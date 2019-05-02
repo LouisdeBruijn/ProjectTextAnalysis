@@ -10,6 +10,8 @@ from nltk.metrics.spearman import *
 
 def main():
 
+    vr = 'test'
+
     # Read the text
     path = "holmes.txt"
     f = open(path)
