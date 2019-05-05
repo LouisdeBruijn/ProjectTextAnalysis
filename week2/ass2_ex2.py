@@ -71,16 +71,33 @@ Penn treebank POS tagging
 """
 import nltk
 from nltk.tokenize import RegexpTokenizer # tokanizer zonder punctation.
+import operator
 
 def main():
-	# Opdracht 1
-	tokens = nltk.word_tokenize("Peter really liked the movies and warm pop-corn . He would never bring Mira with him, though .")
-	print(tokens)
-	print(nltk.corpus.brown.tagged_words(tagset='universal'))
-	# Opdracht 2
-	br_tw = nltk.corpus.brown.tagged_words(categories='mystery')
-	br_ts = nltk.corpus.brown.tagged_sents(categories='mystery')
-	print(br_tw)
-	print(br_ts)
+    # Opdracht 1
+    tokens = nltk.word_tokenize("Peter really liked the movies and warm pop-corn . He would never bring Mira with him, though .")
+    print(tokens)
+    print(nltk.corpus.brown.tagged_words(tagset='universal'))
+    # Opdracht 2
+    br_tw = nltk.corpus.brown.tagged_words(categories='mystery')
+    br_ts = nltk.corpus.brown.tagged_sents(categories='mystery')
+    print(len(br_tw))
+    print(len(br_ts))
+    print(br_tw[50])
+    print(br_tw[75])
+    print(len(set(br_tw)))
+
+	# Finding the not duplicates part of speech
+    not_duplicates = [x[1] for x in br_tw]
+    print(len(set(not_duplicates)))
+
+    # Looking top 15 words
+    all_words = [x[0] for x in br_tw]
+    print(nltk.FreqDist(all_words).most_common(15))
+    # excersize f just change 20 to 40 if you want to know the other one.
+    allwords = [x[0] for x in br_ts[60]]
+    print(nltk.FreqDist(allwords).most_common(1))
+
+
 if __name__ == "__main__":
 	main()
