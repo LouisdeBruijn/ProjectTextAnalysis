@@ -97,7 +97,14 @@ def main():
     # excersize f just change 20 to 40 if you want to know the other one.
     allwords = [x[0] for x in br_ts[60]]
     print(nltk.FreqDist(allwords).most_common(1))
-
-
+    # excersize g: most common adverb
+    allwords2 = [x for x in br_tw if x[1] == "RB"]
+    print(nltk.FreqDist(allwords2).most_common(1))
+    # excersize h: most frequent adjective
+    allwords3 = [x for x in br_tw if x[1] == "JJ"]
+    print(nltk.FreqDist(allwords3).most_common(1))
+    # excersize i and j: the word so and his part of speech
+    allwords = [x for x in br_tw if x[0] == "so"]
+    print(nltk.FreqDist(allwords).most_common(5))
 if __name__ == "__main__":
 	main()
