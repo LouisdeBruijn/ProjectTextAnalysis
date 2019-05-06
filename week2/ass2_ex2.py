@@ -4,18 +4,12 @@
 # Date: 06 May 2019
 
 import nltk
-from nltk.tokenize import RegexpTokenizer # tokanizer zonder punctation.
+from nltk.tokenize import RegexpTokenizer
 import operator
 
 def main():
 
-    # kan dit weg?
-    # Opdracht 1
-    # tokens = nltk.word_tokenize("Peter really liked the movies and warm pop-corn . He would never bring Mira with him, though .")
-    # print(tokens)
-    # print(nltk.corpus.brown.tagged_words(tagset='universal'))
-
-    # Opdracht 2
+    """ Exercise 2 """
     br_tw = nltk.corpus.brown.tagged_words(categories='mystery')
     br_ts = nltk.corpus.brown.tagged_sents(categories='mystery')
 
@@ -78,26 +72,42 @@ def main():
     for i in range(len(example3[0])):
         print(example3[0][i][0], end=" ")
     print()
-    print("### Exercise 2l: ")
-    tags_after = [b[1] for (a,b) in nltk.bigrams(br_tw) if a[0] == 'so']
-    after_most = nltk.FreqDist(tags_after)
-    for tag, freq in after_most.most_common(1):
-        print(tag, freq)
-    tags_before = [a[1] for (a,b) in nltk.bigrams(br_tw) if b[0] == 'so']
-    before_most = nltk.FreqDist(tags_before)
-    for tag, freq in before_most.most_common(1):
-        print(tag, freq)
-    """ Excersize 3 """
+
+    print("### Exercise 2l: most likely POS-tag preceding and following 'so' ")
+    tags_following = [b[1] for (a,b) in nltk.bigrams(br_tw) if a[0] == 'so']
+    tags_follow_most = nltk.FreqDist(tags_following)
+    for tag, freq in tags_follow_most.most_common(1):
+        print("The most frequent POS-tag following 'so' is '{0}' with count {1}".format(tag, freq))
+
+    tags_preceding = [a[1] for (a,b) in nltk.bigrams(br_tw) if b[0] == 'so']
+    tags_preceding_most = nltk.FreqDist(tags_preceding)
+    for tag, freq in tags_preceding_most.most_common(1):
+        print("The most frequent POS-tag preceding 'so' is '{0}' with count {1}".format(tag, freq))
+
+    """ Exercise 3 """
+    # open file
     path = "holmes.txt"
     f = open(path)
     rawText = f.read()
     f.close()
-    pos_tag = nltk.pos_tag(nltk.word_tokenize(rawText))
-    #print(pos_tag)
-    """ Excersize 4 """
+
+    # tokenize
+    sents = nltk.sent_tokenize(rawText) 
+    tokens_s = [nltk.word_tokenize(s) for s in sents] 
+    tokens_t = [t for s in tokens_s for t in s]
+
+    # Create POS-tags per token
+    pos_tag = nltk.pos_tag(tokens_t)
+
+    """ Excersice 4 """
     bigram_measures = nltk.collocations.BigramAssocMeasures()
     bifinder = nltk.BigramCollocationFinder.from_words(pos_tag)
-    best = bifinder.nbest(bigram_measures.pmi, 5)
-    print(best)
+    best_pmi = bifinder.nbest(bigram_measures.pmi, 5)
+    best_raw = bifinder.nbest(bigram_measures.raw_freq, 5)
+    print("### Exercise 4: Top 5 significant bigrams ")    
+    print("The top 5 significant bigrams based on PMI:", best_pmi)
+    print("The top 5 significant bigrams based on raw frequencies:", best_raw)
+
+
 if __name__ == "__main__":
 	main()

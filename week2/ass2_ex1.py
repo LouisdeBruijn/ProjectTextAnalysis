@@ -10,9 +10,8 @@ from nltk.metrics.spearman import *
 
 def main():
 
-    vr = 'test'
-
-    # Read the text
+    """ Exercise 1 """
+    # open file
     path = "holmes.txt"
     f = open(path)
     rawText = f.read()
@@ -30,20 +29,17 @@ def main():
     finder = BigramCollocationFinder.from_words(tokens_t) # create finder object
     text = nltk.Text(tokens_t) # create a text object
 
-    # print("### Exercise 1: top 20 collocations w/ collocations() function")
-    # print(text.collocations(20)) # top 20 collocations w/ collocations()
+    print("### Exercise 1: top 20 collocations w/ collocations() function")
+    print(text.collocations(20)) # top 20 collocations w/ collocations()
 
-    # print("### Exercise 1a: top 20 collocations w/ PMI")
-    # print(finder.nbest(bigram_measures.pmi, 20)) # top 20 collocations w/ PMI
+    print("### Exercise 1a: top 20 collocations w/ PMI")
+    print(finder.nbest(bigram_measures.pmi, 20)) # top 20 collocations w/ PMI
 
-    # print("### Exercise 1b: top 20 collocations w/ chi-square")
-    # print(finder.nbest(bigram_measures.chi_sq, 20)) # top 20 collocations w/ chi-square
+    print("### Exercise 1b: top 20 collocations w/ chi-square")
+    print(finder.nbest(bigram_measures.chi_sq, 20)) # top 20 collocations w/ chi-square
 
-    # print("###")
-    # print("### Exercise 1c: MAG FRISO DOEN: 20 > 40 veranderen, dan zie je wel verschil")
-    # print("### Exercise 1c: top 20 collocations without any association measure")
-    # print(finder.nbest(bigram_measures.raw_freq, 20)) # top 20 collocations w/ chi-square
-    # print("###")
+    print("### Exercise 1c: top 20 collocations without any association measure")
+    print(finder.nbest(bigram_measures.raw_freq, 20)) # top 20 collocations w/ chi-square
 
     print("### Exercise 1d: Calculate Spearman's coefficient") 
     pmi = finder.score_ngrams(bigram_measures.pmi)
