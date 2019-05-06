@@ -65,10 +65,24 @@ def main():
     print("The POS-tag {0} and its count {1}".format(all_words["so"].most_common(1)[0][0], all_words["so"].most_common(1)[0][1]))
    
     print("### Exercise 2k: example sentences with POS-tags for word 'so' ")
-    
-
+    allwords = [x for x in br_ts for i in x if i[0]=="so"]
+    example1 = [x for x in allwords for i in x if i[0] == "so" and i[1] =="QL"]
+    example2 = [x for x in allwords for i in x if i[0] == "so" and i[1] =="RB"]
+    example3 = [x for x in allwords for i in x if i[0] == "so" and i[1] =="CS"]
+    for i in range(len(example1[0])):
+        print(example1[0][i][0], end=" ")
+    print()
+    for i in range(len(example2[0])):
+        print(example2[0][i][0], end=" ")
+    print()
+    for i in range(len(example3[0])):
+        print(example3[0][i][0], end=" ")
+    print()
     print("### Exercise 2l: ")
-
+    print(nltk.bigrams(br_ts))
+    post_word = [b[1] for (a,b) in nltk.bigrams(br_ts) if a[0] == "so"]
+    pre_word = [a[1] for (a,b) in nltk.bigrams(br_ts) if b[0] == "so"]
+    print(nltk.FreqDist(pre_word))
     """ Excersize 3 """
     path = "holmes.txt"
     f = open(path)
