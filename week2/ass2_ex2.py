@@ -40,11 +40,11 @@ def main():
     all_words = [x[1] for x in br_tw]
     print(nltk.FreqDist(all_words).most_common(15))
 
-    print("### Exercise 2f: the most frequent POS-tags in sentence X")
-    # excersize f just change 20 to 40 if you want to know the other one.
-    allwords = [x[0] for x in br_ts[60]]
-    print(nltk.FreqDist(allwords).most_common(15))
-    # dit klopt volgens mij niet
+    print("### Exercise 2f: the most frequent POS-tag in sentence X")
+    all_words = [x[1] for x in br_ts[20]]
+    print("Most frequent POS-tag in sentence 20:", nltk.FreqDist(all_words).most_common(1))
+    all_words = [x[1] for x in br_ts[50]]
+    print("Most frequent POS-tag in sentence 50:", nltk.FreqDist(all_words).most_common(1))
 
     print("### Exercise 2g: most frequent adverb")
     allwords2 = [x for x in br_tw if x[1] == "RB"]
@@ -62,7 +62,7 @@ def main():
         print(item[0])
 
     print("### Exercise 2j: the most frequent POS-tag for the word 'so' is")
-    print("The POS-tag {0} and its count {1}".format(all_words["so"].most_common(1)[0][0], all_words["so"].most_common(1)[0][1]))
+    print("The POS-tag '{0}'' and its count is '{1}' ".format(all_words["so"].most_common(1)[0][0], all_words["so"].most_common(1)[0][1]))
    
     print("### Exercise 2k: example sentences with POS-tags for word 'so' ")
     allwords = [x for x in br_ts for i in x if i[0]=="so"]
