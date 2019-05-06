@@ -79,10 +79,14 @@ def main():
         print(example3[0][i][0], end=" ")
     print()
     print("### Exercise 2l: ")
-    print(nltk.bigrams(br_ts))
-    post_word = [b[1] for (a,b) in nltk.bigrams(br_ts) if a[0] == "so"]
-    pre_word = [a[1] for (a,b) in nltk.bigrams(br_ts) if b[0] == "so"]
-    print(nltk.FreqDist(pre_word))
+    tags_after = [b[1] for (a,b) in nltk.bigrams(br_tw) if a[0] == 'so']
+    after_most = nltk.FreqDist(tags_after)
+    for tag, freq in after_most.most_common(1):
+        print(tag, freq)
+    tags_before = [a[1] for (a,b) in nltk.bigrams(br_tw) if b[0] == 'so']
+    before_most = nltk.FreqDist(tags_before)
+    for tag, freq in before_most.most_common(1):
+        print(tag, freq)
     """ Excersize 3 """
     path = "holmes.txt"
     f = open(path)
@@ -90,6 +94,10 @@ def main():
     f.close()
     pos_tag = nltk.pos_tag(nltk.word_tokenize(rawText))
     #print(pos_tag)
-
+    """ Excersize 4 """
+    bigram_measures = nltk.collocations.BigramAssocMeasures()
+    bifinder = nltk.BigramCollocationFinder.from_words(pos_tag)
+    best = bifinder.nbest(bigram_measures.pmi, 5)
+    print(best)
 if __name__ == "__main__":
 	main()
