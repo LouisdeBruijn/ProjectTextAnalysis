@@ -106,5 +106,17 @@ def main():
     # excersize i and j: the word so and his part of speech
     allwords = [x for x in br_tw if x[0] == "so"]
     print(nltk.FreqDist(allwords).most_common(5))
+    all_words = nltk.ConditionalFreqDist(br_tw)
+    print(all_words["so"].most_common())
+    print(all_words["so"].most_common(1))
+
+    """ Excersize 3 """
+    path = "holmes.txt"
+    f = open(path)
+    rawText = f.read()
+    f.close()
+    pos_tag = nltk.pos_tag(nltk.word_tokenize(rawText))
+    #print(pos_tag)
+
 if __name__ == "__main__":
 	main()
