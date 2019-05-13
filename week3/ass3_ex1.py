@@ -154,11 +154,22 @@ def main():
         synset_list = wn.synsets(lemma, pos=wn.NOUN)
         for synset in synset_list:
             top_N_class[lemma].append(top_hypernym(synset))
-
+    counter = 0
+    counter_2 = 0
+    counter_3 = 0
+    total_hypernouns = 0
     for k, v in top_N_class.items():
-        print(k, v)
-
-
+        v = [x for x in v if x != "None"]
+        total_hypernouns += len(v)
+        print(k, len(v))
+        if len(v) == 1:
+            counter += 1
+        if len(v) > 1:
+            counter_2 += 1
+    average = total_hypernouns / len(top_N_class.items())
+    print("Opdracht 1.2a:" , counter)
+    print("Opdracht 1.2b" , counter_2)
+    print("Opdracht 1.2c" , average, "%")
     # print("### Exercise 3: WordNet similarity")
     # matches = wordNet_similarity()
     # for k, v in matches.items():
