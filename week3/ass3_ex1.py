@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # File name: ass3_ex1.py
 # Description: script that generates all the information required in exercise 1
-# Author: Louis de Bruijn & Friso Stolk
+# Author: Louis de Bruijn & Friso Stolk & Nick Algra
 # Date: 09-05-2018
 
 import nltk # v3.4
@@ -117,38 +117,8 @@ def wordNet_similarity():
     tot['lin'] = matches
 
     return tot
-
-
-def main():
-
-    # Read the text
-    path = "ada_lovelace.txt"
-    f = open(path)
-    rawText = f.read()
-    f.close()
-
-    sents = nltk.sent_tokenize(rawText) # tokenize rawText to sentences
-    tokens_s = [nltk.word_tokenize(s) for s in sents] # a list of lists: sentences w/ tokens
-    tokens_t = [t for s in tokens_s for t in s] # a list of tokens 
-    pos_tags = nltk.pos_tag(tokens_t)
-
-    # create a list of nouns (recognized by their POS-tag)
-    nouns = []
-    for i in range(len(pos_tags)):
-        if pos_tags[i][1] == 'NN' or pos_tags[i][1] == 'NNP' or pos_tags[i][1] == 'NNS' or pos_tags[i][1] == 'NNPS':
-            nouns.append(pos_tags[i][0])
-
-    # lemmatize the nouns
-    lemmatizer = WordNetLemmatizer()
-    noun_lemmas = [lemmatizer.lemmatize(noun, wn.NOUN) for noun in nouns]
-
-    # print("### Exercise 1: WordNet relations")
-    # words = WordNet_relations(noun_lemmas)
-    # for key, value in words.items():
-    #     print("{0} nouns refer to {1}. The nouns are: {2}".format(len(value), key, value))
-
-
-    # # Multiple classes [unfinished]
+def opdr2(noun_lemmas):
+    print("## Opdracht 1.2 ###")
     top_N_class = defaultdict(list)
     for lemma in noun_lemmas:
         synset_list = wn.synsets(lemma, pos=wn.NOUN)
@@ -179,6 +149,36 @@ def main():
     print("Total lemmas:", len(noun_lemmas))
     print("Average num of hypernyms per noun:", lengths/len(top_N_class)) # v3
 
+def main():
+
+    # Read the text
+    path = "ada_lovelace.txt"
+    f = open(path)
+    rawText = f.read()
+    f.close()
+
+    sents = nltk.sent_tokenize(rawText) # tokenize rawText to sentences
+    tokens_s = [nltk.word_tokenize(s) for s in sents] # a list of lists: sentences w/ tokens
+    tokens_t = [t for s in tokens_s for t in s] # a list of tokens 
+    pos_tags = nltk.pos_tag(tokens_t)
+
+    # create a list of nouns (recognized by their POS-tag)
+    nouns = []
+    for i in range(len(pos_tags)):
+        if pos_tags[i][1] == 'NN' or pos_tags[i][1] == 'NNP' or pos_tags[i][1] == 'NNS' or pos_tags[i][1] == 'NNPS':
+            nouns.append(pos_tags[i][0])
+
+    # lemmatize the nouns
+    lemmatizer = WordNetLemmatizer()
+    noun_lemmas = [lemmatizer.lemmatize(noun, wn.NOUN) for noun in nouns]
+    opdr2(noun_lemmas)
+    # print("### Exercise 1: WordNet relations")
+    # words = WordNet_relations(noun_lemmas)
+    # for key, value in words.items():
+    #     print("{0} nouns refer to {1}. The nouns are: {2}".format(len(value), key, value))
+
+
+    # # Multiple classes [unfinished]
 
     # print("### Exercise 3: WordNet similarity")
     # matches = wordNet_similarity()
