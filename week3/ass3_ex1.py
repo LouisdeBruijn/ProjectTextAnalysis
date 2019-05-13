@@ -155,7 +155,6 @@ def main():
         for synset in synset_list:
             top_hypernym(synset)
             top_N_class[lemma].append((synset.name(), top_hypernym(synset)))
-        noun_classes[lemma] = lijst
 
     for k, v in top_N_class.items():
         print(k, v)
