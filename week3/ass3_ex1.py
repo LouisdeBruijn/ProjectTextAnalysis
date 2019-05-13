@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # File name: ass3_ex1.py
 # Description: script that generates all the information required in exercise 1
-# Author: Louis de Bruijn & Friso Stolk
+# Author: Louis de Bruijn & Friso Stolk & Nick Algra
 # Date: 09-05-2018
 
 import nltk # v3.4
@@ -117,7 +117,37 @@ def wordNet_similarity():
     tot['lin'] = matches
 
     return tot
+def opdr2(noun_lemmas):
+    print("## Opdracht 1.2 ###")
+    top_N_class = defaultdict(list)
+    for lemma in noun_lemmas:
+        synset_list = wn.synsets(lemma, pos=wn.NOUN)
+        for synset in synset_list:
+            top_N_class[lemma].append(top_hypernym(synset))
 
+    zero_hypernyms = 0
+    only_one_hypernym = 0
+    multiple_hypernyms = 0
+    lengths = 0
+    for key, values in top_N_class.items():
+        values = [x for x in values if x != None]
+        print(key, len(values))
+        lengths += len(values)
+        if len(values) < 1:
+            zero_hypernyms += 1
+        if len(values) == 1:
+            only_one_hypernym += 1 # v1
+        if len(values) > 1:
+            multiple_hypernyms += 1 # v2
+            print(key, values)
+
+    print("Zero hypernyms:", zero_hypernyms)
+    print("Only one hypernym:", only_one_hypernym) # v1
+    print("Multiple hypernyms:", multiple_hypernyms) # v2
+    print("Combined:", zero_hypernyms+only_one_hypernym+multiple_hypernyms)
+    print("Total in dict:", len(top_N_class))
+    print("Total lemmas:", len(noun_lemmas))
+    print("Average num of hypernyms per noun:", lengths/len(top_N_class)) # v3
 
 def main():
 
@@ -141,7 +171,7 @@ def main():
     # lemmatize the nouns
     lemmatizer = WordNetLemmatizer()
     noun_lemmas = [lemmatizer.lemmatize(noun, wn.NOUN) for noun in nouns]
-
+    opdr2(noun_lemmas)
     # print("### Exercise 1: WordNet relations")
     # words = WordNet_relations(noun_lemmas)
     # for key, value in words.items():
@@ -149,27 +179,7 @@ def main():
 
 
     # # Multiple classes [unfinished]
-    top_N_class = defaultdict(list)
-    for lemma in noun_lemmas:
-        synset_list = wn.synsets(lemma, pos=wn.NOUN)
-        for synset in synset_list:
-            top_N_class[lemma].append(top_hypernym(synset))
-    one_hypernym = 0
-    more_hypernyms = 0
-    counter_3 = 0
-    total_hypernouns = 0
-    for k, v in top_N_class.items():
-        v = [x for x in v if x != "None"]
-        total_hypernouns += len(v)
-        print(k, len(v))
-        if len(v) == 1:
-            one_hypernym += 1
-        if len(v) > 1:
-            more_hypernyms += 1
-    average = total_hypernouns / len(top_N_class.items())
-    print("Opdracht 1.2a: Amount of nouns with one hypernym:" , counter)
-    print("Opdracht 1.2b: Amount of nouns with more than one hypernym" , counter_2)
-    print("Opdracht 1.2c: Average amount of hypernyms per noun" , average, "%")
+
     # print("### Exercise 3: WordNet similarity")
     # matches = wordNet_similarity()
     # for k, v in matches.items():
