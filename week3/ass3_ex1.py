@@ -149,7 +149,6 @@ def main():
     # # Multiple classes [unfinished]
     top_N_class = defaultdict(list)
     for lemma in noun_lemmas:
-        print('lemma', lemma)
         synset_list = wn.synsets(lemma, pos=wn.NOUN)
         lijst = []
         for synset in synset_list:
