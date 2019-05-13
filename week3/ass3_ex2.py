@@ -32,10 +32,6 @@ def main():
         if pos_tags[i][1] == 'NN' or pos_tags[i][1] == 'NNP' or pos_tags[i][1] == 'NNS' or pos_tags[i][1] == 'NNPS':
             nouns.append(pos_tags[i][0])
 
-    # lemmatize the nouns
-    lemmatizer = WordNetLemmatizer()
-    noun_lemmas = [lemmatizer.lemmatize(noun, wn.NOUN) for noun in nouns]
-
 
     print("### Exercise 1 & 2, changing depending on server properties")
     ner_tagger = CoreNLPParser(url='http://localhost:9000', tagtype='ner')
@@ -50,6 +46,7 @@ def main():
         print("Named Entity Class '{}' was found {} times: {}".format(e, len(nec_reversedict[e]), nec_reversedict[e]))
 
     print("### Exercise 3")
+    lemmatizer = WordNetLemmatizer()
     for noun in nouns:
         if noun in nec_dict:
             print("{}: {}".format(noun, nec_dict[noun]))
