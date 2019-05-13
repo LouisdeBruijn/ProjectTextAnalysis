@@ -28,14 +28,17 @@ def hypernymOf(synset1, synset2):
 
 def top_hypernym(synset):
     """ Returns the top hypernym for a synset """
+    root = ['abstraction.n.06', 'physical_entity.n.01', 'thing.n.12']
+
     if synset.hypernyms():
-        hypernym = synset.hypernyms()[0]
-        if hypernym is synset.root_hypernyms()[0]:  
-            return synset
-        else:
-            return top_hypernym(hypernym)
+        for h in synset.hypernyms():
+            hypernym = h.hypernyms()[0]
+            if hypernym.name() in root:
+                return synset.name()
+            else:
+                return top_hypernym(hypernym)
     else:
-        return synset
+        return None
 
 
 def WordNet_relations(noun_lemmas):
@@ -138,41 +141,30 @@ def main():
     lemmatizer = WordNetLemmatizer()
     noun_lemmas = [lemmatizer.lemmatize(noun, wn.NOUN) for noun in nouns]
 
-    print("### Exercise 1: WordNet relations")
-    words = WordNet_relations(noun_lemmas)
-    for key, value in words.items():
-        print("{0} nouns refer to {1}. The nouns are: {2}".format(len(value), key, value))
+    # print("### Exercise 1: WordNet relations")
+    # words = WordNet_relations(noun_lemmas)
+    # for key, value in words.items():
+    #     print("{0} nouns refer to {1}. The nouns are: {2}".format(len(value), key, value))
 
     # # Multiple classes [unfinished]
-    # top_N_class = defaultdict(list)
-    # noun_classes = {}
-    # for lemma in noun_lemmas:
-    #     print('lemma', lemma)
-    #     synset_list = wn.synsets(lemma, pos=wn.NOUN)
-    #     lijst = []
-    #     for synset in synset_list:
-    #         print('top', top_hypernym(synset))
-    #         top_N_class[lemma].append(top_hypernym(synset))
-    #         # print('top', top_hypernym(synset))
-    #         for hypernym in synset.hypernyms():
-    #             lijst.append(hypernym)
-    #             print('hypernyms', lijst)
-    #     #testing
-    #     noun_classes[lemma] = lijst
-    #     print('len hypernyms', len(noun_classes[lemma]))
-    #     print('len top_N_class', len(top_N_class[lemma]))
+    top_N_class = defaultdict(list)
+    for lemma in noun_lemmas:
+        print('lemma', lemma)
+        synset_list = wn.synsets(lemma, pos=wn.NOUN)
+        lijst = []
+        for synset in synset_list:
+            top_hypernym(synset)
+            top_N_class[lemma].append((synset.name(), top_hypernym(synset)))
+        noun_classes[lemma] = lijst
 
-    # # for k, v in top_N_class.items():
-    # #     print(k, v)
-
-    # # for key, value in noun_classes.items():
-    # #     print(key, value)
+    for k, v in top_N_class.items():
+        print(k, v)
 
 
-    print("### Exercise 3: WordNet similarity")
-    matches = wordNet_similarity()
-    for k, v in matches.items():
-        print("Similarity measure '{0}' has {1} matches: {2}".format(k, len(v), v))
+    # print("### Exercise 3: WordNet similarity")
+    # matches = wordNet_similarity()
+    # for k, v in matches.items():
+    #     print("Similarity measure '{0}' has {1} matches: {2}".format(k, len(v), v))
 
 
 
