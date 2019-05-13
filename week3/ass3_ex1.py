@@ -155,8 +155,29 @@ def main():
         for synset in synset_list:
             top_N_class[lemma].append(top_hypernym(synset))
 
-    for k, v in top_N_class.items():
-        print(k, v)
+    zero_hypernyms = 0
+    only_one_hypernym = 0
+    multiple_hypernyms = 0
+    lengths = 0
+    for key, values in top_N_class.items():
+        values = [x for x in values if x != None]
+        print(key, len(values))
+        lengths += len(values)
+        if len(values) < 1:
+            zero_hypernyms += 1
+        if len(values) == 1:
+            only_one_hypernym += 1 # v1
+        if len(values) > 1:
+            multiple_hypernyms += 1 # v2
+            print(key, values)
+
+    print("Zero hypernyms:", zero_hypernyms)
+    print("Only one hypernym:", only_one_hypernym) # v1
+    print("Multiple hypernyms:", multiple_hypernyms) # v2
+    print("Combined:", zero_hypernyms+only_one_hypernym+multiple_hypernyms)
+    print("Total in dict:", len(top_N_class))
+    print("Total lemmas:", len(noun_lemmas))
+    print("Average num of hypernyms per noun:", lengths/len(top_N_class)) # v3
 
 
     # print("### Exercise 3: WordNet similarity")
