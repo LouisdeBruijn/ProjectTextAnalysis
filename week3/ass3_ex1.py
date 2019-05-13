@@ -31,10 +31,11 @@ def top_hypernym(synset):
     root = ['abstraction.n.06', 'physical_entity.n.01', 'thing.n.12']
 
     if synset.hypernyms():
+        # synset.root_hypernyms()[0])
         for h in synset.hypernyms():
             hypernym = h.hypernyms()[0]
             if hypernym.name() in root:
-                return synset.name()
+                return h.name()
             else:
                 return top_hypernym(hypernym)
     else:
@@ -146,11 +147,11 @@ def main():
     # for key, value in words.items():
     #     print("{0} nouns refer to {1}. The nouns are: {2}".format(len(value), key, value))
 
+
     # # Multiple classes [unfinished]
     top_N_class = defaultdict(list)
     for lemma in noun_lemmas:
         synset_list = wn.synsets(lemma, pos=wn.NOUN)
-        lijst = []
         for synset in synset_list:
             top_N_class[lemma].append(top_hypernym(synset))
 
