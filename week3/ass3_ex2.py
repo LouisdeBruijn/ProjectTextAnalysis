@@ -40,13 +40,21 @@ def main():
     print("### Exercise 1 & 2, changing depending on server properties")
     ner_tagger = CoreNLPParser(url='http://localhost:9000', tagtype='ner')
     nec_list = list(ner_tagger.tag(tokens_t))
-    nec_dict = defaultdict(list)
+    nec_dict = {} # Named entiny: class
+    nec_reversedict = defaultdict(list) # Class: [list of named entities]
     for (name, nec) in nec_list:
         if not nec == 'O':
-            nec_dict[nec].append(name)
-    for e in nec_dict:
-        print("Named Entity Class '{}' was found {} times: {}".format(e, len(nec_dict[e]), nec_dict[e]))
+            nec_dict[name] = nec
+            nec_reversedict[nec].append(name)
+    for e in nec_reversedict:
+        print("Named Entity Class '{}' was found {} times: {}".format(e, len(nec_reversedict[e]), nec_reversedict[e]))
 
+    print("### Exercise 3")
+    for noun in nouns:
+        if noun in nec_dict:
+            print("{}: {}".format(noun, nec_dict[noun]))
+        else:
+            print("{}: {}".format(noun, lemmatizer.lemmatize(noun, wn.NOUN)))
 
 if __name__ == '__main__':
     main()
