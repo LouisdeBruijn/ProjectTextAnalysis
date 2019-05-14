@@ -1,23 +1,31 @@
 import nltk
-import sys
+import glob
+import csv
 
-def main(argv):
-    path = argv[1]
-    f = open(path)
-    rawText = f.read()
-    f.close()
 
-    sents = rawText.split('\n') # tokenize rawText to sentences
-    sents.pop() # remove useless newline at end of every file
-    
-    tokens = [sent.split()[3] for sent in sents]
-    pos_tokens = nltk.pos_tag(tokens)
-    for i in range(len(sents)):
-        sents[i] += " " + pos_tokens[i][1]
-    out_text = "\n".join(sents)
-    
-    f = open(path + ".pos", "w")
-    print(out_text, file = f)
-    
+def main():
+    path_list = glob.glob('group11/*/*/*.tok.off')
+    print(path_list)
+    for path in path_list:
+        print(path)
+        with open(path) as f:
+            #csv_reader = csv.reader(csv_file, delimiter=' ')
+            #for line in csv_reader:
+            #    print(line)
+            rawText = f.read()
+
+            sents = rawText.split('\n') # tokenize rawText to sentences
+            sents.pop() # remove useless newline at end of every file
+
+            tokens = [sent.split()[3] for sent in sents]
+            pos_tokens = nltk.pos_tag(tokens)
+            for i in range(len(sents)):
+                sents[i] += " " + pos_tokens[i][1]
+            out_text = "\n".join(sents)
+
+            f = open(path + ".pos", "w")
+            print(out_text, file = f)
+
+
 if __name__ == "__main__":
-    main(sys.argv)
+    main()
