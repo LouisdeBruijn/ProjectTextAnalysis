@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+# File name: pos_tag.py
+# Description: script that does POS-tagging for files
+# Author: Louis de Bruijn & Friso Stolk & Nick Algra
+# Date: 14-05-2018
+
 import nltk
 import glob
 import csv
