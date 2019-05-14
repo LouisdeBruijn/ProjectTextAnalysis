@@ -131,7 +131,7 @@ def opdr2(noun_lemmas):
     lengths = 0
     for key, values in top_N_class.items():
         values = [x for x in values if x != None]
-        print(key, len(values))
+        # print(key, len(values))
         lengths += len(values)
         if len(values) < 1:
             zero_hypernyms += 1
@@ -144,9 +144,9 @@ def opdr2(noun_lemmas):
     print("Zero hypernyms:", zero_hypernyms)
     print("Only one hypernym:", only_one_hypernym) # v1
     print("Multiple hypernyms:", multiple_hypernyms) # v2
-    print("Combined:", zero_hypernyms+only_one_hypernym+multiple_hypernyms)
-    print("Total in dict:", len(top_N_class))
-    print("Total lemmas:", len(noun_lemmas))
+    # print("Combined:", zero_hypernyms+only_one_hypernym+multiple_hypernyms)
+    # print("Total in dict:", len(top_N_class))
+    # print("Total lemmas:", len(noun_lemmas))
     print("Average num of hypernyms per noun:", lengths/len(top_N_class)) # v3
 
 def main():
@@ -171,20 +171,20 @@ def main():
     # lemmatize the nouns
     lemmatizer = WordNetLemmatizer()
     noun_lemmas = [lemmatizer.lemmatize(noun, wn.NOUN) for noun in nouns]
+
+
+    print("### Exercise 1: WordNet relations")
+    words = WordNet_relations(noun_lemmas)
+    for key, value in words.items():
+        print("{0} nouns refer to {1}. The nouns are: {2}".format(len(value), key, value))
+
+    print("### Exercise 2: Multiple classes")
     opdr2(noun_lemmas)
-    # print("### Exercise 1: WordNet relations")
-    # words = WordNet_relations(noun_lemmas)
-    # for key, value in words.items():
-    #     print("{0} nouns refer to {1}. The nouns are: {2}".format(len(value), key, value))
 
-
-    # # Multiple classes [unfinished]
-
-    # print("### Exercise 3: WordNet similarity")
-    # matches = wordNet_similarity()
-    # for k, v in matches.items():
-    #     print("Similarity measure '{0}' has {1} matches: {2}".format(k, len(v), v))
-
+    print("### Exercise 3: WordNet similarity")
+    matches = wordNet_similarity()
+    for k, v in matches.items():
+        print("Similarity measure '{0}' has {1} matches: {2}".format(k, len(v), v))
 
 
 

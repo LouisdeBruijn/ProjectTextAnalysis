@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # File name: ass3_ex2.py
 # Description: script that generates all the information required in exercise 2
-# Author: Louis de Bruijn & Friso Stolk
-# Date: 09-05-2018
+# Author: Louis de Bruijn & Friso Stolk & Nick Algra
+# Date: 13-05-2018
 
 import nltk # v3.4
 from nltk.corpus import wordnet as wn
@@ -10,7 +10,6 @@ from nltk.stem.wordnet import WordNetLemmatizer
 from collections import defaultdict
 from nltk.corpus import wordnet_ic
 from nltk.parse import CoreNLPParser
-import operator
 
 
 def main():
@@ -52,6 +51,7 @@ def main():
             print("{}: {}".format(noun, nec_dict[noun]))
         else:
             print("{}: {}".format(noun, lemmatizer.lemmatize(noun, wn.NOUN)))
+
 
 if __name__ == '__main__':
     main()
