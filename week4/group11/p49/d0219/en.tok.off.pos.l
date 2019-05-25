@@ -67,7 +67,7 @@
 394 401 4006 several JJ
 402 407 4007 trips NNS
 408 410 4008 to TO
-411 415 4009 Iran NNP https://en.wikipedia.org/wiki/Iran
+411 415 4009 Iran NNP COU https://en.wikipedia.org/wiki/Iran
 416 421 4010 since IN
 422 425 4011 Mr. NNP
 426 437 4012 Ahmadinejad NNP PERSON https://en.wikipedia.org/wiki/Mahmoud_Ahmadinejad
