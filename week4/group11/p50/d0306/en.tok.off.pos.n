@@ -39,7 +39,7 @@
 208 215 3015 further JJ
 216 223 3016 details NNS
 223 224 3017 . .
-225 230 4001 Usher NNP https://en.wikipedia.org/wiki/Usher_(musician)
+225 230 4001 Usher NNP PERSON https://en.wikipedia.org/wiki/Usher_(musician)
 231 234 4002 had VBD
 235 245 4003 previously RB
 246 255 4004 announced VBN
