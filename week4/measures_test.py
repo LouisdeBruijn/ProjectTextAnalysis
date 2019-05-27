@@ -65,20 +65,11 @@ def main():
                 friso.append(line[5])
             else:
                 friso.append("NONE")
-    #path_list = glob.glob('group11/*/*/*.tok.off.pos.l')
-    #friso = defaultdict(list)
-    #for path in path_list:
-    #    with open(path) as csv_file:
-    #        csv_reader = csv.reader(csv_file, delimiter=' ')
-    #        for line in csv_reader:
-    #            if len(line) > 5:
-    #                friso[path[:17]].append((line[0], line[1], line[5]))
     # initalize variables
     tp = fn = fp = 0
 
-# Nick and Louis comparison
-    print(len(nick))
-    print(len(friso))
+    # Nick and Friso comparison
+    print("### NICK AND FRISO COMPARISON ###")
     cm = ConfusionMatrix(nick, friso)
     print(cm)
     labels = set(nick + friso)
@@ -110,8 +101,72 @@ def main():
             fscore = 2 * (precision * recall) / float(precision + recall)
         print(i, fscore)
 
-# Nick and Friso comparison
-  
+    # Nick and Louis comparison
+    print("### NICK AND LOUIS COMPARISON ###")
+    cm = ConfusionMatrix(nick, louis)
+    print(cm)
+    labels = set(nick + louis)
+    true_positives = Counter()
+    false_negatives = Counter()
+    false_positives = Counter()
+    for i in labels:
+        for j in labels:
+            if i == j:
+                true_positives[i] += cm[i,j]
+            else:
+                false_negatives[i] += cm[i,j]
+                false_positives[j] += cm[i,j]
+
+
+
+
+    print("TP:", sum(true_positives.values()), true_positives)
+    print("FN:", sum(false_negatives.values()), false_negatives)
+    print("FP:", sum(false_positives.values()), false_positives)
+    print() 
+
+    for i in sorted(labels):
+        if true_positives[i] == 0:
+            fscore = 0
+        else:
+            precision = true_positives[i] / float(true_positives[i]+false_positives[i])
+            recall = true_positives[i] / float(true_positives[i]+false_negatives[i])
+            fscore = 2 * (precision * recall) / float(precision + recall)
+        print(i, fscore)
+
+    # Louis and Friso comparison
+    print("### Louis AND FRISO COMPARISON ")
+    cm = ConfusionMatrix(louis, friso)
+    print(cm)
+    labels = set(louis + friso)
+    true_positives = Counter()
+    false_negatives = Counter()
+    false_positives = Counter()
+    for i in labels:
+        for j in labels:
+            if i == j:
+                true_positives[i] += cm[i,j]
+            else:
+                false_negatives[i] += cm[i,j]
+                false_positives[j] += cm[i,j]
+
+
+
+
+    print("TP:", sum(true_positives.values()), true_positives)
+    print("FN:", sum(false_negatives.values()), false_negatives)
+    print("FP:", sum(false_positives.values()), false_positives)
+    print() 
+
+    for i in sorted(labels):
+        if true_positives[i] == 0:
+            fscore = 0
+        else:
+            precision = true_positives[i] / float(true_positives[i]+false_positives[i])
+            recall = true_positives[i] / float(true_positives[i]+false_negatives[i])
+            fscore = 2 * (precision * recall) / float(precision + recall)
+        print(i, fscore)
+
 if __name__ == '__main__':
     main()
 
