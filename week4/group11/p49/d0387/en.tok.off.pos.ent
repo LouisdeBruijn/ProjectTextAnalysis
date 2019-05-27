@@ -26,15 +26,15 @@
 163 168 2006 clash NN
 169 177 2007 occurred VBD
 178 180 2008 in IN
-181 193 2009 southeastern JJ NAT https://en.wikipedia.org/wiki/Hakkari
-194 201 2010 Hakkari NNP NAT https://en.wikipedia.org/wiki/Hakkari
-202 210 2011 province NN
+181 193 2009 southeastern JJ
+194 201 2010 Hakkari NNP NAT https://en.wikipedia.org/wiki/Hakk%C3%A2ri_Province
+202 210 2011 province NN NAT https://en.wikipedia.org/wiki/Hakk%C3%A2ri_Province
 210 211 2012 . .
 212 215 3001 The DT
 216 222 3002 banned JJ
 223 232 3003 Kurdistan NNP ORG https://en.wikipedia.org/wiki/Kurdistan_Workers%27_Party
 233 240 3004 Workers NNP ORG https://en.wikipedia.org/wiki/Kurdistan_Workers%27_Party
-240 241 3005 ' POS
+240 241 3005 ' POS ORG https://en.wikipedia.org/wiki/Kurdistan_Workers%27_Party
 242 247 3006 Party NNP ORG https://en.wikipedia.org/wiki/Kurdistan_Workers%27_Party
 248 249 3007 ( (
 249 252 3008 PKK NNP ORG https://en.wikipedia.org/wiki/Kurdistan_Workers%27_Party
