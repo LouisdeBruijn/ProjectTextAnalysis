@@ -21,8 +21,13 @@ def main():
                     # print(path[:17], line[5], line[6]) # check correctness
                     if ' ' in line[6]:
                         print(line[6]) # whitespaces in link
-                    if ' ' in line[5]:
+                    elif ' ' in line[5]:
                         print(line[5]) # whitespaces in entiy class tag
+                    elif line[6] == '-':
+                        print(path, line)
+                    elif line[6] == 'Washington': # could link to the disambiguation page
+                        print(line)
+
 
 
 if __name__ == '__main__':
