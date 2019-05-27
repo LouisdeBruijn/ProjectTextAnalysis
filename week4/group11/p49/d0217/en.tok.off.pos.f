@@ -55,8 +55,8 @@
 298 305 4007 senator NN
 306 309 4008 and CC
 310 319 4009 astronaut NN
-320 324 4010 John NNP PERSON https://en.wikipedia.org/wiki/John_Glenn
-325 330 4011 Glenn NNP PERSON https://en.wikipedia.org/wiki/John_Glenn
+320 324 4010 John NNP PER https://en.wikipedia.org/wiki/John_Glenn
+325 330 4011 Glenn NNP PER https://en.wikipedia.org/wiki/John_Glenn
 331 337 4012 joined VBD
 338 345 4013 members NNS
 346 348 4014 of IN
@@ -76,7 +76,7 @@
 418 419 4028 . .
 421 424 5001 VOA NNP
 424 426 5002 's POS
-428 432 5003 Paul NNP PERSON
-433 438 5004 Sisco NNP PERSON
+428 432 5003 Paul NNP PER
+433 438 5004 Sisco NNP PER
 439 446 5005 reports NNS
 446 447 5006 . .

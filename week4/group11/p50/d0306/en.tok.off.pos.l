@@ -1,4 +1,4 @@
-0 5 1001 Usher NNP PERSON https://en.wikipedia.org/wiki/Usher_(musician)
+0 5 1001 Usher NNP PER https://en.wikipedia.org/wiki/Usher_(musician)
 6 8 1002 is VBZ
 9 12 1003 off IN
 13 16 1004 the DT
@@ -19,14 +19,14 @@
 93 103 2013 girlfriend NN
 103 104 2014 , ,
 105 112 2015 stylist JJ
-113 119 2016 Tameka NNP PERSON https://en.wikipedia.org/wiki/Tameka_Foster
-120 126 2017 Foster NNP PERSON https://en.wikipedia.org/wiki/Tameka_Foster
+113 119 2016 Tameka NNP PER https://en.wikipedia.org/wiki/Tameka_Foster
+120 126 2017 Foster NNP PER https://en.wikipedia.org/wiki/Tameka_Foster
 126 127 2018 . .
-128 133 3001 Usher NNP PERSON https://en.wikipedia.org/wiki/Usher_(musician)
+128 133 3001 Usher NNP PER https://en.wikipedia.org/wiki/Usher_(musician)
 133 135 3002 's POS
 136 145 3003 publicist NN
-146 152 3004 Simone NNP PERSON
-153 159 3005 Smalls NNP PERSON
+146 152 3004 Simone NNP PER
+153 159 3005 Smalls NNP PER
 160 164 3006 made VBD
 165 168 3007 the DT
 169 181 3008 announcement NN
@@ -39,7 +39,7 @@
 208 215 3015 further JJ
 216 223 3016 details NNS
 223 224 3017 . .
-225 230 4001 Usher NNP PERSON https://en.wikipedia.org/wiki/Usher_(musician)
+225 230 4001 Usher NNP PER https://en.wikipedia.org/wiki/Usher_(musician)
 231 234 4002 had VBD
 235 245 4003 previously RB
 246 255 4004 announced VBN
@@ -70,7 +70,7 @@
 373 378 6005 Award NNP ENT https://en.wikipedia.org/wiki/Grammy_Award
 379 385 6006 winner NN
 385 386 6007 , ,
-387 392 6008 Usher NNP PERSON https://en.wikipedia.org/wiki/Usher_(musician)
+387 392 6008 Usher NNP PER https://en.wikipedia.org/wiki/Usher_(musician)
 393 396 6009 has VBZ
 397 401 6010 sold VBN
 402 406 6011 more JJR

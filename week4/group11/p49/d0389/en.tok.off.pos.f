@@ -16,8 +16,8 @@
 87 93 1016 ousted JJ
 94 100 1017 former JJ
 101 110 1018 President NNP
-111 124 1019 Jean-Bertrand NNP PERSON https://en.wikipedia.org/wiki/Jean-Bertrand_Aristide
-125 133 1020 Aristide NNP PERSON https://en.wikipedia.org/wiki/Jean-Bertrand_Aristide
+111 124 1019 Jean-Bertrand NNP PER https://en.wikipedia.org/wiki/Jean-Bertrand_Aristide
+125 133 1020 Aristide NNP PER https://en.wikipedia.org/wiki/Jean-Bertrand_Aristide
 133 134 1021 . .
 135 144 2001 Thousands NNP
 145 147 2002 of IN
@@ -34,7 +34,7 @@
 218 221 2013 the DT
 222 228 2014 return NN
 229 232 2015 Mr. NNP
-233 241 2016 Aristide NNP PERSON https://en.wikipedia.org/wiki/Jean-Bertrand_Aristide
+233 241 2016 Aristide NNP PER https://en.wikipedia.org/wiki/Jean-Bertrand_Aristide
 241 242 2017 , ,
 243 246 2018 who WP
 247 250 2019 has VBZ

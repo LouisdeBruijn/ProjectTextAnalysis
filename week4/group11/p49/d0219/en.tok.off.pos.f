@@ -1,7 +1,7 @@
 0 10 1001 Venezuelan NNP
 11 20 1002 President NNP
-21 25 1003 Hugo NNP PERSON https://en.wikipedia.org/wiki/Hugo_Ch%C3%A1vez
-26 32 1004 Chavez NNP PERSON https://en.wikipedia.org/wiki/Hugo_Ch%C3%A1vez
+21 25 1003 Hugo NNP PER https://en.wikipedia.org/wiki/Hugo_Ch%C3%A1vez
+26 32 1004 Chavez NNP PER https://en.wikipedia.org/wiki/Hugo_Ch%C3%A1vez
 33 40 1005 arrived VBD
 41 43 1006 in IN
 44 48 1007 Iran NNP COU https://en.wikipedia.org/wiki/IRAN
@@ -24,8 +24,8 @@
 140 144 2008 with IN
 145 152 2009 Iranian NNP
 153 162 2010 President NNP
-163 170 2011 Mahmoud NNP PERSON https://en.wikipedia.org/wiki/Mahmoud_Ahmadinejad
-171 182 2012 Ahmadinejad NNP PERSON https://en.wikipedia.org/wiki/Mahmoud_Ahmadinejad
+163 170 2011 Mahmoud NNP PER https://en.wikipedia.org/wiki/Mahmoud_Ahmadinejad
+171 182 2012 Ahmadinejad NNP PER https://en.wikipedia.org/wiki/Mahmoud_Ahmadinejad
 183 185 2013 on IN
 186 194 2014 Thursday NNP
 195 197 2015 as RB
@@ -42,7 +42,7 @@
 263 267 2026 fund NN
 267 268 2027 . .
 269 272 3001 Mr. NNP
-273 279 3002 Chavez NNP PERSON https://en.wikipedia.org/wiki/Hugo_chavez
+273 279 3002 Chavez NNP PER https://en.wikipedia.org/wiki/Hugo_chavez
 279 280 3003 ' POS
 281 286 3004 visit NN
 287 289 3005 to TO
@@ -70,7 +70,7 @@
 411 415 4009 Iran NNP COU https://en.wikipedia.org/wiki/Iran
 416 421 4010 since IN
 422 425 4011 Mr. NNP
-426 437 4012 Ahmadinejad NNP PERSON https://en.wikipedia.org/wiki/Mahmoud_Ahmadinejad
+426 437 4012 Ahmadinejad NNP PER https://en.wikipedia.org/wiki/Mahmoud_Ahmadinejad
 438 442 4013 took VBD
 443 448 4014 power NN
 449 451 4015 in IN
@@ -88,7 +88,7 @@
 506 510 6003 week NN
 510 511 6004 , ,
 512 515 6005 Mr. NNP
-516 522 6006 Chavez NNP PERSON https://en.wikipedia.org/wiki/Hugo_chavez
+516 522 6006 Chavez NNP PER https://en.wikipedia.org/wiki/Hugo_chavez
 523 528 6007 heads VBZ
 529 531 6008 to TO
 532 536 6009 Asia VB NAT https://en.wikipedia.org/wiki/Asia

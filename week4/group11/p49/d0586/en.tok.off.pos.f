@@ -27,8 +27,8 @@
 141 148 2001 Iranian JJ
 149 156 2002 Foreign NNP
 157 165 2003 Minister NNP
-166 176 2004 Manouchehr NNP PERSON https://en.wikipedia.org/wiki/Manouchehr_Mottaki
-177 184 2005 Mottaki NNP PERSON https://en.wikipedia.org/wiki/Manouchehr_Mottaki
+166 176 2004 Manouchehr NNP PER https://en.wikipedia.org/wiki/Manouchehr_Mottaki
+177 184 2005 Mottaki NNP PER https://en.wikipedia.org/wiki/Manouchehr_Mottaki
 185 194 2006 announced VBD
 195 198 2007 the DT
 199 207 2008 donation NN

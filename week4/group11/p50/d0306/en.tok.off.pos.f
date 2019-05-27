@@ -19,14 +19,14 @@
 93 103 2013 girlfriend NN
 103 104 2014 , ,
 105 112 2015 stylist JJ
-113 119 2016 Tameka NNP PERSON https://en.wikipedia.org/wiki/Tameka_Foster
-120 126 2017 Foster NNP PERSON https://en.wikipedia.org/wiki/Tameka_Foster
+113 119 2016 Tameka NNP PER https://en.wikipedia.org/wiki/Tameka_Foster
+120 126 2017 Foster NNP PER https://en.wikipedia.org/wiki/Tameka_Foster
 126 127 2018 . .
 128 133 3001 Usher NNP
 133 135 3002 's POS
 136 145 3003 publicist NN
-146 152 3004 Simone NNP PERSON
-153 159 3005 Smalls NNP PERSON
+146 152 3004 Simone NNP PER
+153 159 3005 Smalls NNP PER
 160 164 3006 made VBD
 165 168 3007 the DT
 169 181 3008 announcement NN
