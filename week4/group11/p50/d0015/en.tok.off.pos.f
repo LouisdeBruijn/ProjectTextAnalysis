@@ -1,0 +1,80 @@
+0 2 1001 At IN
+3 5 1002 17 CD
+5 6 1003 , ,
+7 14 1004 DeAndre NNP PERSON https://en.wikipedia.org/wiki/Soulja_Boy
+15 18 1005 Way NNP PERSON https://en.wikipedia.org/wiki/Soulja_Boy
+19 25 1006 became VBD
+26 31 1007 known VBN
+32 38 1008 around IN
+39 42 1009 the DT
+43 48 1010 world NN
+49 51 1011 as IN
+52 58 1012 Soulja NNP
+59 62 1013 Boy NNP
+63 65 1014 on IN
+66 69 1015 the DT
+70 77 1016 success NN
+78 80 1017 of IN
+81 84 1018 his PRP$
+85 91 1019 number NN
+92 95 1020 one CD
+96 99 1021 hit NN
+99 100 1022 , ,
+101 102 1023 " NNP
+102 107 1024 Crank NNP ENT https://en.wikipedia.org/wiki/Crank_That_(Soulja_Boy)
+108 112 1025 That NNP ENT https://en.wikipedia.org/wiki/Crank_That_(Soulja_Boy)
+112 113 1026 . .
+113 114 1027 " VB
+117 120 2001 The DT
+121 125 2002 song NN
+126 129 2003 was VBD
+130 134 2004 also RB
+135 141 2005 number NN
+142 145 2006 one CD
+146 149 2007 for IN
+150 155 2008 seven CD
+156 161 2009 weeks NNS
+162 164 2010 on IN
+165 168 2011 the DT
+169 175 2012 iTunes NNS ENT https://en.wikipedia.org/wiki/ITunes
+176 183 2013 digital JJ
+184 192 2014 download NN
+193 197 2015 site NN
+198 200 2016 in IN
+201 210 2017 September NNP
+211 215 2018 2007 CD
+215 216 2019 . .
+218 225 3001 Despite IN
+226 229 3002 the DT
+230 239 3003 criticism NN
+240 244 3004 from IN
+245 250 3005 other JJ
+251 254 3006 rap NN
+255 260 3007 stars NNS
+261 265 3008 like IN
+266 268 3009 50 CD
+269 273 3010 Cent NN
+274 277 3011 and CC
+278 283 3012 Jay-Z NNP
+283 284 3013 , ,
+285 291 3014 Soulja NNP
+292 295 3015 Boy NNP
+296 300 3016 says VBZ
+301 304 3017 the DT
+305 312 3018 numbers NNS
+313 318 3019 speak VBP
+319 322 3020 for IN
+323 333 3021 themselves PRP
+333 334 3022 . .
+336 341 4001 Larry NNP PERSON
+342 348 4002 London NNP PERSON
+349 355 4003 caught VBD
+356 358 4004 up RP
+359 363 4005 with IN
+364 370 4006 Soulja NNP
+371 374 4007 Boy NNP
+375 377 4008 on IN
+378 382 4009 tour NN
+383 385 4010 in IN
+386 396 4011 Washington NNP NAT https://en.wikipedia.org/wiki/Washington_(state)
+396 397 4012 . .
