@@ -41,11 +41,11 @@
 223 235 3003 independence NN
 236 240 3004 from IN
 241 244 3005 the DT
-245 247 3006 UK NNP COU https://en.wikipedia.org/wiki/United_Kingdom
+245 247 3006 UK NNP COU https://en.wikipedia.org/wiki/UK
 248 250 3007 in IN
 251 255 3008 1973 CD
 255 256 3009 , ,
-257 260 3010 The DT COU https://en.wikipedia.org/wiki/The_Bahamas
+257 260 3010 The DT
 261 268 3011 Bahamas NNP COU https://en.wikipedia.org/wiki/The_Bahamas
 269 272 3012 has VBZ
 273 282 3013 prospered VBN

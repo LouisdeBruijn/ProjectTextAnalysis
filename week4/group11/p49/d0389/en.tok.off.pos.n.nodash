@@ -25,7 +25,7 @@
 159 166 2004 marched VBN
 167 169 2005 in IN
 170 173 2006 the DT
-174 181 2007 Bel-air NNP
+174 181 2007 Bel-air NNP NAT https://en.wikipedia.org/wiki/Bel_Air,_Haiti
 182 189 2008 section NN
 190 192 2009 of IN
 193 207 2010 Port-au-Prince NNP CIT https://en.wikipedia.org/wiki/Port-au-Prince
@@ -42,8 +42,8 @@
 256 258 2021 in IN
 259 264 2022 exile NN
 265 267 2023 in IN
-268 273 2024 South NNP COU https://en.wikipedia.org/wiki/South_africa
-274 280 2025 Africa NNP COU https://en.wikipedia.org/wiki/South_africa
+268 273 2024 South NNP COU https://en.wikipedia.org/wiki/South_Africa
+274 280 2025 Africa NNP COU https://en.wikipedia.org/wiki/South_Africa
 281 286 2026 since IN
 287 291 2027 last JJ
 292 300 2028 February NNP
@@ -60,8 +60,8 @@
 355 357 3010 an DT
 358 370 3011 intersection NN
 371 373 3012 in IN
-374 378 3013 Bel- NNP
-379 382 3014 air NN
+374 378 3013 Bel- NNP NAT https://en.wikipedia.org/wiki/Bel_Air,_Haiti
+379 382 3014 air NN NAT https://en.wikipedia.org/wiki/Bel_Air,_Haiti
 382 383 3015 . .
 384 387 4001 Few JJ
 388 393 4002 other JJ

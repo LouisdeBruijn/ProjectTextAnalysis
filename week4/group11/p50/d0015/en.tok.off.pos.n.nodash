@@ -9,8 +9,8 @@
 39 42 1009 the DT
 43 48 1010 world NN
 49 51 1011 as IN
-52 58 1012 Soulja NNP
-59 62 1013 Boy NNP
+52 58 1012 Soulja NNP PER https://en.wikipedia.org/wiki/Soulja_Boy
+59 62 1013 Boy NNP PER https://en.wikipedia.org/wiki/Soulja_Boy
 63 65 1014 on IN
 66 69 1015 the DT
 70 77 1016 success NN
@@ -36,7 +36,7 @@
 156 161 2009 weeks NNS
 162 164 2010 on IN
 165 168 2011 the DT
-169 175 2012 iTunes NNS ENT https://en.wikipedia.org/wiki/ITunes
+169 175 2012 iTunes NNS
 176 183 2013 digital JJ
 184 192 2014 download NN
 193 197 2015 site NN
@@ -52,13 +52,13 @@
 251 254 3006 rap NN
 255 260 3007 stars NNS
 261 265 3008 like IN
-266 268 3009 50 CD
-269 273 3010 Cent NN
+266 268 3009 50 CD PER https://en.wikipedia.org/wiki/50_Cent
+269 273 3010 Cent NN PER https://en.wikipedia.org/wiki/50_Cent
 274 277 3011 and CC
-278 283 3012 Jay-Z NNP
+278 283 3012 Jay-Z NNP PER https://en.wikipedia.org/wiki/Jay-Z
 283 284 3013 , ,
-285 291 3014 Soulja NNP
-292 295 3015 Boy NNP
+285 291 3014 Soulja NNP PER https://en.wikipedia.org/wiki/Crank_That_(Soulja_Boy)
+292 295 3015 Boy NNP PER https://en.wikipedia.org/wiki/Crank_That_(Soulja_Boy)
 296 300 3016 says VBZ
 301 304 3017 the DT
 305 312 3018 numbers NNS
@@ -71,10 +71,10 @@
 349 355 4003 caught VBD
 356 358 4004 up RP
 359 363 4005 with IN
-364 370 4006 Soulja NNP
-371 374 4007 Boy NNP
+364 370 4006 Soulja NNP PER https://en.wikipedia.org/wiki/Crank_That_(Soulja_Boy)
+371 374 4007 Boy NNP PER https://en.wikipedia.org/wiki/Crank_That_(Soulja_Boy)
 375 377 4008 on IN
 378 382 4009 tour NN
 383 385 4010 in IN
-386 396 4011 Washington NNP NAT https://en.wikipedia.org/wiki/Washington_(state)
+386 396 4011 Washington NNP COU https://en.wikipedia.org/wiki/Washington_(state)
 396 397 4012 . .

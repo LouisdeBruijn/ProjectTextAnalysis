@@ -4,7 +4,7 @@
 26 32 1004 Chavez NNP PER https://en.wikipedia.org/wiki/Hugo_Ch%C3%A1vez
 33 40 1005 arrived VBD
 41 43 1006 in IN
-44 48 1007 Iran NNP COU https://en.wikipedia.org/wiki/IRAN
+44 48 1007 Iran NNP COU https://en.wikipedia.org/wiki/Iran
 49 58 1008 Wednesday NNP
 59 62 1009 for IN
 63 68 1010 talks NNS
@@ -42,11 +42,11 @@
 263 267 2026 fund NN
 267 268 2027 . .
 269 272 3001 Mr. NNP
-273 279 3002 Chavez NNP PER https://en.wikipedia.org/wiki/Hugo_chavez
+273 279 3002 Chavez NNP PER https://en.wikipedia.org/wiki/Hugo_Ch%C3%A1vez
 279 280 3003 ' POS
 281 286 3004 visit NN
 287 289 3005 to TO
-290 294 3006 Iran NNP COU https://en.wikipedia.org/wiki/Iran
+290 294 3006 Iran NNP
 295 302 3007 follows VBZ
 303 304 3008 a DT
 305 312 3009 meeting NN
@@ -57,7 +57,7 @@
 337 341 3014 Arab JJ
 342 349 3015 leaders NNS
 350 352 3016 in IN
-353 358 3017 Qatar NNP COU https://en.wikipedia.org/wiki/Qatar
+353 358 3017 Qatar NNP
 358 359 3018 . .
 360 363 4001 The DT
 364 374 4002 Venezuelan NNP
@@ -88,7 +88,7 @@
 506 510 6003 week NN
 510 511 6004 , ,
 512 515 6005 Mr. NNP
-516 522 6006 Chavez NNP PER https://en.wikipedia.org/wiki/Hugo_chavez
+516 522 6006 Chavez NNP PER https://en.wikipedia.org/wiki/Hugo_Ch%C3%A1vez
 523 528 6007 heads VBZ
 529 531 6008 to TO
 532 536 6009 Asia VB NAT https://en.wikipedia.org/wiki/Asia

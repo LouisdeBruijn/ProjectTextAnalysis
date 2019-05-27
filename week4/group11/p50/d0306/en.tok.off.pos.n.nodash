@@ -39,7 +39,7 @@
 208 215 3015 further JJ
 216 223 3016 details NNS
 223 224 3017 . .
-225 230 4001 Usher NNP PER https://en.wikipedia.org/wiki/Usher_(musician)
+225 230 4001 Usher NNP PERSON https://en.wikipedia.org/wiki/Usher_(musician)
 231 234 4002 had VBD
 235 245 4003 previously RB
 246 255 4004 announced VBN
@@ -66,8 +66,8 @@
 353 354 6001 A DT
 355 360 6002 five- JJ
 361 365 6003 time NN
-366 372 6004 Grammy NNP ENT https://en.wikipedia.org/wiki/Grammy_Award
-373 378 6005 Award NNP ENT https://en.wikipedia.org/wiki/Grammy_Award
+366 372 6004 Grammy NNP
+373 378 6005 Award NNP
 379 385 6006 winner NN
 385 386 6007 , ,
 387 392 6008 Usher NNP PER https://en.wikipedia.org/wiki/Usher_(musician)

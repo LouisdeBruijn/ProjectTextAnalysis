@@ -77,7 +77,7 @@
 420 430 3020 stronghold NN
 430 431 3021 , ,
 432 435 3022 the DT
-436 443 3023 Taleban NNP
+436 443 3023 Taleban NNP ORG https://en.wikipedia.org/wiki/Taliban
 444 450 3024 leader NN
 451 455 3025 said VBD
 456 459 3026 his PRP$

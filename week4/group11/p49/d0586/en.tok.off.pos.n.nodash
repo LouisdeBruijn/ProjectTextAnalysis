@@ -59,8 +59,8 @@
 346 349 3018 aid NN
 350 352 3019 to TO
 353 356 3020 the DT
-357 362 3021 Hamas NNP ORG https://en.wikipedia.org/wiki/Palestinian_government
-363 373 3022 government NN ORG https://en.wikipedia.org/wiki/Palestinian_government
+357 362 3021 Hamas NNP
+363 373 3022 government NN
 374 381 3023 because IN
 382 384 3024 it PRP
 385 392 3025 refuses VBZ

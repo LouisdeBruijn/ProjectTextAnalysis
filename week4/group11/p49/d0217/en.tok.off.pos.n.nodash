@@ -1,4 +1,4 @@
-1 4 1001 The DT
+1 4 1001 The DT ORG https://en.wikipedia.org/wiki/Discovery_Channel
 5 14 1002 Discovery NNP ORG https://en.wikipedia.org/wiki/Discovery_Channel
 15 22 1003 Channel NNP ORG https://en.wikipedia.org/wiki/Discovery_Channel
 23 26 1004 and CC
@@ -11,7 +11,7 @@
 58 65 1011 history NN
 66 69 1012 for IN
 70 73 1013 the DT
-74 78 1014 U.S. NNP COU https://en.wikipedia.org/wiki/United_states
+74 78 1014 U.S. NNP COU https://en.wikipedia.org/wiki/United_States
 79 84 1015 space NN
 85 91 1016 agency NN
 91 93 1017 's POS
@@ -29,14 +29,14 @@
 162 168 2010 series NN
 169 175 2011 called VBN
 175 176 2012 , ,
-177 181 2013 When WRB
-182 184 2014 We PRP
-185 189 2015 Left VBD
-190 195 2016 Earth NN
-195 196 2017 : :
-197 200 2018 The DT
-201 205 2019 NASA NNP ORG https://en.wikipedia.org/wiki/NASA
-206 214 2020 Missions NNP
+177 181 2013 When WRB ENT https://en.wikipedia.org/wiki/When_We_Left_Earth:_The_NASA_Missions
+182 184 2014 We PRP ENT https://en.wikipedia.org/wiki/When_We_Left_Earth:_The_NASA_Missions
+185 189 2015 Left VBD ENT https://en.wikipedia.org/wiki/When_We_Left_Earth:_The_NASA_Missions
+190 195 2016 Earth NN ENT https://en.wikipedia.org/wiki/When_We_Left_Earth:_The_NASA_Missions
+195 196 2017 : : ENT https://en.wikipedia.org/wiki/When_We_Left_Earth:_The_NASA_Missions
+197 200 2018 The DT ENT https://en.wikipedia.org/wiki/When_We_Left_Earth:_The_NASA_Missions
+201 205 2019 NASA NNP ENT https://en.wikipedia.org/wiki/When_We_Left_Earth:_The_NASA_Missions
+206 214 2020 Missions NNP ENT https://en.wikipedia.org/wiki/When_We_Left_Earth:_The_NASA_Missions
 214 215 2021 . .
 217 219 3001 It PRP
 220 224 3002 will MD
@@ -49,7 +49,7 @@
 266 270 4001 This DT
 271 275 4002 week NN
 276 278 4003 in IN
-279 289 4004 Washington NNP NAT https://en.wikipedia.org/wiki/Washington_(state)
+279 289 4004 Washington NNP COU https://en.wikipedia.org/wiki/Washington_(state)
 289 290 4005 , ,
 291 297 4006 former JJ
 298 305 4007 senator NN
@@ -66,7 +66,7 @@
 366 367 4018 , ,
 368 377 4019 officials NNS
 378 382 4020 from IN
-383 387 4021 NASA NNP ORG https://en.wikipedia.org/wiki/Nasa
+383 387 4021 NASA NNP ORG https://en.wikipedia.org/wiki/NASA
 388 391 4022 and CC
 392 398 4023 others NNS
 399 402 4024 for IN
@@ -74,7 +74,7 @@
 405 410 4026 sneak JJ
 411 418 4027 preview NN
 418 419 4028 . .
-421 424 5001 VOA NNP
+421 424 5001 VOA NNP ORG https://en.wikipedia.org/wiki/Voice_of_America
 424 426 5002 's POS
 428 432 5003 Paul NNP PER
 433 438 5004 Sisco NNP PER

@@ -1,8 +1,8 @@
 0 2 1001 At IN
 3 5 1002 17 CD
 5 6 1003 , ,
-7 14 1004 DeAndre NNP PERSON https://en.wikipedia.org/wiki/Soulja_Boy
-15 18 1005 Way NNP PERSON https://en.wikipedia.org/wiki/Soulja_Boy
+7 14 1004 DeAndre NNP PER https://en.wikipedia.org/wiki/Soulja_Boy
+15 18 1005 Way NNP PER https://en.wikipedia.org/wiki/Soulja_Boy
 19 25 1006 became VBD
 26 31 1007 known VBN
 32 38 1008 around IN
@@ -66,8 +66,8 @@
 319 322 3020 for IN
 323 333 3021 themselves PRP
 333 334 3022 . .
-336 341 4001 Larry NNP PERSON
-342 348 4002 London NNP PERSON
+336 341 4001 Larry NNP PER
+342 348 4002 London NNP PER
 349 355 4003 caught VBD
 356 358 4004 up RP
 359 363 4005 with IN

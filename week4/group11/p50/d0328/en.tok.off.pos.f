@@ -1,8 +1,8 @@
 0 7 1001 Chadian JJ
 8 13 1002 Prime NNP
 14 22 1003 Minister NNP
-23 29 1004 Pascal NNP PERSON https://en.wikipedia.org/wiki/Pascal_Yoadimnadji
-30 40 1005 Yoadimadji NNP PERSON https://en.wikipedia.org/wiki/Pascal_Yoadimnadji
+23 29 1004 Pascal NNP PER https://en.wikipedia.org/wiki/Pascal_Yoadimnadji
+30 40 1005 Yoadimadji NNP PER https://en.wikipedia.org/wiki/Pascal_Yoadimnadji
 41 44 1006 has VBZ
 45 49 1007 died VBN
 50 52 1008 in IN
@@ -20,7 +20,7 @@
 98 104 2005 France NNP COU https://en.wikipedia.org/wiki/France
 105 109 2006 says VBZ
 110 113 2007 Mr. NNP
-114 125 2008 Yoadimnadji NNP PERSON https://en.wikipedia.org/wiki/Pascal_Yoadimnadji
+114 125 2008 Yoadimnadji NNP PER https://en.wikipedia.org/wiki/Pascal_Yoadimnadji
 126 130 2009 died VBD
 131 137 2010 Friday NNP
 138 142 2011 from IN
@@ -45,7 +45,7 @@
 243 249 3015 attack NN
 249 250 3016 . .
 251 254 4001 Mr. NNP
-255 266 4002 Yoadimnadji NNP PERSON https://en.wikipedia.org/wiki/Pascal_Yoadimnadji
+255 266 4002 Yoadimnadji NNP PER https://en.wikipedia.org/wiki/Pascal_Yoadimnadji
 267 270 4003 was VBD
 271 276 4004 named VBN
 277 282 4005 prime JJ
@@ -55,8 +55,8 @@
 300 302 4009 by IN
 303 310 4010 Chadian JJ
 311 320 4011 President NNP
-321 327 4012 Idriss NNP PERSON https://en.wikipedia.org/wiki/Idriss_D%C3%A9by
-328 332 4013 Deby NNP PERSON https://en.wikipedia.org/wiki/Idriss_D%C3%A9by
+321 327 4012 Idriss NNP PER https://en.wikipedia.org/wiki/Idriss_D%C3%A9by
+328 332 4013 Deby NNP PER https://en.wikipedia.org/wiki/Idriss_D%C3%A9by
 332 333 4014 . .
 334 336 5001 He PRP
 337 340 5002 had VBD

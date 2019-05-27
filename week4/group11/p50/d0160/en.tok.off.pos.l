@@ -1,6 +1,6 @@
-0 6 1001 Mullah NNP PERSON https://en.wikipedia.org/wiki/Mohammed_Omar
-7 15 1002 Mohammad NNP PERSON https://en.wikipedia.org/wiki/Mohammed_Omar
-16 20 1003 Omar NNP PERSON https://en.wikipedia.org/wiki/Mohammed_Omar
+0 6 1001 Mullah NNP PER https://en.wikipedia.org/wiki/Mohammed_Omar
+7 15 1002 Mohammad NNP PER https://en.wikipedia.org/wiki/Mohammed_Omar
+16 20 1003 Omar NNP PER https://en.wikipedia.org/wiki/Mohammed_Omar
 20 21 1004 , ,
 22 25 1005 the DT
 26 33 1006 Taleban NNP ORG https://en.wikipedia.org/wiki/Taliban
@@ -31,8 +31,8 @@
 177 180 1031 his PRP$
 181 186 1032 fight NN
 186 187 1033 . .
-188 194 2001 Mullah NNP PERSON https://en.wikipedia.org/wiki/Mohammed_Omar
-195 199 2002 Omar NNP PERSON https://en.wikipedia.org/wiki/Mohammed_Omar
+188 194 2001 Mullah NNP PER https://en.wikipedia.org/wiki/Mohammed_Omar
+195 199 2002 Omar NNP PER https://en.wikipedia.org/wiki/Mohammed_Omar
 200 207 2003 dropped VBD
 208 211 2004 out IN
 212 214 2005 of IN

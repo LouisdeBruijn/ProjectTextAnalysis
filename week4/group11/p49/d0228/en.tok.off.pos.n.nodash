@@ -3,7 +3,7 @@
 9 16 1003 Defense NNP ORG https://en.wikipedia.org/wiki/United_States_Department_of_Defense
 17 27 1004 Department NNP ORG https://en.wikipedia.org/wiki/United_States_Department_of_Defense
 28 32 1005 says VBZ
-33 37 1006 U.S. NNP
+33 37 1006 U.S. NNP COU https://en.wikipedia.org/wiki/United_States
 38 41 1007 and CC
 42 47 1008 North JJ
 48 54 1009 Korean JJ
@@ -42,8 +42,8 @@
 240 249 2013 Secretary NNP
 250 252 2014 of IN
 253 260 2015 Defense NNP
-261 266 2016 Jerry NNP PER https://en.wikipedia.org/wiki/Gerald_Jennings
-267 275 2017 Jennings NNP PER https://en.wikipedia.org/wiki/Gerald_Jennings
+261 266 2016 Jerry NNP PER
+267 275 2017 Jennings NNP PER
 275 276 2018 . .
 277 280 3001 The DT
 281 290 3002 agreement NN

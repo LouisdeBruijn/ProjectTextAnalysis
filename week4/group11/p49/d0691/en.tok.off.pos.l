@@ -4,8 +4,8 @@
 26 29 1004 the DT
 30 37 1005 islands NNS
 38 42 1006 when WRB
-43 54 1007 Christopher NNP PERSON https://en.wikipedia.org/wiki/Christopher_Columbus
-55 63 1008 COLUMBUS NNP PERSON https://en.wikipedia.org/wiki/Christopher_Columbus
+43 54 1007 Christopher NNP PER https://en.wikipedia.org/wiki/Christopher_Columbus
+55 63 1008 COLUMBUS NNP PER https://en.wikipedia.org/wiki/Christopher_Columbus
 64 69 1009 first RB
 70 73 1010 set VBD
 74 78 1011 foot NN
