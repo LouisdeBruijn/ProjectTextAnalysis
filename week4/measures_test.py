@@ -78,10 +78,10 @@ def main():
 
 # Nick and Louis comparison
     print(len(nick))
-    print(len(louis))
-    cm = ConfusionMatrix(nick, louis)
+    print(len(friso))
+    cm = ConfusionMatrix(nick, friso)
     print(cm)
-    labels = set(nick + louis)
+    labels = set(nick + friso)
     true_positives = Counter()
     false_negatives = Counter()
     false_positives = Counter()
