@@ -69,8 +69,7 @@
 385 389 5005 name NN
 390 392 5006 is VBZ
 393 398 5007 David NNP PER https://en.wikipedia.org/wiki/Sinbad_(comedian)
-399 405 5008 Adkins NNP PER
-https://en.wikipedia.org/wiki/Sinbad_(comedian)
+399 405 5008 Adkins NNP PER https://en.wikipedia.org/wiki/Sinbad_(comedian)
 405 406 5009 , ,
 407 411 5010 says VBZ
 412 414 5011 he PRP

@@ -42,8 +42,8 @@
 240 249 2013 Secretary NNP
 250 252 2014 of IN
 253 260 2015 Defense NNP
-261 266 2016 Jerry NNP PERSON https://en.wikipedia.org/wiki/Gerald_Jennings
-267 275 2017 Jennings NNP PERSON https://en.wikipedia.org/wiki/Gerald_Jennings
+261 266 2016 Jerry NNP PER https://en.wikipedia.org/wiki/Gerald_Jennings
+267 275 2017 Jennings NNP PER https://en.wikipedia.org/wiki/Gerald_Jennings
 275 276 2018 . .
 277 280 3001 The DT
 281 290 3002 agreement NN

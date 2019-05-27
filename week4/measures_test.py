@@ -41,7 +41,7 @@ def main():
             else:
                 louis.append("NONE")
 
-    path_list = [files for files in glob.glob('group11/*/*/*.tok.off.pos.n')]
+    path_list = [files for files in glob.glob('group11/*/*/*.tok.off.pos.n.nodash')]
     nick = []
     for file in path_list:
         with open(file) as f:
@@ -53,18 +53,32 @@ def main():
                 nick.append(line[5])
             else:
                 nick.append("NONE")
-    path_list = glob.glob('group11/*/*/*.tok.off.pos.l')
-    friso = defaultdict(list)
-    for path in path_list:
-        with open(path) as csv_file:
-            csv_reader = csv.reader(csv_file, delimiter=' ')
-            for line in csv_reader:
-                if len(line) > 5:
-                    friso[path[:17]].append((line[0], line[1], line[5]))
+    path_list = [files for files in glob.glob('group11/*/*/*.tok.off.pos.f')]
+    friso = []
+    for file in path_list:
+        with open(file) as f:
+            text = f.readlines()
+            print(len(text), file)
+        for line in text:
+            line = line.split()
+            if len(line) == 7:
+                friso.append(line[5])
+            else:
+                friso.append("NONE")
+    #path_list = glob.glob('group11/*/*/*.tok.off.pos.l')
+    #friso = defaultdict(list)
+    #for path in path_list:
+    #    with open(path) as csv_file:
+    #        csv_reader = csv.reader(csv_file, delimiter=' ')
+    #        for line in csv_reader:
+    #            if len(line) > 5:
+    #                friso[path[:17]].append((line[0], line[1], line[5]))
     # initalize variables
     tp = fn = fp = 0
 
 # Nick and Louis comparison
+    print(len(nick))
+    print(len(louis))
     cm = ConfusionMatrix(nick, louis)
     print(cm)
     labels = set(nick + louis)
