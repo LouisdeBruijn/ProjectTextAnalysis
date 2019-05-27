@@ -25,8 +25,8 @@
 128 133 3001 Usher NNP PERSON https://en.wikipedia.org/wiki/Usher_(musician)
 133 135 3002 's POS
 136 145 3003 publicist NN
-146 152 3004 Simone NNP PERSON -
-153 159 3005 Smalls NNP PERSON -
+146 152 3004 Simone NNP PERSON
+153 159 3005 Smalls NNP PERSON
 160 164 3006 made VBD
 165 168 3007 the DT
 169 181 3008 announcement NN
