@@ -1,0 +1,69 @@
+0 5 1001 After IN
+6 11 1002 three CD
+12 19 1003 decades NNS
+20 22 1004 as IN
+23 27 1005 part NN
+28 30 1006 of IN
+31 34 1007 the DT
+35 37 1008 UN NNP ORG https://en.wikipedia.org/wiki/Trust_Territory_of_the_Pacific_Islands
+38 43 1009 Trust NNP ORG https://en.wikipedia.org/wiki/Trust_Territory_of_the_Pacific_Islands
+44 53 1010 Territory NNP ORG https://en.wikipedia.org/wiki/Trust_Territory_of_the_Pacific_Islands
+54 56 1011 of IN ORG https://en.wikipedia.org/wiki/Trust_Territory_of_the_Pacific_Islands
+57 60 1012 the DT ORG https://en.wikipedia.org/wiki/Trust_Territory_of_the_Pacific_Islands
+61 68 1013 Pacific NNP ORG https://en.wikipedia.org/wiki/Trust_Territory_of_the_Pacific_Islands
+69 74 1014 under IN
+75 77 1015 US NNP COU https://en.wikipedia.org/wiki/United_States
+78 92 1016 administration NN
+92 93 1017 , ,
+94 98 1018 this DT
+99 110 1019 westernmost NN
+111 118 1020 cluster NN
+119 121 1021 of IN
+122 125 1022 the DT
+126 134 1023 Caroline NNP NAT https://en.wikipedia.org/wiki/Caroline_Islands
+135 142 1024 Islands NNP NAT https://en.wikipedia.org/wiki/Caroline_Islands
+143 148 1025 opted VBD
+149 152 1026 for IN
+153 165 1027 independence NN
+166 168 1028 in IN
+169 173 1029 1978 CD
+174 180 1030 rather RB
+181 185 1031 than IN
+186 190 1032 join VB
+191 194 1033 the DT
+195 204 1034 Federated NNP COU https://en.wikipedia.org/wiki/Federated_States_of_Micronesia
+205 211 1035 States NNPS COU https://en.wikipedia.org/wiki/Federated_States_of_Micronesia
+212 214 1036 of IN COU https://en.wikipedia.org/wiki/Federated_States_of_Micronesia
+215 225 1037 Micronesia NNP COU https://en.wikipedia.org/wiki/Federated_States_of_Micronesia
+225 226 1038 . .
+227 228 2001 A NNP
+229 236 2002 Compact NNP
+237 239 2003 of IN
+240 244 2004 Free NNP
+245 256 2005 Association NNP
+257 261 2006 with IN
+262 265 2007 the DT
+266 268 2008 US NNP COU https://en.wikipedia.org/wiki/United_States
+269 272 2009 was VBD
+273 281 2010 approved VBN
+282 284 2011 in IN
+285 289 2012 1986 CD
+290 293 2013 but CC
+294 297 2014 not RB
+298 306 2015 ratified VBN
+307 312 2016 until IN
+313 317 2017 1993 CD
+317 318 2018 . .
+319 321 3001 It PRP
+322 329 3002 entered VBD
+330 334 3003 into IN
+335 340 3004 force NN
+341 344 3005 the DT
+345 354 3006 following JJ
+355 359 3007 year NN
+360 364 3008 when WRB
+365 368 3009 the DT
+369 376 3010 islands NNS
+377 383 3011 gained VBD
+384 396 3012 independence NN
+396 397 3013 . .

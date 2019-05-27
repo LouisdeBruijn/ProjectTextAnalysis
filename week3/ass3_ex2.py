@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # File name: ass3_ex2.py
 # Description: script that generates all the information required in exercise 2
-# Author: Louis de Bruijn & Friso Stolk
-# Date: 09-05-2018
+# Author: Louis de Bruijn & Friso Stolk & Nick Algra
+# Date: 13-05-2018
 
 import nltk # v3.4
 from nltk.corpus import wordnet as wn
@@ -10,7 +10,6 @@ from nltk.stem.wordnet import WordNetLemmatizer
 from collections import defaultdict
 from nltk.corpus import wordnet_ic
 from nltk.parse import CoreNLPParser
-import operator
 
 
 def main():
@@ -32,20 +31,26 @@ def main():
         if pos_tags[i][1] == 'NN' or pos_tags[i][1] == 'NNP' or pos_tags[i][1] == 'NNS' or pos_tags[i][1] == 'NNPS':
             nouns.append(pos_tags[i][0])
 
-    # lemmatize the nouns
-    lemmatizer = WordNetLemmatizer()
-    noun_lemmas = [lemmatizer.lemmatize(noun, wn.NOUN) for noun in nouns]
-
 
     print("### Exercise 1 & 2, changing depending on server properties")
     ner_tagger = CoreNLPParser(url='http://localhost:9000', tagtype='ner')
     nec_list = list(ner_tagger.tag(tokens_t))
-    nec_dict = defaultdict(list)
+    nec_dict = {} # Named entiny: class
+    nec_reversedict = defaultdict(list) # Class: [list of named entities]
     for (name, nec) in nec_list:
         if not nec == 'O':
-            nec_dict[nec].append(name)
-    for e in nec_dict:
-        print("Named Entity Class '{}' was found {} times: {}".format(e, len(nec_dict[e]), nec_dict[e]))
+            nec_dict[name] = nec
+            nec_reversedict[nec].append(name)
+    for e in nec_reversedict:
+        print("Named Entity Class '{}' was found {} times: {}".format(e, len(nec_reversedict[e]), nec_reversedict[e]))
+
+    print("### Exercise 3")
+    lemmatizer = WordNetLemmatizer()
+    for noun in nouns:
+        if noun in nec_dict:
+            print("{}: {}".format(noun, nec_dict[noun]))
+        else:
+            print("{}: {}".format(noun, lemmatizer.lemmatize(noun, wn.NOUN)))
 
 
 if __name__ == '__main__':
