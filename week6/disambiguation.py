@@ -28,22 +28,34 @@ def main():
     pos_tags = nltk.pos_tag(tokens_t)
     
     sent_dict = defaultdict(list)
-    for (token, pos) in pos_tags:
-        for sent in sents:
-            if token in sent:
-                
-    
-    nouns = []
+    j = k = 0
+    key = sents[0]
     for i in range(len(pos_tags)):
-        if pos_tags[i][1] == 'NN' or pos_tags[i][1] == 'NNP' or pos_tags[i][1] == 'NNS' or pos_tags[i][1] == 'NNPS':
-            nouns.append(pos_tags[i][0])
+        if j == len(tokens_s[k]):
+            k += 1
+            j = 0
+            key = sents[k]
+            sent_dict[key] = []
+        #print(tokens_s[k][j])
+        #print(pos_tags[i])
+        #print('\n')
+        sent_dict[key].append(pos_tags[i])
+        j += 1
+        
+    print(sent_dict)
     
-    ambiguous_nouns = {}
+    #nouns = []
+    #for i in range(len(pos_tags)):
+    #    if pos_tags[i][1] == 'NN' or pos_tags[i][1] == 'NNP' or pos_tags[i][1] == 'NNS' or pos_tags[i][1] == 'NNPS':
+    #        nouns.append(pos_tags[i][0])
+    
+    #ambiguous_nouns = {}
     #for noun in nouns:
     #    if len(wordnet.synsets(noun, 'n')) > 1:
     #    ambiguous_nouns[noun] = lesk(
             
-    print(len(ambiguous_nouns))
+    #print(len(ambiguous_nouns))
+    
 
 if __name__ == "__main__":
     main()
