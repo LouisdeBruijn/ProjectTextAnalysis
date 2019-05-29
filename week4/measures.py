@@ -28,67 +28,54 @@ def main():
 
 
     # precision, recall and f-score for interisting entities vs non-interesting
-    path_list = glob.glob('group11/*/*/*.tok.off.pos.l')
-    louis = defaultdict(list)
-    total = 0
-    for path in path_list:
-        with open(path) as csv_file:
-            csv_reader = csv.reader(csv_file, delimiter=' ')
-            for line in csv_reader:
-                if len(line) > 5:
-                    louis[path[:17]].append((line[0], line[1], line[5]))
-                total += 1
+    path_list = [files for files in glob.glob('group11/*/*/*.tok.off.pos.l')]
+    louis = []
+    for file in path_list:
+        with open(file) as f:
+            text = f.readlines()
+            print(len(text), file)
+        for line in text:
+            line = line.split()
+            if len(line) == 7:
+                louis.append(line[5])
+            else:
+                louis.append("NONE")
 
-    path_list = glob.glob('group11/*/*/*.tok.off.pos.n')
-    nick = defaultdict(list)
-    for path in path_list:
-        with open(path) as csv_file:
-            csv_reader = csv.reader(csv_file, delimiter=' ')
-            for line in csv_reader:
-                if len(line) > 5:
-                    nick[path[:17]].append((line[0], line[1], line[5]))
-    path_list = glob.glob('group11/*/*/*.tok.off.pos.l')
-    friso = defaultdict(list)
-    for path in path_list:
-        with open(path) as csv_file:
-            csv_reader = csv.reader(csv_file, delimiter=' ')
-            for line in csv_reader:
-                if len(line) > 5:
-                    friso[path[:17]].append((line[0], line[1], line[5]))
+    path_list = [files for files in glob.glob('group11/*/*/*.tok.off.pos.n.nodash')]
+    nick = []
+    for file in path_list:
+        with open(file) as f:
+            text = f.readlines()
+            print(len(text), file)
+        for line in text:
+            line = line.split()
+            if len(line) == 7:
+                nick.append(line[5])
+            else:
+                nick.append("NONE")
+    path_list = [files for files in glob.glob('group11/*/*/*.tok.off.pos.f')]
+    friso = []
+    for file in path_list:
+        with open(file) as f:
+            text = f.readlines()
+            print(len(text), file)
+        for line in text:
+            line = line.split()
+            if len(line) == 7:
+                friso.append(line[5])
+            else:
+                friso.append("NONE")
     # initalize variables
     tp = fn = fp = 0
 
-# Nick and Louis comparison
-    for (k, v), (k2, v2) in zip(louis.items(), nick.items()):
-        for i, i2 in zip(v, v2):
-            if i[0] == i2[0] and i[1] == i2[1]:
-                tp += 1
-            else: 
-                fn += 1
-                fp += 1
-
-    tn = total - tp
-
-
-    precision = tp/(tp+fp)
-    recall = tp/(tp+fn)
-
-    print(precision, recall)
-
-
-    #### original content ####
-    ref  = 'DET NN VB DET JJ NN NN IN DET NN'.split()
-    tagged = 'DET VB VB DET NN NN NN IN DET NN'.split()
-    cm = ConfusionMatrix(ref, tagged)
-
+    # Nick and Friso comparison
+    print("### NICK AND FRISO COMPARISON ###")
+    cm = ConfusionMatrix(nick, friso)
     print(cm)
-
-    labels = set('DET NN VB IN JJ'.split())
-
+    labels = set(nick + friso)
     true_positives = Counter()
     false_negatives = Counter()
     false_positives = Counter()
-
     for i in labels:
         for j in labels:
             if i == j:
@@ -97,7 +84,7 @@ def main():
                 false_negatives[i] += cm[i,j]
                 false_positives[j] += cm[i,j]
 
-    print(true_positives)
+
 
 
     print("TP:", sum(true_positives.values()), true_positives)
@@ -114,37 +101,14 @@ def main():
             fscore = 2 * (precision * recall) / float(precision + recall)
         print(i, fscore)
 
-# Nick and Friso comparison
-    print("### NICK AND FRISO")
-    for (k, v), (k2, v2) in zip(friso.items(), louis.items()):
-        for i, i2 in zip(v, v2):
-            if i[0] == i2[0] and i[1] == i2[1]:
-                tp += 1
-            else: 
-                fn += 1
-                fp += 1
-    tn = total - tp
-
-
-    precision = tp/(tp+fp)
-    recall = tp/(tp+fn)
-
-    print(precision, recall)
-
-
-    #### original content ####
-    ref  = 'DET NN VB DET JJ NN NN IN DET NN'.split()
-    tagged = 'DET VB VB DET NN NN NN IN DET NN'.split()
-    cm = ConfusionMatrix(ref, tagged)
-
+    # Nick and Louis comparison
+    print("### NICK AND LOUIS COMPARISON ###")
+    cm = ConfusionMatrix(nick, louis)
     print(cm)
-
-    labels = set('DET NN VB IN JJ'.split())
-
+    labels = set(nick + louis)
     true_positives = Counter()
     false_negatives = Counter()
     false_positives = Counter()
-
     for i in labels:
         for j in labels:
             if i == j:
@@ -153,7 +117,7 @@ def main():
                 false_negatives[i] += cm[i,j]
                 false_positives[j] += cm[i,j]
 
-    print(true_positives)
+
 
 
     print("TP:", sum(true_positives.values()), true_positives)
@@ -170,37 +134,14 @@ def main():
             fscore = 2 * (precision * recall) / float(precision + recall)
         print(i, fscore)
 
-# FRISO AND LOUIS
-    print("### NICK AND FRISO")
-    for (k, v), (k2, v2) in zip(friso.items(), nick.items()):
-        for i, i2 in zip(v, v2):
-            if i[0] == i2[0] and i[1] == i2[1]:
-                tp += 1
-            else: 
-                fn += 1
-                fp += 1
-    tn = total - tp
-
-
-    precision = tp/(tp+fp)
-    recall = tp/(tp+fn)
-
-    print(precision, recall)
-
-
-    #### original content ####
-    ref  = 'DET NN VB DET JJ NN NN IN DET NN'.split()
-    tagged = 'DET VB VB DET NN NN NN IN DET NN'.split()
-    cm = ConfusionMatrix(ref, tagged)
-
+    # Louis and Friso comparison
+    print("### Louis AND FRISO COMPARISON ")
+    cm = ConfusionMatrix(louis, friso)
     print(cm)
-
-    labels = set('DET NN VB IN JJ'.split())
-
+    labels = set(louis + friso)
     true_positives = Counter()
     false_negatives = Counter()
     false_positives = Counter()
-
     for i in labels:
         for j in labels:
             if i == j:
@@ -209,7 +150,7 @@ def main():
                 false_negatives[i] += cm[i,j]
                 false_positives[j] += cm[i,j]
 
-    print(true_positives)
+
 
 
     print("TP:", sum(true_positives.values()), true_positives)
@@ -225,6 +166,7 @@ def main():
             recall = true_positives[i] / float(true_positives[i]+false_negatives[i])
             fscore = 2 * (precision * recall) / float(precision + recall)
         print(i, fscore)
+
 if __name__ == '__main__':
     main()
 
