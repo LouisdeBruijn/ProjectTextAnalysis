@@ -5,13 +5,45 @@
 # Date: 29-05-2018
 
 import wikipedia
+import nltk
 from nltk.corpus import wordnet
 from nltk.wsd import lesk
-from nltk import word_tokenize
+from collections import defaultdict
+# from nltk import word_tokenize
+# from nltk import pos_tag
 
-def main() {
+def main():
+    PAGE_NAME = "New York City"
+    page = wikipedia.page(PAGE_NAME)
+    raw_text = page.content
+    
+    sents = nltk.sent_tokenize(raw_text) # tokenize rawText to sentences
 
-}
+    # create tokens per sentence, because nltk.word_tokenize needs sentences as input
+    tokens_s = [nltk.word_tokenize(s) for s in sents] # a list of lists: sentences w/ tokens
+    
+    # but for collocations we need not a list of tokens per sentence, but a list of tokens per rawText   
+    tokens_t = [t for s in tokens_s for t in s] # a list of tokens
+    
+    pos_tags = nltk.pos_tag(tokens_t)
+    
+    sent_dict = defaultdict(list)
+    for (token, pos) in pos_tags:
+        for sent in sents:
+            if token in sent:
+                
+    
+    nouns = []
+    for i in range(len(pos_tags)):
+        if pos_tags[i][1] == 'NN' or pos_tags[i][1] == 'NNP' or pos_tags[i][1] == 'NNS' or pos_tags[i][1] == 'NNPS':
+            nouns.append(pos_tags[i][0])
+    
+    ambiguous_nouns = {}
+    #for noun in nouns:
+    #    if len(wordnet.synsets(noun, 'n')) > 1:
+    #    ambiguous_nouns[noun] = lesk(
+            
+    print(len(ambiguous_nouns))
 
 if __name__ == "__main__":
     main()
