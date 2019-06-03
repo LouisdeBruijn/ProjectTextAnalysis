@@ -28,10 +28,15 @@ def main():
         'Iraq', 
         'Commonwealth of Nations'
         ]
+    
+    histogram = defaultdict(int)
+    words_per_wiki = []
 
     for name in wiki_names:
         page = wikipedia.page(name)
         raw_text = page.content
+        poly_words = 0
+        total_words = 0
         
         sents = nltk.sent_tokenize(raw_text) # tokenize rawText to sentences
         # create tokens per sentence, because nltk.word_tokenize needs sentences as input
@@ -60,13 +65,27 @@ def main():
         for key, value in sent_dict.items():
             for (token,pos) in value:
                 # print(token, pos)
+                total_words += 1
                 if len(wn.synsets(token, pos=wn.NOUN)) > 1:
+                    histogram[len(wn.synsets(token, pos=wn.NOUN))] += 1
+                    poly_words += 1
                     # print(wn.synsets(token, pos=wn.NOUN))
                     print('For the following word:', token)
                     print('The Lesk algorithm shows this is the best definition:')
                     print(lesk(key, token, pos=wn.NOUN))
                     print()
-
+        words_per_wiki.append(poly_words / total_words)
+        
+    for em in words_per_wiki:
+        print(em)
+        
+    print(histogram)
+    total_words = 0
+    total_senses = 0
+    for key, value in histogram.items():
+        total_words += value
+        total_senses += key * value
+    print(total_senses / total_words)
 
 
 if __name__ == "__main__":
