@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # File name: disambiguation.py
-# Description: Provide disambiguation for 
+# Description: Provide disambiguation for all polysemous nouns in wiki pages.
 # Author: Louis de Bruijn & Friso Stolk & Nick Algra
 # Date: 29-05-2018
 
@@ -28,7 +28,7 @@ def main():
         'Iraq', 
         'Commonwealth of Nations'
         ]
-    
+
     histogram = defaultdict(int)
     words_per_wiki = []
 
@@ -37,15 +37,15 @@ def main():
         raw_text = page.content
         poly_words = 0
         total_words = 0
-        
+
         sents = nltk.sent_tokenize(raw_text) # tokenize rawText to sentences
         # create tokens per sentence, because nltk.word_tokenize needs sentences as input
         tokens_s = [nltk.word_tokenize(s) for s in sents] # a list of lists: sentences w/ tokens
-        # but for collocations we need not a list of tokens per sentence, but a list of tokens per rawText   
+        # but for collocations we need not a list of tokens per sentence, but a list of tokens per rawText
         tokens_t = [t for s in tokens_s for t in s] # a list of tokens
         # POS tagging tokens
         pos_tags = nltk.pos_tag(tokens_t)
-        
+
         # create dictionary with sentences as keys and tokens as value list
         sent_dict = defaultdict(list)
         j = k = 0
@@ -60,7 +60,7 @@ def main():
                 # print(pos_tags[i])
                 sent_dict[key].append(pos_tags[i])
             j += 1
-            
+
         # extract ambiguous nouns and find most relevant definiont using Lesk
         for key, value in sent_dict.items():
             for (token,pos) in value:
@@ -75,16 +75,22 @@ def main():
                     print(lesk(key, token, pos=wn.NOUN))
                     print()
         words_per_wiki.append(poly_words / total_words)
-        
+
+    print('Polysemous nouns / total nouns per wiki page:')
     for em in words_per_wiki:
         print(em)
-        
+    print()
+
+    print('Number of words per amount of word senses:')
     print(histogram)
+    print()
+
     total_words = 0
     total_senses = 0
     for key, value in histogram.items():
         total_words += value
         total_senses += key * value
+    print('Average number of senses per polysemous noun:')
     print(total_senses / total_words)
 
 
