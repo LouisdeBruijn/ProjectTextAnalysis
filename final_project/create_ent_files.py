@@ -10,10 +10,6 @@ import os
 import nltk
 import spacy
 import pandas as pd
-# pip3 install https://github.com/elyase/geotext/archive/master.zip
-from geotext import GeoText # Geotext extracts country and city mentions from text
-# pip3 install pycountry
-import pycountry # all countries in a list
 from nltk.corpus import wordnet as wn
 from nltk.tree import Tree
 from nltk.wsd import lesk
@@ -25,12 +21,12 @@ def get_continuous_chunks(sent):
     chunked = nltk.ne_chunk(sent)
     named_entities = []
     # we need an index for the word
-    for idx, tree_item in enumerate(chunked):
-
+    index = -1
+    for tree_item in chunked:
+        index += 1
         if type(tree_item) == Tree:
             # because there can be multiple tokens in one id
-            idx = idx - 1 + len(tree_item.leaves())
-
+            index = index - 1 + len(tree_item.leaves())
             # print('leaves', i.leaves())
             entity_list = [] # append each tup(token, POS, tag) in here
             for tup in tree_item.leaves(): # tup(token, POS)
@@ -47,7 +43,7 @@ def get_continuous_chunks(sent):
                             tag = 'PER'
                         if 'GPE' in str(tree_item):
                             tag = 'COU'
-                        entity_list.append((idx, token, pos, tag))
+                        entity_list.append((index, token, pos, tag))
             named_entities.append(entity_list)
 
     # a list of list of tuples that go together: 
@@ -74,7 +70,23 @@ def create_sentences(path):
     return sentData
 
 
-def spacy_tagger(sent, nlp):
+def gpe_disambiguation(token):
+    '''disambiguate between cities and countries'''
+    with open('GPE/countries.txt') as countryFile:
+        for line in countryFile:
+            if token in line:
+                return 'COU'
+
+    with open('GPE/cities.txt') as cityFile:
+        csvReader = csv.reader(cityFile, delimiter=",")
+        for line in csvReader:
+            if token in line[1] or token in line[2]: #lowercase and uppercase city names
+                return 'CIT'
+
+    return 'COU'
+
+
+def spacy_tagger(sent, nlp, begin, end):
     '''find named entities based on SpaCy model and return these entities'''
     
     entities = []
@@ -84,24 +96,20 @@ def spacy_tagger(sent, nlp):
     for ent in doc.ents:
         # change SpaCy tags to our category tags
         if ent.label_ not in ['NORP', 'FAC', 'PRODUCT', 'LAW', 'LANGUAGE', 'DATE', 'TIME', 'PERCENT', 'MONEY', 'QUANTITY', 'ORDINAL', 'CARDINAL']:
-            if ent.label_ == 'PERSON': # change PERSON to PER
-                entities.append((ent.start_char, ent.end_char, ent.text, 'PER'))
+            # offsets are begin of sentence + token offsets
+            b = begin + ent.start_char
+            e = begin + ent.end_char
+            if ent.label_ in ['COU', 'GPE']: # Countries, cities, states.
+                # disambiguate between countries and cities
+                entities.append((b, e, ent.text, gpe_disambiguation(ent.text)))
+            elif ent.label_ == 'PERSON': # change PERSON to PER
+                entities.append((b, e, ent.text, 'PER'))
             elif ent.label_ == 'LOC': # Non-GPE locations, mountain ranges, bodies of water.
-                entities.append((ent.start_char, ent.end_char, ent.text, 'NAT'))
-            elif ent.label_ == 'WORK_OF_ART': #Titles of books, songs, etc.
-                entities.append((ent.start_char, ent.end_char, ent.text, 'ENT'))
-            elif ent.label_ == 'GPE': # Countries, cities, states.
-                # disambiguation between cities and countries
-                cit = GeoText(ent.text) # cities
-                if cit.cities: # cities
-                    entities.append((ent.start_char, ent.end_char, ent.text, 'CIT'))
-                elif ent.text in list(pycountry.countries): # countries 
-                    entities.append((ent.start_char, ent.end_char, ent.text, 'COU'))
-
-                ## TODO: kijken hoe we disambiguate between CIT and COU
-                entities.append((ent.start_char, ent.end_char, ent.text, 'COU'))
+                entities.append((b, e, ent.text, 'NAT'))
+            elif ent.label_ == 'WORK_OF_ART': # Titles of books, songs, etc.
+                entities.append((b, e, ent.text, 'ENT'))
             else:
-                entities.append((ent.start_char, ent.end_char, ent.text, ent.label_))
+                entities.append((b, e, ent.text, ent.label_))
 
     return entities
 
@@ -134,9 +142,11 @@ def categorise_WordNet(lines, begin, end, sent, entities):
                                             else:
                                                 return (line[0], line[1], token, key)
 
+
 def nltk_ner_tagger(lines, begin, end, entities):
     '''finds entities tagged by nltk's NER tagger and converts categories '''
     
+    entity_list = []
     ## create NLTK tagged entities
     ne_chunk_input = [] # input needs to be tuple(token, pos) for NLTK NER tagger
 
@@ -150,7 +160,6 @@ def nltk_ner_tagger(lines, begin, end, entities):
     ## [[(9, 'Rugova', 'NNP', 'PER')], [(18, 'European', 'NNP', 'ORG'), (18, 'Union', 'NNP', 'ORG')]
     ne_chunk_input.clear() # return to empty input for next sentence
 
-    
     ## check if item already tagged by SpaCy, and append otherwise
     for item in named_entities_list:
         # this is to rewrite my index, because it get's tagged as index 19 for both items:
@@ -168,28 +177,51 @@ def nltk_ner_tagger(lines, begin, end, entities):
             item = new_item
         # now it is:
         ## [(18, 'European', 'NNP', 'ORG'), (19, 'Union', 'NNP', 'ORG')
-
+        cnt = 0
         for ne in item:
             # check if index of word matches index of line item
-            for idx, line in enumerate(lines):
+            for line in lines:
+                # create index of 0 every new line
+                if int(line[0]) == begin:
+                    cnt = 0
                 # if NER id equals line id and NER token == line token
-                if idx == ne[0] and ne[1] == line[3]:
-                    # check if the NE from NLTK are already found by SpaCy 
+                if cnt == ne[0] and ne[1] == line[3]:
+                    # check if the NE from NLTK are already found by SpaCy
                     if any(line[3] in ent[2] for ent in entities):
                         # NE found in entities, thus break loop
+                        for entity in entities:
+                            if line[3] == entity[2]:
+                                if int(line[0]) == entity[0] and int(line[1]) == entity[1]:
+                                    break
+                                else:
+                                    tag = ne[3]
+                                    if tag == 'COU':
+                                        # disambiguate between countries and cities
+                                        tag = gpe_disambiguation(line[3])
+                                    # check if the item with all offsets and tags is not already in entities
+                                    tup = (int(line[0]), int(line[1]), line[3], tag)
+                                    if tup not in entities:
+                                        # otherwise append the newly found entity!
+                                        entity_list.append(tup)
                         break
                     else:
-                        # append the missing NE tagged entity to entities
-                        return (line[0], line[1], line[3], ne[3])
-                        ## TODO hier kunnen we nog mee spelen
-                        ## if ne[3] == 'COU' of ne[3] == '-'
-                        ## hij tagt alles als 'COU', ook 'CIT'
+                        if ne[3] == 'COU':
+                            # disambiguate between countries and cities
+                            entity_list.append((line[0], line[1], line[3], gpe_disambiguation(line[3])))
+                        else:
+                            # append the missing NE tagged entity to entities
+                            entity_list.append((line[0], line[1], line[3], ne[3]))
+                            ## TODO hier kunnen we nog mee spelen
+                            ## if ne[3] == 'COU' of ne[3] == '-'
+                            ## hij tagt alles als 'COU', ook 'CIT'
+
+                cnt += 1
+
+    return entity_list
 
 
 def create_files(path, model, output_file='.ent.louis'):
     '''create the .ent files based on the model'''
-
-    
 
     rawPathlist = glob.glob(path + '/en.raw')
     offsetPosList = glob.glob(path + '/en.tok.off.pos')
@@ -206,28 +238,28 @@ def create_files(path, model, output_file='.ent.louis'):
         # create sentences w/ offsets in tuple
         sentData = create_sentences(r)
 
-
         # find our entities 
         for begin, end, sent in sentData:
 
             #find entities with SpaCy model
             nlp = spacy.load(model) # load the SpaCy model
-            spacy_entity = spacy_tagger(sent, nlp) # a list of entities
+            spacy_entity = spacy_tagger(sent, nlp, begin, end) # a list of entities
             if spacy_entity: 
-                # print('Appending SpaCy tagged entities', spacy_entity)
+                print('Appending SpaCy tagged entities', spacy_entity)
                 for spacy_ent in spacy_entity:
-                    entities.append(spacy_ent)          
+                    entities.append(spacy_ent)
 
             # lets try to find new entities with the NLTK NER tagger
             nltk_entity = nltk_ner_tagger(lines, begin, end, entities)
             if nltk_entity:
-                # print('Appending NLTK tagged entities', nltk_entity)
-                entities.append(nltk_entity)
+                print('Appending NLTK tagged entities', nltk_entity)
+                for nltk_ent in nltk_entity:
+                    entities.append(nltk_ent)
 
             # find entities for categories 'ANI', 'SPO' and 'NAT' with WordNet
             wn_entity = categorise_WordNet(lines, begin, end, sent, entities)
             if wn_entity:
-                # print('Appending WordNet tagged entities', wn_entity)
+                print('Appending WordNet tagged entities', wn_entity)
                 entities.append(wn_entity)
 
 
@@ -246,7 +278,6 @@ def create_files(path, model, output_file='.ent.louis'):
                 #     print(line)
                 item = ' '.join(line)
                 parserFile.write("%s\n" %item)
-
 
         print('Succesfully created "{0}" file in directory: {1}'.format(output_file, p + output_file))
 
@@ -293,6 +324,7 @@ def compare(path, output_file):
                     if gold[2] == pars[2]:
                         print(pars, gold)
                         cat += 1
+                    else:
 
 
         missed = len(parserLines) - len(goldLines) # hoeveel tags we missen..
@@ -304,17 +336,17 @@ def compare(path, output_file):
 def main():
     '''Create parser file and compare it to the gold standard file'''
 
-    path = 'dev/*/*'                            # set to 'dev/*/*' for all files
-    # model = "en_core_web_sm"                    # SpaCy English model
+    path = 'dev/p18/d0671'                            # set to 'dev/*/*' for all files
+    model = "en_core_web_sm"                    # SpaCy English model
     # model = os.getcwd() + '/spacy_model'        # our own model
-    model = os.getcwd() + '/spacy_modelv2'      # our own model + SpaCy English model
-    output_file = '.ent.louis'                  # output file endings
+    # model = os.getcwd() + '/spacy_modelv2'      # our own model + SpaCy English model
+    output_file = '.ent.louis2'                  # output file endings
     
     ## run it
-    create_files(path, model, output_file)
+    # create_files(path, model, output_file)
 
     ## compare gold standard and parser files
-    # print(compare(path, output_file))
+    print(compare(path, output_file))
 
 
 if __name__ == '__main__':
