@@ -13,6 +13,8 @@ import pandas as pd
 from nltk.corpus import wordnet as wn
 from nltk.tree import Tree
 from nltk.wsd import lesk
+from collections import Counter
+from nltk.metrics import ConfusionMatrix
 
 
 def get_continuous_chunks(sent):
@@ -272,81 +274,94 @@ def create_files(path, model, output_file='.ent.louis'):
                     line.append(ent[3])
 
 
-        with open(p + output_file, "w") as parserFile:
-            for line in lines:
-                # if len(line)>5:
-                #     print(line)
-                item = ' '.join(line)
-                parserFile.write("%s\n" %item)
+        # with open(p + output_file, "w") as parserFile:
+        #     for line in lines:
+        #         # if len(line)>5:
+        #         #     print(line)
+        #         item = ' '.join(line)
+        #         parserFile.write("%s\n" %item)
 
-        print('Succesfully created "{0}" file in directory: {1}'.format(output_file, p + output_file))
+        # print('Succesfully created "{0}" file in directory: {1}'.format(output_file, p + output_file))
 
-def compare(path, output_file):
+
+def measures(path, output_file):
     '''compare parser file and gold standard file'''
 
     parserOutput = glob.glob(path + '/en.tok.off.pos' + output_file)
     goldStandard = glob.glob(path + '/en.tok.off.pos.ent')
 
-    score = []
-
     for p, g in zip(parserOutput, goldStandard):
+
+        labels = set()
 
         parserLines = []
         with open(p) as parserFile:
             csvReader = csv.reader(parserFile, delimiter=" ")
             for line in csvReader:
+                if len(line) == 5:
+                    parserLines.append(' ')
                 if len(line) > 5:
-                    parserLines.append([line[2], line[3], line[5]])
+                    labels.add(line[5])
+                    parserLines.append(line[5])
 
         goldLines = []
         with open(g) as goldFile:
             csvReader = csv.reader(goldFile, delimiter=" ")
             for line in csvReader:
+                if len(line) == 5:
+                    goldLines.append(' ')
                 if len(line) > 5:
-                    goldLines.append([line[2], line[3], line[5]]) # don't append the Wikipedia link
+                    labels.add(line[5])
+                    goldLines.append(line[5]) # don't append the Wikipedia link
 
+    print('The labels', labels, '\n')
 
-        print(p)
-        print('parser', parserLines)
-        print('gold', goldLines)  
-        print()  
+    cm = ConfusionMatrix(parserLines, goldLines)
+    print(cm)
 
+    true_positives = Counter()
+    false_negatives = Counter()
+    false_positives = Counter()
 
-        # hier kunnen we al die precision en recall uitrekenen
-        # en de f1 score etc
+    for i in labels:
+        for j in labels:
+            if i == j:
+                true_positives[i] += cm[i,j]
+            else:
+                false_negatives[i] += cm[i,j]
+                false_positives[j] += cm[i,j]
 
-        tag = 0 # the parser tagged the same entity
-        cat = 0 # the parser also tagged the same entity with the same category
-        for gold in goldLines:
-            for pars in parserLines:
-                if gold[0] == pars[0]:
-                    tag += 1
-                    if gold[2] == pars[2]:
-                        print(pars, gold)
-                        cat += 1
-                    else:
+    print("TP:", sum(true_positives.values()), true_positives)
+    print("FN:", sum(false_negatives.values()), false_negatives)
+    print("FP:", sum(false_positives.values()), false_positives)
+    print() 
 
-
-        missed = len(parserLines) - len(goldLines) # hoeveel tags we missen..
-
-        score.append((p[:13], tag, cat, missed))
-    return score
-
+    for i in sorted(labels):
+        if true_positives[i] == 0:
+            fscore = 0
+        else:
+            precision = true_positives[i] / float(true_positives[i]+false_positives[i])
+            recall = true_positives[i] / float(true_positives[i]+false_negatives[i])
+            fscore = 2 * (precision * recall) / float(precision + recall)
+        print(i, fscore)
 
 def main():
     '''Create parser file and compare it to the gold standard file'''
 
-    path = 'dev/p18/d0671'                            # set to 'dev/*/*' for all files
-    model = "en_core_web_sm"                    # SpaCy English model
+    path = 'dev/p36/d0500'                            # set to 'dev/*/*' for all files
+    # model = "en_core_web_sm"                    # SpaCy English model
     # model = os.getcwd() + '/spacy_model'        # our own model
     # model = os.getcwd() + '/spacy_modelv2'      # our own model + SpaCy English model
     output_file = '.ent.louis2'                  # output file endings
     
+    # TODO: dev/p36/d0500
+    # in deze tagt hij India nog 2x met COU !!
+
     ## run it
     # create_files(path, model, output_file)
 
     ## compare gold standard and parser files
-    print(compare(path, output_file))
+    measures(path, output_file)
 
 
 if __name__ == '__main__':
