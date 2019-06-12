@@ -20,14 +20,22 @@ from nltk.tree import Tree
 def get_continuous_chunks(sent):
     '''extract named entities form nltk.ne_chunk'''
     chunked = nltk.ne_chunk(sent)
-    continuous_chunk = []
-    current_chunk = []
+    named_entities = []
     for i in chunked:
         if type(i) == Tree:
-            current_chunk.append(" ".join([token for token, pos in i.leaves()]))
-    return current_chunk
+            for token, tag in i.leaves():
+                # hardcoding: sometimes it tags months as named entities
+                if token not in ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']: 
+                    # only take 'NNS' tagged tokens, because we're sure they are something
+                    if tag in ['NNS']: 
+                        # find the tag the NLTK NE tagger gave
+                        if 'ORGANIZATION' in str(i):
+                            named_entities.append([(token, tag, 'ORG')])
+                        else:
+                            named_entities.append([(token, tag, '-')])
 
-
+    # print(named_entities)
+    return named_entities
 
 def create_sentences(path):
     '''create sentences with offsets'''
@@ -64,7 +72,6 @@ def create_files(path, model, output_file='.ent.louis'):
             csvReader = csv.reader(posFile, delimiter=" ")
             lines = [line for line in csvReader]
 
-        i = 0 # counter
         entities = []
         # create sentences w/ offsets in tuple
         sentData = create_sentences(r)
@@ -76,7 +83,9 @@ def create_files(path, model, output_file='.ent.louis'):
             for ent in doc.ents:
                 # following entity labels are not used
                 if ent.label_ not in ['NORP', 'FAC', 'PRODUCT', 'LAW', 'LANGUAGE', 'DATE', 'TIME', 'PERCENT', 'MONEY', 'QUANTITY', 'ORDINAL', 'CARDINAL']:
-                    if ent.label_ == 'LOC': # Non-GPE locations, mountain ranges, bodies of water.
+                    if ent.label_ == 'PERSON': # change PERSON to PER
+                        entities.append((ent.start_char, ent.end_char, ent.text, 'PER'))
+                    elif ent.label_ == 'LOC': # Non-GPE locations, mountain ranges, bodies of water.
                         entities.append((ent.start_char, ent.end_char, ent.text, 'NAT'))
                     elif ent.label_ == 'WORK_OF_ART': #Titles of books, songs, etc.
                         entities.append((ent.start_char, ent.end_char, ent.text, 'ENT'))
@@ -95,59 +104,71 @@ def create_files(path, model, output_file='.ent.louis'):
 
 
             # lets try to find new entities with the NLTK NER tagger
-            sentence = []
+            ne_chunk_input = []
             for line in lines:
                 if int(line[1]) <= end:
-                    sentence.append((line[3], line[4]))
-            named_entities = get_continuous_chunks(sentence)
-            sentence = [] # return to empty sentence
-            for ne in named_entities:
-                # check if the NE from NLTK are already found by SpaCy
-                if any(ne in ent[2] for ent in entities):
-                    break
-                else:
-                    # we moeten ook de offsets meegeven, dus dat proberen we zo!
-                    for token in doc:
-                        if ne == token.text:
-                            # hier moeten we er dus een token aan geven
-                            print("WE HAVE A WINNER")
-                            entities.append(token.idx, i+token.idx, ne, '-')
-               
-            i += len(doc) # offset counter
+                    ne_chunk_input.append((line[3], line[4]))
+            named_entities_list = get_continuous_chunks(ne_chunk_input)
+            ne_chunk_input = [] # return to empty input
+            for item in named_entities_list:
+                if len(item) == 1:
+                    for ne in item:
+                        # check if the NE from NLTK are already found by SpaCy
+                        if any(ne[0] in ent[2] for ent in entities):
+                            # NE found in entities, thus break loop
+                            break
+                        else:
+                            # using enumerate to find lines after and before current 
+                            for idx, line in enumerate(lines):
+                                # check if NE matches token and it's POS tag also matches
+                                if ne[0] == line[3] and ne[1] == line[4]:
+                                    if ne[2] != '-':
+                                        entities.append((line[0], line[1], ne[0], ne[2]))
+                                    else:
+                                        # hier nog iets doen?
+                                        # TODO!!
+                                        # print(line[0], line[1], ne[0], ne[2])
+                                        entities.append((line[0], line[1], ne[0], ne[2]))
 
 
-        #### nadenken hoe we in godsnaam die nieuwe tags gaan geven.
-        ### dat moet dus met wordnet.
-
-        #### hier moeten we entities gaan toevoegen
-        ### alleen weten we de offsets niet
-        ## die moeten we op een of andere manier nog vinden
-
-        ## stap 1 = nieuwe named entities vinden
-        ## stap 2 = deze nieuwe entities classificeren
-        ## sport en animal moeten we nog doen op basis van wn.synset.hypernym 
-
-
-        # Wordnet operations.. ?..
-        # for line in lines:
-        #     if line[4] in ['NN', 'NNP', 'NNS', 'NNPS']:
-        #         token = line[3]
-
+            # find 'ANI', 'SPO' and 'NAT' with WordNet
+            categories = {'ANI': ['animal', 'bird'], 'SPO': ['sport'], 'NAT': ['ocean', 'river', 'mountain', 'crack', 'land']}
+            for line in lines:
+                token = line[3]
+                tag = line[4]
+                if tag in ['NNPS', 'NNS']:
+                    synsets = wn.synsets(token, pos='n') # creates a list with all found synsets for noun
+                    if len(synsets) > 0:
+                        synset = wn.synsets(token, pos='n')[0] # only use the first synset found by WordNet
+                        hypernyms = [i for i in synset.closure(lambda s:s.hypernyms())] 
+                        for hyp in hypernyms:
+                            if str(hyp) != "Synset('public_transport.n.01')": # door categorie 'sport' ging deze ook mee
+                                for key, value_list in categories.items():  
+                                    for cat in value_list:
+                                        if cat in str(hyp):
+                                            # check if the NE from NLTK are already found by SpaCy
+                                            if any(token in ent[2] for ent in entities):
+                                                break
+                                            else:
+                                                # komt bird etc er nu niet per bestand maar 1x in?
+                                                # moeten kijken naar die loops...
+                                                # want het moet natuurlijk per keer erin..
+                                                entities.append((line[0], line[1], token, key))
 
         # iterate over both
         for ent in entities:
             for line in lines:
                 # check if offsets of entity match ent.tok.off.pos token offsets
                 if int(line[0]) == ent[0] and int(line[1]) == ent[1]:
-                    print(ent[2], ent[3])
+                    # print(ent[2], ent[3])
                     line.append(ent[3])
 
-        with open(p + output_file, "w") as parserFile:
-            for line in lines:
-                item = ' '.join(line)
-                parserFile.write("%s\n" %item)
+        # with open(p + output_file, "w") as parserFile:
+        #     for line in lines:
+        #         item = ' '.join(line)
+        #         parserFile.write("%s\n" %item)
 
-        print('Succesfully created "{0}" file in directory: {1}'.format(output_file, path))
+        # print('Succesfully created "{0}" file in directory: {1}'.format(output_file, path))
 
 
 def compare(path, output_file):
@@ -204,10 +225,10 @@ def compare(path, output_file):
 def main():
     '''Create parser file and compare it to the gold standard file'''
 
-    path = 'dev/p36/d0690'                      # set to 'dev/*/*' for all files
-    model = "en_core_web_sm"                    # SpaCy English model
+    path = 'dev/*/*' # p36/d0690                      # set to 'dev/*/*' for all files
+    # model = "en_core_web_sm"                    # SpaCy English model
     # model = os.getcwd() + '/spacy_model'        # our own model
-    # model = os.getcwd() + '/spacy_modelv2'      # our own model + SpaCy English model
+    model = os.getcwd() + '/spacy_modelv2'      # our own model + SpaCy English model
     output_file = '.ent.louis'                  # output file endings
     
     ## run it
