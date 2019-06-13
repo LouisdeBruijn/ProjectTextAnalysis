@@ -14,6 +14,7 @@ from nltk.corpus import wordnet as wn
 from nltk.tree import Tree
 from nltk.wsd import lesk
 from collections import Counter
+from collections import defaultdict
 from nltk.metrics import ConfusionMatrix
 
 
@@ -130,7 +131,7 @@ def spacy_tagger(sent, nlp, begin, end, entities):
                 else:
                     label = ent.label_
 
-                new_entities.append((b, e, entit, label))
+                new_entities.append((str(b), str(e), entit, label))
             # for ent offsets
             e += 1
             b = e
@@ -209,37 +210,39 @@ def nltk_ner_tagger(lines, begin, end, entities):
                 if int(line[0]) == begin:
                     cnt = 0
                 # if NER id equals line id and NER token == line token
+                # then that tagged entity equals the line entity
+                # and thus we can append it
                 if cnt == ne[0] and ne[1] == line[3]:
-                    # check if the NE from NLTK are already found by SpaCy
-                    if any(line[3] in ent[2] for ent in entities):
-                        # NE found in entities, thus break loop
-                        for entity in entities:
-                            if line[3] == entity[2]:
-                                if int(line[0]) == entity[0] and int(line[1]) == entity[1]:
-                                    break
-                                else:
-                                    tag = ne[3]
-                                    if tag == 'COU':
-                                        # disambiguate between countries and cities
-                                        tag = gpe_disambiguation(line[3])
-                                    # check if the item with all offsets and tags is not already in entities
-                                    tup = (int(line[0]), int(line[1]), line[3], tag)
-                                    if tup not in entities:
-                                        print('HIER>?', tup)
-                                        # otherwise append the newly found entity!
-                                        new_entities.append(tup)
-                                        break
-                        break
+                    # check if the NE from NLTK are already found by SpaCy                    
+                    # if any(line[3] in ent[2] for ent in entities):
+                    #     # NE found in entities, thus break loop
+                    #     for entity in entities:
+                    #         if line[3] == entity[2]:
+                    #             if int(line[0]) == entity[0] and int(line[1]) == entity[1]:
+                    #                 break
+                    #             else:
+                    #                 tag = ne[3]
+                    #                 if tag == 'COU':
+                    #                     # disambiguate between countries and cities
+                    #                     tag = gpe_disambiguation(line[3])
+                    #                 # check if the item with all offsets and tags is not already in entities
+                    #                 tup = (int(line[0]), int(line[1]), line[3], tag)
+                    #                 if tup not in entities:
+                    #                     print('HIER>?', tup)
+                    #                     # otherwise append the newly found entity!
+                    #                     new_entities.append(tup)
+                    #                     break
+                    #     break
+                    # else:
+                    if ne[3] == 'COU':
+                        # disambiguate between countries and cities
+                        new_entities.append((line[0], line[1], line[3], gpe_disambiguation(line[3])))
                     else:
-                        if ne[3] == 'COU':
-                            # disambiguate between countries and cities
-                            new_entities.append((line[0], line[1], line[3], gpe_disambiguation(line[3])))
-                        else:
-                            # append the missing NE tagged entity to entities
-                            new_entities.append((line[0], line[1], line[3], ne[3]))
-                            ## TODO hier kunnen we nog mee spelen
-                            ## if ne[3] == 'COU' of ne[3] == '-'
-                            ## hij tagt alles als 'COU', ook 'CIT'
+                        # append the missing NE tagged entity to entities
+                        new_entities.append((line[0], line[1], line[3], ne[3]))
+                        ## TODO hier kunnen we nog mee spelen
+                        ## if ne[3] == 'COU' of ne[3] == '-'
+                        ## hij tagt alles als 'COU', ook 'CIT'
 
                 cnt += 1
 
@@ -288,17 +291,60 @@ def create_files(path, model, output_file='.ent.louis'):
                 print('Appending WordNet tagged entities', wn_entity)
                 entities.append(wn_entity)
 
-        # print('...', entities)
-        # iterate over entities and lines
+        # out of all NER taggers, choose the tag
+        dic = defaultdict(list)
+        for (_, _, token, tag) in entities:
+            dic[token].append(tag)
+
+        for key, value in dic.items():
+            for idx, (b, e, token, tag) in enumerate(entities):
+                if key == token:
+                    # choose the used tag, if two tags same amount, choose first
+                    tag = max(value, key=value.count)
+                    # delete entity with incorrect tag
+                    del entities[idx]
+                    # insert entitiy with most used tag
+                    entities.insert(idx, (b, e, key, tag))
+
+
+        print('.o.', entities)
+        print(len(entities))
+
+
+        # make the items unique
+        entities = list(set(entities))
+
+        print('.n.', entities)
+        print(len(entities))
+
+        # if token is already in entity, append it with same tag
+        for ent in entities:
+            for line in lines:
+                # check if entity-token is in line
+                if ent[2] == line[3] and ent[0] != line[0] and ent[1] != line[1]:
+                    # check if this line is not already in entities
+                    if (line[0], line[1], line[3], ent[3]) not in entities:
+                        print("WE HEBBEN ER EEN")  
+                        ### lol er is een fout in de offsets
+                        ### appenden maar gewoon..
+
+                        # print(ent)   
+                        # print(line)
+                        # print()                 
+                        # print((line[0], line[1], line[3], ent[3]))
+
+                        print(entities)
+                        exit()
+
+
+        # append entity tag to the line
         for ent in entities:
             for line in lines:
                 # check if offsets of entity match ent.tok.off.pos token offsets
                 if int(line[0]) == int(ent[0]) and int(line[1]) == int(ent[1]):
-                    # print(ent[2], ent[3])
                     line.append(ent[3])
 
-        print('ENTITIES', entities)
-
+        # write lines the an output file
         with open(p + output_file, "w") as parserFile:
             for line in lines:
                 # if len(line)>5:
@@ -351,7 +397,6 @@ def measures(path, output_file):
             else:
                 print(p, g[:6])
 
-        exit()
 
         print('The labels', labels, '\n')
 
@@ -387,9 +432,9 @@ def measures(path, output_file):
 def main():
     '''Create parser file and compare it to the gold standard file'''
 
-    path = 'dev/p74/d0234'                            # set to 'dev/*/*' for all files
-    model = "en_core_web_sm"                    # SpaCy English model
-    # model = os.getcwd() + '/spacy_model'        # our own model
+    path = 'dev/*/*'                            # set to 'dev/*/*' for all files
+    # model = "en_core_web_sm"                    # SpaCy English model
+    model = os.getcwd() + '/spacy_model'        # our own model
     # model = os.getcwd() + '/spacy_modelv2'      # our own model + SpaCy English model
     output_file = '.ent.louis2'                  # output file endings
 
