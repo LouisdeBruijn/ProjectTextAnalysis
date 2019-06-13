@@ -88,32 +88,47 @@ def gpe_disambiguation(token):
     return 'COU'
 
 
-def spacy_tagger(sent, nlp, begin, end):
+def spacy_tagger(sent, nlp, begin, end, entities):
     '''find named entities based on SpaCy model and return these entities'''
     
-    entities = []
+    new_entities = []
     # create nlp pipeline
     doc = nlp(sent)
     # append entity offsets, text and tagged category
     for ent in doc.ents:
-        # change SpaCy tags to our category tags
-        if ent.label_ not in ['NORP', 'FAC', 'PRODUCT', 'LAW', 'LANGUAGE', 'DATE', 'TIME', 'PERCENT', 'MONEY', 'QUANTITY', 'ORDINAL', 'CARDINAL']:
-            # offsets are begin of sentence + token offsets
-            b = begin + ent.start_char
-            e = begin + ent.end_char
-            if ent.label_ in ['COU', 'GPE']: # Countries, cities, states.
-                # disambiguate between countries and cities
-                entities.append((b, e, ent.text, gpe_disambiguation(ent.text)))
-            elif ent.label_ == 'PERSON': # change PERSON to PER
-                entities.append((b, e, ent.text, 'PER'))
-            elif ent.label_ == 'LOC': # Non-GPE locations, mountain ranges, bodies of water.
-                entities.append((b, e, ent.text, 'NAT'))
-            elif ent.label_ == 'WORK_OF_ART': # Titles of books, songs, etc.
-                entities.append((b, e, ent.text, 'ENT'))
-            else:
-                entities.append((b, e, ent.text, ent.label_))
 
-    return entities
+        # offsets have been adjusted to fit both double entities and single
+        b = begin + ent.start_char
+        e = 0
+        # (125, 132, 'Benazir', 'PER'), (133, 139, 'Bhutto', 'PER')
+        for entit in ent.text.split():
+            e = b + len(entit)
+            # change SpaCy tags to our category tags
+            if ent.label_ not in ['NORP', 'FAC', 'PRODUCT', 'LAW', 'LANGUAGE', 'DATE', 'TIME', 'PERCENT', 'MONEY', 'QUANTITY', 'ORDINAL', 'CARDINAL']:
+                if ent.label_ in ['COU', 'GPE']: # Countries, cities, states.
+                    # disambiguate between countries and cities
+                    label = gpe_disambiguation(ent.text)
+                elif ent.label_ == 'PERSON': # change PERSON to PER
+                    label = 'PER'
+                elif ent.label_ == 'LOC': # Non-GPE locations, mountain ranges, bodies of water.
+                    label = 'NAT'
+                elif ent.label_ == 'WORK_OF_ART': # Titles of books, songs, etc.
+                    label = 'ENT'
+                else:
+                    label = ent.label_
+                # check if entity has already been tagged earlier
+                for old_ent in entities:
+                    if ent.text == old_ent[2]:
+                        # tags do not match, keep earlier tagged tag as gold standard
+                        if label != old_ent[3]:
+                            # earlier tagged label is the gold-standard
+                            label = old_ent[3]
+                new_entities.append((b, e, entit, label))
+    
+            e += 1
+            b = e
+
+    return new_entities
 
 
 def categorise_WordNet(lines, begin, end, sent, entities):
@@ -148,7 +163,7 @@ def categorise_WordNet(lines, begin, end, sent, entities):
 def nltk_ner_tagger(lines, begin, end, entities):
     '''finds entities tagged by nltk's NER tagger and converts categories '''
     
-    entity_list = []
+    new_entities = []
     ## create NLTK tagged entities
     ne_chunk_input = [] # input needs to be tuple(token, pos) for NLTK NER tagger
 
@@ -204,22 +219,22 @@ def nltk_ner_tagger(lines, begin, end, entities):
                                     tup = (int(line[0]), int(line[1]), line[3], tag)
                                     if tup not in entities:
                                         # otherwise append the newly found entity!
-                                        entity_list.append(tup)
+                                        new_entities.append(tup)
                         break
                     else:
                         if ne[3] == 'COU':
                             # disambiguate between countries and cities
-                            entity_list.append((line[0], line[1], line[3], gpe_disambiguation(line[3])))
+                            new_entities.append((line[0], line[1], line[3], gpe_disambiguation(line[3])))
                         else:
                             # append the missing NE tagged entity to entities
-                            entity_list.append((line[0], line[1], line[3], ne[3]))
+                            new_entities.append((line[0], line[1], line[3], ne[3]))
                             ## TODO hier kunnen we nog mee spelen
                             ## if ne[3] == 'COU' of ne[3] == '-'
                             ## hij tagt alles als 'COU', ook 'CIT'
 
                 cnt += 1
 
-    return entity_list
+    return new_entities
 
 
 def create_files(path, model, output_file='.ent.louis'):
@@ -245,7 +260,7 @@ def create_files(path, model, output_file='.ent.louis'):
 
             #find entities with SpaCy model
             nlp = spacy.load(model) # load the SpaCy model
-            spacy_entity = spacy_tagger(sent, nlp, begin, end) # a list of entities
+            spacy_entity = spacy_tagger(sent, nlp, begin, end, entities) # a list of entities
             if spacy_entity: 
                 print('Appending SpaCy tagged entities', spacy_entity)
                 for spacy_ent in spacy_entity:
@@ -264,7 +279,7 @@ def create_files(path, model, output_file='.ent.louis'):
                 print('Appending WordNet tagged entities', wn_entity)
                 entities.append(wn_entity)
 
-
+        # print('...', entities)
         # iterate over entities and lines
         for ent in entities:
             for line in lines:
@@ -274,14 +289,14 @@ def create_files(path, model, output_file='.ent.louis'):
                     line.append(ent[3])
 
 
-        # with open(p + output_file, "w") as parserFile:
-        #     for line in lines:
-        #         # if len(line)>5:
-        #         #     print(line)
-        #         item = ' '.join(line)
-        #         parserFile.write("%s\n" %item)
+        with open(p + output_file, "w") as parserFile:
+            for line in lines:
+                # if len(line)>5:
+                #     print(line)
+                item = ' '.join(line)
+                parserFile.write("%s\n" %item)
 
-        # print('Succesfully created "{0}" file in directory: {1}'.format(output_file, p + output_file))
+        print('Succesfully created "{0}" file in directory: {1}'.format(output_file, p + output_file))
 
 
 def measures(path, output_file):
@@ -294,74 +309,89 @@ def measures(path, output_file):
 
         labels = set()
 
+        parser = []
+        gold = []
+
         parserLines = []
+        goldLines = []
+
         with open(p) as parserFile:
             csvReader = csv.reader(parserFile, delimiter=" ")
             for line in csvReader:
+                parserLines.append(line)
                 if len(line) == 5:
-                    parserLines.append(' ')
+                    parser.append(' ')
                 if len(line) > 5:
                     labels.add(line[5])
-                    parserLines.append(line[5])
+                    parser.append(line[5])
 
-        goldLines = []
         with open(g) as goldFile:
             csvReader = csv.reader(goldFile, delimiter=" ")
             for line in csvReader:
+                goldLines.append(line)
                 if len(line) == 5:
-                    goldLines.append(' ')
+                    gold.append(' ')
                 if len(line) > 5:
                     labels.add(line[5])
-                    goldLines.append(line[5]) # don't append the Wikipedia link
+                    gold.append(line[5]) # don't append the Wikipedia link
 
-    print('The labels', labels, '\n')
 
-    cm = ConfusionMatrix(parserLines, goldLines)
-    print(cm)
-
-    true_positives = Counter()
-    false_negatives = Counter()
-    false_positives = Counter()
-
-    for i in labels:
-        for j in labels:
-            if i == j:
-                true_positives[i] += cm[i,j]
+        for p, g in zip(parserLines, goldLines):
+            if p == g[:6]:
+                pass
             else:
-                false_negatives[i] += cm[i,j]
-                false_positives[j] += cm[i,j]
+                print(p, g[:6])
 
-    print("TP:", sum(true_positives.values()), true_positives)
-    print("FN:", sum(false_negatives.values()), false_negatives)
-    print("FP:", sum(false_positives.values()), false_positives)
-    print() 
 
-    for i in sorted(labels):
-        if true_positives[i] == 0:
-            fscore = 0
-        else:
-            precision = true_positives[i] / float(true_positives[i]+false_positives[i])
-            recall = true_positives[i] / float(true_positives[i]+false_negatives[i])
-            fscore = 2 * (precision * recall) / float(precision + recall)
-        print(i, fscore)
+        print('The labels', labels, '\n')
+
+        cm = ConfusionMatrix(gold, parser)
+        print(cm)
+
+        true_positives = Counter()
+        false_negatives = Counter()
+        false_positives = Counter()
+
+        for i in labels:
+            for j in labels:
+                if i == j:
+                    true_positives[i] += cm[i,j]
+                else:
+                    false_negatives[i] += cm[i,j]
+                    false_positives[j] += cm[i,j]
+
+        print("TP:", sum(true_positives.values()), true_positives)
+        print("FN:", sum(false_negatives.values()), false_negatives)
+        print("FP:", sum(false_positives.values()), false_positives)
+        print() 
+
+        for i in sorted(labels):
+            if true_positives[i] == 0:
+                fscore = 0
+            else:
+                precision = true_positives[i] / float(true_positives[i]+false_positives[i])
+                recall = true_positives[i] / float(true_positives[i]+false_negatives[i])
+                fscore = 2 * (precision * recall) / float(precision + recall)
+            print(i, fscore)
 
 def main():
     '''Create parser file and compare it to the gold standard file'''
 
     path = 'dev/p36/d0500'                            # set to 'dev/*/*' for all files
-    # model = "en_core_web_sm"                    # SpaCy English model
+    model = "en_core_web_sm"                    # SpaCy English model
     # model = os.getcwd() + '/spacy_model'        # our own model
     # model = os.getcwd() + '/spacy_modelv2'      # our own model + SpaCy English model
     output_file = '.ent.louis2'                  # output file endings
-    
-    # TODO: dev/p36/d0500
-    # in deze tagt hij India nog 2x met COU !!
 
     ## run it
-    # create_files(path, model, output_file)
+    create_files(path, model, output_file)
 
     ## compare gold standard and parser files
     measures(path, output_file)
+
+
+    # spacy tagt nu entities samen, moeten nog gesplits worden
+    # Appending SpaCy tagged entities [(0, 5, 'India', 'COU'), (48, 56, 'Pakistan', 'COU'), (125, 139, 'Benazir Bhutto', 'PER')]
 
 
 if __name__ == '__main__':
