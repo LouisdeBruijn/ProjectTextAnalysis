@@ -16,6 +16,16 @@ from nltk.wsd import lesk
 from collections import Counter
 from collections import defaultdict
 from nltk.metrics import ConfusionMatrix
+# pip install -U pywsd
+# from pywsd.lesk import simple_lesk, adapted_lesk, cosine_lesk
+
+def whatisthis(s):
+    if isinstance(s, str):
+        print("ordinary string")
+    elif isinstance(s, unicode):
+        print("unicode string")
+    else:
+        print("not a string")
 
 
 def get_continuous_chunks(sent):
@@ -39,7 +49,7 @@ def get_continuous_chunks(sent):
                 # hardcoding: sometimes it tags months as named entities
                 if token not in ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']: 
                     # only take these into account, not 'JJ'
-                    if pos in ['NNS', 'NNP', 'NNPS']:
+                    if pos in ['NN', 'NNS', 'NNP', 'NNPS']:
                         if 'ORGANIZATION' in str(tree_item):
                             tag = 'ORG'
                         if 'PERSON' in str(tree_item):
@@ -145,27 +155,31 @@ def categorise_WordNet(lines, begin, end, sent, entities):
     for line in lines:
         # see if line is in the sentence in order to go through lines per sentence 
         if begin <= int(line[1]) <= end:
-            token = line[3] # 'turtles' and 'sea' tagged wrong
+            token = line[3] 
+            # if token == 'services': print(token)
             tag = line[4]
             if tag in ['NNPS', 'NNS']:
                 synsets = wn.synsets(token, pos=wn.NOUN) # creates a list with all found synsets for noun
+                # if token == 'services': print('syns', synsets)
                 if len(synsets) > 1:
                     # let Lesk algorithm choose the correct synset from ambigu results
-                    synset = lesk(sent, token, pos=wn.NOUN) # use Lesk algorithm to choose synset
-                    # synset = wn.synsets(token, pos=wn.NOUN)[0] # only use the first synset found by WordNet
+                    # if token == 'services': print('sent', sent)
+                    # use any of the following Lesk-based algorithms to disambiguate synset
+                    ## so far adapted_lesk is the best: does not tag 'services' & 'workers', but does tag 'soldiers' 
+                    # synset = adapted_lesk(sent, token, pos='NOUN') # simple_lesk(), cosine_lesk(), adapted_lesk() or just lesk() from NLTK
+                    synset = lesk(sent, token, pos=wn.NOUN)
+                    # if token == 'services': print('synset', synset)
+                    # find hypernyms for this synset
                     hypernyms = [i for i in synset.closure(lambda s:s.hypernyms())] 
+                    # if token == 'services': print('hypern', hypernyms)
                     # iterate through hypernyms to see whether they match a category
                     for hyp in hypernyms:
+                        # if token == 'services': ('hyp', hyp)
                         if str(hyp) != "Synset('public_transport.n.01')": # door categorie 'sport' ging deze ook mee
                             for key, value_list in categories.items():  
                                 for cat in value_list:
                                     if cat in str(hyp):
-                                        for ent in entities:
-                                            # check if NE tagged by NLTK already in entities list (found by SpaCy)
-                                            if int(line[0]) == int(ent[0]) and int(line[1]) == int(ent[1]) and token == ent[2]:
-                                                break
-                                            else:
-                                                return (line[0], line[1], token, key)
+                                        return (line[0], line[1], token, key)
 
 
 def nltk_ner_tagger(lines, begin, end, entities):
@@ -213,27 +227,6 @@ def nltk_ner_tagger(lines, begin, end, entities):
                 # then that tagged entity equals the line entity
                 # and thus we can append it
                 if cnt == ne[0] and ne[1] == line[3]:
-                    # check if the NE from NLTK are already found by SpaCy                    
-                    # if any(line[3] in ent[2] for ent in entities):
-                    #     # NE found in entities, thus break loop
-                    #     for entity in entities:
-                    #         if line[3] == entity[2]:
-                    #             if int(line[0]) == entity[0] and int(line[1]) == entity[1]:
-                    #                 break
-                    #             else:
-                    #                 tag = ne[3]
-                    #                 if tag == 'COU':
-                    #                     # disambiguate between countries and cities
-                    #                     tag = gpe_disambiguation(line[3])
-                    #                 # check if the item with all offsets and tags is not already in entities
-                    #                 tup = (int(line[0]), int(line[1]), line[3], tag)
-                    #                 if tup not in entities:
-                    #                     print('HIER>?', tup)
-                    #                     # otherwise append the newly found entity!
-                    #                     new_entities.append(tup)
-                    #                     break
-                    #     break
-                    # else:
                     if ne[3] == 'COU':
                         # disambiguate between countries and cities
                         new_entities.append((line[0], line[1], line[3], gpe_disambiguation(line[3])))
@@ -258,10 +251,9 @@ def create_files(path, model, output_file='.ent.louis'):
     for r, p in zip(rawPathlist, offsetPosList):
         print(r, p)
 
-        # append lines from csv.reader to list, because can't iterate over csv.reader
+        # append lines
         with open(p) as posFile:
-            csvReader = csv.reader(posFile, delimiter=" ")
-            lines = [line for line in csvReader]
+            lines = [line.rstrip().split() for line in posFile]
 
         entities = []
         # create sentences w/ offsets in tuple
@@ -274,14 +266,14 @@ def create_files(path, model, output_file='.ent.louis'):
             nlp = spacy.load(model) # load the SpaCy model
             spacy_entity = spacy_tagger(sent, nlp, begin, end, entities) # a list of entities
             if spacy_entity: 
-                print('Appending SpaCy tagged entities', spacy_entity)
+                # print('Appending SpaCy tagged entities', spacy_entity)
                 for spacy_ent in spacy_entity:
                     entities.append(spacy_ent)
 
             # lets try to find new entities with the NLTK NER tagger
             nltk_entity = nltk_ner_tagger(lines, begin, end, entities)
             if nltk_entity:
-                print('Appending NLTK tagged entities', nltk_entity)
+                # print('Appending NLTK tagged entities', nltk_entity)
                 for nltk_ent in nltk_entity:
                     entities.append(nltk_ent)
 
@@ -306,16 +298,8 @@ def create_files(path, model, output_file='.ent.louis'):
                     # insert entitiy with most used tag
                     entities.insert(idx, (b, e, key, tag))
 
-
-        print('.o.', entities)
-        print(len(entities))
-
-
         # make the items unique
         entities = list(set(entities))
-
-        print('.n.', entities)
-        print(len(entities))
 
         # if token is already in entity, append it with same tag
         for ent in entities:
@@ -324,18 +308,12 @@ def create_files(path, model, output_file='.ent.louis'):
                 if ent[2] == line[3] and ent[0] != line[0] and ent[1] != line[1]:
                     # check if this line is not already in entities
                     if (line[0], line[1], line[3], ent[3]) not in entities:
-                        print("WE HEBBEN ER EEN")  
-                        ### lol er is een fout in de offsets
-                        ### appenden maar gewoon..
-
-                        # print(ent)   
-                        # print(line)
-                        # print()                 
-                        # print((line[0], line[1], line[3], ent[3]))
-
-                        print(entities)
-                        exit()
-
+                        # tokens such "'s" or "The" or "and" were once tagged as entity, but these are not ALWAYS entities
+                        if line[2] not in ['POS', 'DT', 'CC', 'IN']:
+                            # append the line + earlier entity tagged category
+                            entities.append((line[0], line[1], line[3], ent[3]))
+                            # lost of files have wrong offsets... which means that a lot of tokens get in here
+                            print('### WRONG OFFSETS IN FILE ? ###')
 
         # append entity tag to the line
         for ent in entities:
@@ -357,39 +335,44 @@ def create_files(path, model, output_file='.ent.louis'):
 
 def measures(path, output_file):
     '''compare parser file and gold standard file'''
-
     parserOutput = glob.glob(path + '/en.tok.off.pos' + output_file)
     goldStandard = glob.glob(path + '/en.tok.off.pos.ent')
 
     for p, g in zip(parserOutput, goldStandard):
+        print(p, g)
 
         labels = set()
 
         parser = []
         gold = []
-
         parserLines = []
         goldLines = []
 
         with open(p) as parserFile:
-            csvReader = csv.reader(parserFile, delimiter=" ")
-            for line in csvReader:
+            for line in parserFile:
+                line = line.rstrip().split()
                 parserLines.append(line)
-                if len(line) == 5:
-                    parser.append(' ')
                 if len(line) > 5:
                     labels.add(line[5])
                     parser.append(line[5])
-
+                else:
+                    parser.append(' ')
+                    
         with open(g) as goldFile:
-            csvReader = csv.reader(goldFile, delimiter=" ")
-            for line in csvReader:
+            for line in goldFile:
+                line = line.rstrip().split()
                 goldLines.append(line)
-                if len(line) == 5:
-                    gold.append(' ')
                 if len(line) > 5:
                     labels.add(line[5])
                     gold.append(line[5]) # don't append the Wikipedia link
+
+                    # TODO: for testing WordNet!!!!
+                    # if line[5] in ['ANI', 'SPO', 'ENT']:
+                    #     print(line)
+
+                else:
+                    gold.append(' ')
+
 
         for p, g in zip(parserLines, goldLines):
             if p == g[:6]:
@@ -400,43 +383,48 @@ def measures(path, output_file):
 
         print('The labels', labels, '\n')
 
-        cm = ConfusionMatrix(gold, parser)
-        print(cm)
 
-        true_positives = Counter()
-        false_negatives = Counter()
-        false_positives = Counter()
+        if len(gold) == len(parser):
+            cm = ConfusionMatrix(gold, parser)
+            print(cm)
 
-        for i in labels:
-            for j in labels:
-                if i == j:
-                    true_positives[i] += cm[i,j]
+            true_positives = Counter()
+            false_negatives = Counter()
+            false_positives = Counter()
+
+            for i in labels:
+                for j in labels:
+                    if i == j:
+                        true_positives[i] += cm[i,j]
+                    else:
+                        false_negatives[i] += cm[i,j]
+                        false_positives[j] += cm[i,j]
+
+            print("TP:", sum(true_positives.values()), true_positives)
+            print("FN:", sum(false_negatives.values()), false_negatives)
+            print("FP:", sum(false_positives.values()), false_positives)
+            print() 
+
+            for i in sorted(labels):
+                if true_positives[i] == 0:
+                    fscore = 0
                 else:
-                    false_negatives[i] += cm[i,j]
-                    false_positives[j] += cm[i,j]
-
-        print("TP:", sum(true_positives.values()), true_positives)
-        print("FN:", sum(false_negatives.values()), false_negatives)
-        print("FP:", sum(false_positives.values()), false_positives)
-        print() 
-
-        for i in sorted(labels):
-            if true_positives[i] == 0:
-                fscore = 0
-            else:
-                precision = true_positives[i] / float(true_positives[i]+false_positives[i])
-                recall = true_positives[i] / float(true_positives[i]+false_negatives[i])
-                fscore = 2 * (precision * recall) / float(precision + recall)
-            print(i, fscore)
+                    precision = true_positives[i] / float(true_positives[i]+false_positives[i])
+                    recall = true_positives[i] / float(true_positives[i]+false_negatives[i])
+                    fscore = 2 * (precision * recall) / float(precision + recall)
+                print(i, fscore)
+        else:
+            print(p, len(parser))
+            print(g, len(gold))
 
 def main():
     '''Create parser file and compare it to the gold standard file'''
 
-    path = 'dev/*/*'                            # set to 'dev/*/*' for all files
+    path = 'dev/p64/d0564'                            # set to 'dev/*/*' for all files
     # model = "en_core_web_sm"                    # SpaCy English model
-    model = os.getcwd() + '/spacy_model'        # our own model
-    # model = os.getcwd() + '/spacy_modelv2'      # our own model + SpaCy English model
-    output_file = '.ent.louis2'                  # output file endings
+    # model = os.getcwd() + '/spacy_model'        # our own model
+    model = os.getcwd() + '/spacy_modelv2'      # our own model + SpaCy English model
+    output_file = '.ent.louis'                  # output file endings
 
     ## run it
     create_files(path, model, output_file)
@@ -444,10 +432,7 @@ def main():
     ## compare gold standard and parser files
     measures(path, output_file)
 
-
-    # spacy tagt nu entities samen, moeten nog gesplits worden
-    # Appending SpaCy tagged entities [(0, 5, 'India', 'COU'), (48, 56, 'Pakistan', 'COU'), (125, 139, 'Benazir Bhutto', 'PER')]
-
+    ## TODO: WORDNET entities checken in dev, of ze allemaal wel getagd worden
 
 if __name__ == '__main__':
     main()
