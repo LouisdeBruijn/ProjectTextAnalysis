@@ -227,7 +227,7 @@ def nltk_ner_tagger(lines, begin, end, entities):
                                     if tup not in entities:
                                         # otherwise append the newly found entity!
                                         # check if entity has already been tagged earlier
-                                        tup = int(line[0], int(line[1], line[3], token_tagged(line[3], tag, entities)))
+                                        tup = (int(line[0]), int(line[1]), line[3], token_tagged(line[3], tag, entities))
                                         new_entities.append(tup)
                         break
                     else:
@@ -387,7 +387,7 @@ def measures(path, output_file):
 def main():
     '''Create parser file and compare it to the gold standard file'''
 
-    path = 'dev/p36/d0690'                            # set to 'dev/*/*' for all files
+    path = 'dev/*/*'                            # set to 'dev/*/*' for all files
     model = "en_core_web_sm"                    # SpaCy English model
     # model = os.getcwd() + '/spacy_model'        # our own model
     # model = os.getcwd() + '/spacy_modelv2'      # our own model + SpaCy English model
