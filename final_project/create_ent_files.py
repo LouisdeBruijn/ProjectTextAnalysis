@@ -52,6 +52,7 @@ def get_continuous_chunks(sent):
     ## [[(9, 'Rugova', 'NNP', 'PER')], [(18, 'European', 'NNP', 'ORG'), (18, 'Union', 'NNP', 'ORG')]
     return named_entities
 
+
 def token_tagged(token, label, entities):
     '''check if token has already been tagged earlier, use earlier tagged category as gold-standard'''
     for old_ent in entities:
@@ -128,10 +129,9 @@ def spacy_tagger(sent, nlp, begin, end, entities):
                     label = 'ENT'
                 else:
                     label = ent.label_
-                # check if entity has already been tagged earlier
-                label = token_tagged(ent.text, label, entities)
+
                 new_entities.append((b, e, entit, label))
-    
+            # for ent offsets
             e += 1
             b = e
 
@@ -225,10 +225,10 @@ def nltk_ner_tagger(lines, begin, end, entities):
                                     # check if the item with all offsets and tags is not already in entities
                                     tup = (int(line[0]), int(line[1]), line[3], tag)
                                     if tup not in entities:
+                                        print('HIER>?', tup)
                                         # otherwise append the newly found entity!
-                                        # check if entity has already been tagged earlier
-                                        tup = (int(line[0]), int(line[1]), line[3], token_tagged(line[3], tag, entities))
                                         new_entities.append(tup)
+                                        break
                         break
                     else:
                         if ne[3] == 'COU':
@@ -236,8 +236,7 @@ def nltk_ner_tagger(lines, begin, end, entities):
                             new_entities.append((line[0], line[1], line[3], gpe_disambiguation(line[3])))
                         else:
                             # append the missing NE tagged entity to entities
-                            tag = token_tagged(line[3], ne[3], entities)
-                            new_entities.append((line[0], line[1], line[3], tag))
+                            new_entities.append((line[0], line[1], line[3], ne[3]))
                             ## TODO hier kunnen we nog mee spelen
                             ## if ne[3] == 'COU' of ne[3] == '-'
                             ## hij tagt alles als 'COU', ook 'CIT'
@@ -298,6 +297,7 @@ def create_files(path, model, output_file='.ent.louis'):
                     # print(ent[2], ent[3])
                     line.append(ent[3])
 
+        print('ENTITIES', entities)
 
         with open(p + output_file, "w") as parserFile:
             for line in lines:
@@ -345,13 +345,13 @@ def measures(path, output_file):
                     labels.add(line[5])
                     gold.append(line[5]) # don't append the Wikipedia link
 
-
         for p, g in zip(parserLines, goldLines):
             if p == g[:6]:
                 pass
             else:
                 print(p, g[:6])
 
+        exit()
 
         print('The labels', labels, '\n')
 
@@ -387,7 +387,7 @@ def measures(path, output_file):
 def main():
     '''Create parser file and compare it to the gold standard file'''
 
-    path = 'dev/*/*'                            # set to 'dev/*/*' for all files
+    path = 'dev/p74/d0234'                            # set to 'dev/*/*' for all files
     model = "en_core_web_sm"                    # SpaCy English model
     # model = os.getcwd() + '/spacy_model'        # our own model
     # model = os.getcwd() + '/spacy_modelv2'      # our own model + SpaCy English model
