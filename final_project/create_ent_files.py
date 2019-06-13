@@ -52,6 +52,18 @@ def get_continuous_chunks(sent):
     ## [[(9, 'Rugova', 'NNP', 'PER')], [(18, 'European', 'NNP', 'ORG'), (18, 'Union', 'NNP', 'ORG')]
     return named_entities
 
+def token_tagged(token, label, entities):
+    '''check if token has already been tagged earlier, use earlier tagged category as gold-standard'''
+    for old_ent in entities:
+        if token == old_ent[2]:
+            # tags do not match, keep earlier tagged tag as gold standard
+            if label != old_ent[3]:
+                # earlier tagged label is the gold-standard
+                label = old_ent[3]
+            # else just return the same tag
+
+    return label
+
 
 def create_sentences(path):
     '''create sentences with offsets'''
@@ -117,12 +129,7 @@ def spacy_tagger(sent, nlp, begin, end, entities):
                 else:
                     label = ent.label_
                 # check if entity has already been tagged earlier
-                for old_ent in entities:
-                    if ent.text == old_ent[2]:
-                        # tags do not match, keep earlier tagged tag as gold standard
-                        if label != old_ent[3]:
-                            # earlier tagged label is the gold-standard
-                            label = old_ent[3]
+                label = token_tagged(ent.text, label, entities)
                 new_entities.append((b, e, entit, label))
     
             e += 1
@@ -219,6 +226,8 @@ def nltk_ner_tagger(lines, begin, end, entities):
                                     tup = (int(line[0]), int(line[1]), line[3], tag)
                                     if tup not in entities:
                                         # otherwise append the newly found entity!
+                                        # check if entity has already been tagged earlier
+                                        tup = int(line[0], int(line[1], line[3], token_tagged(line[3], tag, entities)))
                                         new_entities.append(tup)
                         break
                     else:
@@ -227,7 +236,8 @@ def nltk_ner_tagger(lines, begin, end, entities):
                             new_entities.append((line[0], line[1], line[3], gpe_disambiguation(line[3])))
                         else:
                             # append the missing NE tagged entity to entities
-                            new_entities.append((line[0], line[1], line[3], ne[3]))
+                            tag = token_tagged(line[3], ne[3], entities)
+                            new_entities.append((line[0], line[1], line[3], tag))
                             ## TODO hier kunnen we nog mee spelen
                             ## if ne[3] == 'COU' of ne[3] == '-'
                             ## hij tagt alles als 'COU', ook 'CIT'
@@ -377,7 +387,7 @@ def measures(path, output_file):
 def main():
     '''Create parser file and compare it to the gold standard file'''
 
-    path = 'dev/p36/d0500'                            # set to 'dev/*/*' for all files
+    path = 'dev/p36/d0690'                            # set to 'dev/*/*' for all files
     model = "en_core_web_sm"                    # SpaCy English model
     # model = os.getcwd() + '/spacy_model'        # our own model
     # model = os.getcwd() + '/spacy_modelv2'      # our own model + SpaCy English model
