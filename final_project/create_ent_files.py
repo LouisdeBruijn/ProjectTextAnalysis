@@ -17,16 +17,7 @@ from collections import Counter
 from collections import defaultdict
 from nltk.metrics import ConfusionMatrix
 # pip install -U pywsd
-# from pywsd.lesk import simple_lesk, adapted_lesk, cosine_lesk
-
-def whatisthis(s):
-    if isinstance(s, str):
-        print("ordinary string")
-    elif isinstance(s, unicode):
-        print("unicode string")
-    else:
-        print("not a string")
-
+from pywsd.lesk import simple_lesk, adapted_lesk, cosine_lesk
 
 def get_continuous_chunks(sent):
     '''extract named entities form nltk.ne_chunk'''
@@ -47,7 +38,7 @@ def get_continuous_chunks(sent):
                 pos = tup[1]
                 tag = '-'
                 # hardcoding: sometimes it tags months as named entities
-                if token not in ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']: 
+                if token not in ['Mr.', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']: 
                     # only take these into account, not 'JJ'
                     if pos in ['NN', 'NNS', 'NNP', 'NNPS']:
                         if 'ORGANIZATION' in str(tree_item):
@@ -62,19 +53,6 @@ def get_continuous_chunks(sent):
     # a list of list of tuples that go together: 
     ## [[(9, 'Rugova', 'NNP', 'PER')], [(18, 'European', 'NNP', 'ORG'), (18, 'Union', 'NNP', 'ORG')]
     return named_entities
-
-
-def token_tagged(token, label, entities):
-    '''check if token has already been tagged earlier, use earlier tagged category as gold-standard'''
-    for old_ent in entities:
-        if token == old_ent[2]:
-            # tags do not match, keep earlier tagged tag as gold standard
-            if label != old_ent[3]:
-                # earlier tagged label is the gold-standard
-                label = old_ent[3]
-            # else just return the same tag
-
-    return label
 
 
 def create_sentences(path):
@@ -128,7 +106,10 @@ def spacy_tagger(sent, nlp, begin, end, entities):
         for entit in ent.text.split():
             e = b + len(entit)
             # change SpaCy tags to our category tags
-            if ent.label_ not in ['NORP', 'FAC', 'PRODUCT', 'LAW', 'LANGUAGE', 'DATE', 'TIME', 'PERCENT', 'MONEY', 'QUANTITY', 'ORDINAL', 'CARDINAL']:
+            if ent.label_ not in ['EVENT', 'FAC', 'PRODUCT', 'LAW', 'LANGUAGE', 'DATE', 'TIME', 'PERCENT', 'MONEY', 'QUANTITY', 'ORDINAL', 'CARDINAL']:
+                # checken of dit het beter maakt
+                if ent.label_ == 'NORP':
+                    label = 'ORG'
                 if ent.label_ in ['COU', 'GPE']: # Countries, cities, states.
                     # disambiguate between countries and cities
                     label = gpe_disambiguation(ent.text)
@@ -147,39 +128,6 @@ def spacy_tagger(sent, nlp, begin, end, entities):
             b = e
 
     return new_entities
-
-
-def categorise_WordNet(lines, begin, end, sent, entities):
-    '''finds named entities based on WordNet information and returns the entity'''
-    categories = {'ANI': ['animal', 'bird'], 'SPO': ['sport'], 'NAT': ['ocean', 'river', 'mountain', 'crack', 'land']}
-    for line in lines:
-        # see if line is in the sentence in order to go through lines per sentence 
-        if begin <= int(line[1]) <= end:
-            token = line[3] 
-            # if token == 'services': print(token)
-            tag = line[4]
-            if tag in ['NNPS', 'NNS']:
-                synsets = wn.synsets(token, pos=wn.NOUN) # creates a list with all found synsets for noun
-                # if token == 'services': print('syns', synsets)
-                if len(synsets) > 1:
-                    # let Lesk algorithm choose the correct synset from ambigu results
-                    # if token == 'services': print('sent', sent)
-                    # use any of the following Lesk-based algorithms to disambiguate synset
-                    ## so far adapted_lesk is the best: does not tag 'services' & 'workers', but does tag 'soldiers' 
-                    # synset = adapted_lesk(sent, token, pos='NOUN') # simple_lesk(), cosine_lesk(), adapted_lesk() or just lesk() from NLTK
-                    synset = lesk(sent, token, pos=wn.NOUN)
-                    # if token == 'services': print('synset', synset)
-                    # find hypernyms for this synset
-                    hypernyms = [i for i in synset.closure(lambda s:s.hypernyms())] 
-                    # if token == 'services': print('hypern', hypernyms)
-                    # iterate through hypernyms to see whether they match a category
-                    for hyp in hypernyms:
-                        # if token == 'services': ('hyp', hyp)
-                        if str(hyp) != "Synset('public_transport.n.01')": # door categorie 'sport' ging deze ook mee
-                            for key, value_list in categories.items():  
-                                for cat in value_list:
-                                    if cat in str(hyp):
-                                        return (line[0], line[1], token, key)
 
 
 def nltk_ner_tagger(lines, begin, end, entities):
@@ -242,6 +190,38 @@ def nltk_ner_tagger(lines, begin, end, entities):
     return new_entities
 
 
+def categorise_WordNet(lines, begin, end, sent, entities):
+    '''finds named entities based on WordNet information and returns the entity'''
+    categories = {'ANI': ['animal', 'bird'], 'SPO': ['sport'], 'NAT': ['ocean', 'river', 'mountain', 'crack', 'land']}
+    for line in lines:
+        # see if line is in the sentence in order to go through lines per sentence 
+        if begin <= int(line[1]) <= end:
+            token = line[3] 
+            # print(token)
+            tag = line[4]
+            if tag in ['NN', 'NNPS', 'NNS']:
+                synsets = wn.synsets(token, pos=wn.NOUN) # creates a list with all found synsets for noun
+                # print('syns', synsets)
+                if len(synsets) > 1:
+                    # let Lesk algorithm choose the correct synset from ambigu results
+                    # print('sent', sent)
+                    # use any of the following Lesk-based algorithms to disambiguate synset
+                    # so far adapted_lesk is the best: does not tag 'bird(s)', services' & 'workers', but does tag 'soldiers' and 'survivors' 
+                    synset = adapted_lesk(sent, token, pos='NOUN') # simple_lesk(), cosine_lesk(), adapted_lesk() or just lesk() from NLTK
+                    # print('synset', synset)
+                    # find hypernyms for this synset
+                    hypernyms = [i for i in synset.closure(lambda s:s.hypernyms())] 
+                    # print('hypern', hypernyms)
+                    # iterate through hypernyms to see whether they match a category
+                    for hyp in hypernyms:
+                        # print('hyp', hyp)
+                        if str(hyp) != "Synset('public_transport.n.01')" and str(hyp) != "Synset('sports_equipment.n.01')": # beide is geen sport
+                            for key, value_list in categories.items():  
+                                for cat in value_list:
+                                    if cat in str(hyp):
+                                        return (line[0], line[1], token, key)
+
+
 def create_files(path, model, output_file='.ent.louis'):
     '''create the .ent files based on the model'''
 
@@ -266,14 +246,14 @@ def create_files(path, model, output_file='.ent.louis'):
             nlp = spacy.load(model) # load the SpaCy model
             spacy_entity = spacy_tagger(sent, nlp, begin, end, entities) # a list of entities
             if spacy_entity: 
-                # print('Appending SpaCy tagged entities', spacy_entity)
+                print('Appending SpaCy tagged entities', spacy_entity)
                 for spacy_ent in spacy_entity:
                     entities.append(spacy_ent)
 
             # lets try to find new entities with the NLTK NER tagger
             nltk_entity = nltk_ner_tagger(lines, begin, end, entities)
             if nltk_entity:
-                # print('Appending NLTK tagged entities', nltk_entity)
+                print('Appending NLTK tagged entities', nltk_entity)
                 for nltk_ent in nltk_entity:
                     entities.append(nltk_ent)
 
@@ -282,6 +262,7 @@ def create_files(path, model, output_file='.ent.louis'):
             if wn_entity:
                 print('Appending WordNet tagged entities', wn_entity)
                 entities.append(wn_entity)
+
 
         # out of all NER taggers, choose the tag
         dic = defaultdict(list)
@@ -309,7 +290,7 @@ def create_files(path, model, output_file='.ent.louis'):
                     # check if this line is not already in entities
                     if (line[0], line[1], line[3], ent[3]) not in entities:
                         # tokens such "'s" or "The" or "and" were once tagged as entity, but these are not ALWAYS entities
-                        if line[2] not in ['POS', 'DT', 'CC', 'IN']:
+                        if line[4] not in ['POS', 'DT', 'CC', 'IN']:
                             # append the line + earlier entity tagged category
                             entities.append((line[0], line[1], line[3], ent[3]))
                             # lost of files have wrong offsets... which means that a lot of tokens get in here
@@ -337,6 +318,10 @@ def measures(path, output_file):
     '''compare parser file and gold standard file'''
     parserOutput = glob.glob(path + '/en.tok.off.pos' + output_file)
     goldStandard = glob.glob(path + '/en.tok.off.pos.ent')
+
+
+    # de lines appenden aan een lijst en dat schrijven naar errors.txt
+    errors = []
 
     for p, g in zip(parserOutput, goldStandard):
         print(p, g)
@@ -366,7 +351,7 @@ def measures(path, output_file):
                     labels.add(line[5])
                     gold.append(line[5]) # don't append the Wikipedia link
 
-                    # TODO: for testing WordNet!!!!
+                    # # TODO: for testing WordNet!!!!
                     # if line[5] in ['ANI', 'SPO', 'ENT']:
                     #     print(line)
 
@@ -379,51 +364,61 @@ def measures(path, output_file):
                 pass
             else:
                 print(p, g[:6])
+                errors.append("{0}\t\t{1}".format(p, g[:6]))
 
+                # # to check WordNet entities
+                # if len(p) > 5:
+                #     if p[5] in ['ANI', 'SPO', 'ENT']:
+                #         print(p, g[:6])
+                # if len(g) > 5:
+                #     if g[5] in ['ANI', 'SPO', 'ENT']:
+                #         print(p, g[:6])
 
         print('The labels', labels, '\n')
 
+        cm = ConfusionMatrix(gold, parser)
+        print(cm)
 
-        if len(gold) == len(parser):
-            cm = ConfusionMatrix(gold, parser)
-            print(cm)
+        true_positives = Counter()
+        false_negatives = Counter()
+        false_positives = Counter()
 
-            true_positives = Counter()
-            false_negatives = Counter()
-            false_positives = Counter()
-
-            for i in labels:
-                for j in labels:
-                    if i == j:
-                        true_positives[i] += cm[i,j]
-                    else:
-                        false_negatives[i] += cm[i,j]
-                        false_positives[j] += cm[i,j]
-
-            print("TP:", sum(true_positives.values()), true_positives)
-            print("FN:", sum(false_negatives.values()), false_negatives)
-            print("FP:", sum(false_positives.values()), false_positives)
-            print() 
-
-            for i in sorted(labels):
-                if true_positives[i] == 0:
-                    fscore = 0
+        for i in labels:
+            for j in labels:
+                if i == j:
+                    true_positives[i] += cm[i,j]
                 else:
-                    precision = true_positives[i] / float(true_positives[i]+false_positives[i])
-                    recall = true_positives[i] / float(true_positives[i]+false_negatives[i])
-                    fscore = 2 * (precision * recall) / float(precision + recall)
-                print(i, fscore)
-        else:
-            print(p, len(parser))
-            print(g, len(gold))
+                    false_negatives[i] += cm[i,j]
+                    false_positives[j] += cm[i,j]
+
+        print("TP:", sum(true_positives.values()), true_positives)
+        print("FN:", sum(false_negatives.values()), false_negatives)
+        print("FP:", sum(false_positives.values()), false_positives)
+        print() 
+
+        for i in sorted(labels):
+            if true_positives[i] == 0:
+                fscore = 0
+            else:
+                precision = true_positives[i] / float(true_positives[i]+false_positives[i])
+                recall = true_positives[i] / float(true_positives[i]+false_negatives[i])
+                fscore = 2 * (precision * recall) / float(precision + recall)
+            print(i, fscore)
+
+    print('length of errors', len(errors))
+
+    # write erronerous lines to an error file
+    with open('errors.txt', "w") as errorFile:
+        for error in errors:
+            errorFile.write("%s\n" %error)
 
 def main():
     '''Create parser file and compare it to the gold standard file'''
 
-    path = 'dev/p64/d0564'                            # set to 'dev/*/*' for all files
-    # model = "en_core_web_sm"                    # SpaCy English model
+    path = 'dev/*/*'                            # set to 'dev/*/*' for all files
+    model = "en_core_web_sm"                    # SpaCy English model
     # model = os.getcwd() + '/spacy_model'        # our own model
-    model = os.getcwd() + '/spacy_modelv2'      # our own model + SpaCy English model
+    # model = os.getcwd() + '/spacy_modelv2'      # our own model + SpaCy English model
     output_file = '.ent.louis'                  # output file endings
 
     ## run it
@@ -432,7 +427,6 @@ def main():
     ## compare gold standard and parser files
     measures(path, output_file)
 
-    ## TODO: WORDNET entities checken in dev, of ze allemaal wel getagd worden
 
 if __name__ == '__main__':
     main()
