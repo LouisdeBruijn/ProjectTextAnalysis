@@ -1,0 +1,54 @@
+0 7 1001 Shuttle NN
+8 18 1002 astronauts NNS
+19 22 1003 are VBP
+23 27 1004 more RBR
+28 32 1005 than IN
+33 37 1006 half NN
+38 41 1007 way NN
+42 49 1008 through IN
+50 51 1009 a DT
+52 58 1010 record NN
+59 66 1011 sixteen NN
+67 70 1012 day NN
+71 83 1013 construction NN
+84 91 1014 mission NN
+92 94 1015 to TO
+95 98 1016 the DT
+99 112 1017 International NNP ORG https://en.wikipedia.org/wiki/International_Space_Station
+113 118 1018 Space NN ORG https://en.wikipedia.org/wiki/International_Space_Station
+119 126 1019 Station NN ORG https://en.wikipedia.org/wiki/International_Space_Station
+126 127 1020 . .
+127 135 2001 Endeavor NN
+136 138 2002 is VBZ
+139 145 2003 docked NNS
+146 149 2004 for IN
+150 153 2005 the DT
+154 167 2006 International NNP ORG https://en.wikipedia.org/wiki/International_Space_Station
+168 173 2007 Space NN ORG https://en.wikipedia.org/wiki/International_Space_Station
+174 181 2008 Station NN ORG https://en.wikipedia.org/wiki/International_Space_Station
+181 182 2009 , ,
+183 188 2010 where WRB
+189 191 2011 it PRP
+192 196 2012 will MD
+197 203 2013 remain NN
+204 209 2014 until IN
+210 214 2015 next JJ
+215 224 2016 Wednesday NNP
+225 229 2017 when WRB
+230 239 2018 unhitches NNS
+240 243 2019 for IN
+244 247 2020 the DT
+248 254 2021 return NN
+255 257 2022 to TO
+258 263 2023 earth NN
+263 264 2024 . .
+266 269 3001 VOA NN ORG https://en.wikipedia.org/wiki/Voice_of_America
+269 271 3002 's POS
+272 276 3003 Paul NNP PER
+277 282 3004 Sisco NN PER
+283 286 3005 has VBZ
+287 292 3006 today NN
+292 294 3007 's POS
+295 302 3008 mission NN
+303 309 3009 update NN
+309 310 3010 . .
