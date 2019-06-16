@@ -25,6 +25,8 @@ def read_files():
                                 entity.append(split_s[5])
                                 word.append(split_s[3])
                             else:
+                                print(entity)
+                                print(word)
                                 entity = []
                                 word = []
                                 entity.append(split_s[5])
@@ -32,8 +34,13 @@ def read_files():
                         else:
                             entity.append(split_s[5])
                             word.append(split_s[3])
+                            print(entity)
+                            print(word)
+                    elif len(entity) > 0:
                         print(entity)
                         print(word)
+                        entity = []
+                        word = []
 
 
 
