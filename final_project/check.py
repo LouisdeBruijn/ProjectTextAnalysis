@@ -1,104 +1,93 @@
 #!/usr/bin/python3
 # File name: check.py
-# Description: Creates .ent files with annoted categories
+# Description: check w/ measures.py TP/FP/TN/FN and F1-score
 # Author: Louis de Bruijn
 # Date: 11-06-2018
 
 import glob
-import csv
+from collections import Counter
+from nltk.metrics import ConfusionMatrix
 
-def check():
 
-    gold_tags = []
-    parser_tags = []
-    entity_missed = []
-    entity_too_much = []
+def main():
+    '''compares all of the parser and gold-standard files'''
     path = 'dev/*/*'
-
-    NORP_wrong = []
-    NORP_right = []
-
-    parser = glob.glob(path + '/en.tok.off.pos.ent.louis')
+    parser = glob.glob(path + '/en.tok.off.pos.ent.dev2')
     gold = glob.glob(path + '/en.tok.off.pos.ent')
+
+    parserLines = []
+    goldLines = []
 
     for p, g in zip(parser, gold):
         # print(p, g)
 
-        with open(g) as goldfile:
-            goldLines = [line.rstrip().split() for line in goldfile]
+        with open(p) as parserFile:
+            for line in parserFile:
+                # remove newline character and split in list items
+                line = line.rstrip().split()
+                # remove the offsets per line
+                parserLines.append(line[2:])
+                    
+        with open(g) as goldFile:
+            for line in goldFile:
+                # remove newline character and split in list items
+                line = line.rstrip().split()
+                # remove the offsets per line
+                goldLines.append(line[2:])
 
-        with open(p) as parserfile:
-            parserLines = [line.rstrip().split() for line in parserfile]
+    parserTags = []
+    goldTags = []
 
-        for line in goldLines:
-            if len(line) > 5:
-                gold_tags.append(line)
-
-        for line in parserLines:
-            if len(line) > 5:
-                parser_tags.append(line)
-
-
-        for p, g in zip(parserLines, goldLines):
-            if len(p) > 5 and len(g) < 6:
-                entity_too_much.append((p, g))
-            elif len(p) < 6 and len(g) > 5:
-                entity_missed.append((p, g))
+    labels = set()
 
 
+    for line in parserLines:
+        if len(line) > 3:
+            parserTags.append(line[3])
+            labels.add(line[3])
+        else:
+            parserTags.append(" ")
 
-            if len(p) > 5:
-                if p[5] == 'EXTRA' and len(g) < 6 :
-                    NORP_wrong.append((p, g))
-                elif p[5] == 'EXTRA' and len(g) > 5 :
-                    NORP_right.append((p,g))
+    for line in goldLines:
+        if len(line) > 3:
+            labels.add(line[3])
+            goldTags.append(line[3])
+        else:
+            goldTags.append(" ")
 
-    print('NORP wrong', len(NORP_wrong))
-    print('NORP right', len(NORP_right))
+    gold = goldTags
+    parser = parserTags
 
-    for i in NORP_right:
-        print(i)
-    print()
-    for i in NORP_wrong:
-        print(i)
+    cm = ConfusionMatrix(gold, parser)
 
-    print()         
+    print(cm)
 
-    # for i in entity_too_much:
-    #     print(i)
+    true_positives = Counter()
+    false_negatives = Counter()
+    false_positives = Counter()
 
-    print(len(gold_tags)) # all gold tagged entities
-    print(len(parser_tags)) # all parser tagged entities
-    print(len(entity_missed)) # parser did not tag entity when it actually is
-    print(len(entity_too_much)) # parser tagged an entity, when it is not            
+    for i in labels:
+        for j in labels:
+            if i == j:
+                true_positives[i] += cm[i,j]
+            else:
+                false_negatives[i] += cm[i,j]
+                false_positives[j] += cm[i,j]
 
+    print("TP:", sum(true_positives.values()), true_positives)
+    print("FN:", sum(false_negatives.values()), false_negatives)
+    print("FP:", sum(false_positives.values()), false_positives)
+    print() 
 
-
-def main():
-
-    err1 = [] # met SpaCy NORP als 'EXTRA'
-    err2 = [] # SpaCy model
-    err3 = [] # SpaCy + own model
-    err4 = [] # own model
-
-    with open('errors2.txt') as error2:
-        for line in error2:
-            err2.append(line)
-
-    with open('errors3.txt') as error3:
-        for line in error3:
-            err3.append(line)
-
-    with open('errors4.txt') as error4:
-        for line in error4:
-        err4.append(line)
-
-
-    print('SpaCy model', len(err2))
-    print('SpaCy + own model', len(err3))
-    print('own model', len(err4))
-
-    # for e1, e2 in zip(err2, err3):
+    for i in sorted(labels):
+        if true_positives[i] == 0:
+            fscore = 0
+        else:
+            precision = true_positives[i] / float(true_positives[i]+false_positives[i])
+            recall = true_positives[i] / float(true_positives[i]+false_negatives[i])
+            fscore = 2 * (precision * recall) / float(precision + recall)
+        
+        print(i, fscore)
 
 
 if __name__ == '__main__':
