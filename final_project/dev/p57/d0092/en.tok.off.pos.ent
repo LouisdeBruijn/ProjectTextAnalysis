@@ -1,0 +1,83 @@
+0 10 1001 Indonesian JJ
+11 17 1002 health NN
+18 27 1003 officials NNS
+28 31 1004 say VBP
+32 38 1005 former JJ
+39 43 1006 vice NN
+44 53 1007 president NN
+54 64 1008 Sudharmono NNP PER https://en.wikipedia.org/wiki/Sudharmono
+65 68 1009 has VBZ
+69 73 1010 died VBN
+74 76 1011 at IN
+77 80 1012 the DT
+81 84 1013 age NN
+85 87 1014 of IN
+88 90 1015 78 CD
+90 91 1016 . .
+92 101 2001 Officials NNS
+102 105 2002 say VBP
+106 116 2003 Sudharmono NNP PER https://en.wikipedia.org/wiki/Sudharmono
+117 121 2004 died VBD
+122 131 2005 Wednesday NNP
+132 134 2006 in IN
+135 136 2007 a DT
+137 144 2008 Jakarta NNP CIT https://en.wikipedia.org/wiki/Jakarta
+145 153 2009 hospital NN
+153 154 2010 . .
+156 158 3001 He PRP
+159 162 3002 had VBD
+163 169 3003 served VBN
+170 172 3004 as IN
+173 179 3005 former JJ
+180 189 3006 president NN
+190 197 3007 Suharto NNP PER https://en.wikipedia.org/wiki/Suharto
+197 199 3008 's POS
+200 206 3009 fourth JJ
+207 211 3010 vice NN
+212 221 3011 president NN
+221 222 3012 , ,
+223 227 3013 from IN
+228 232 3014 1988 CD
+233 235 3015 to TO
+236 240 3016 1993 CD
+240 241 3017 . .
+242 252 4001 Sudharmono NNP PER https://en.wikipedia.org/wiki/Sudharmono
+253 256 4002 was VBD
+257 258 4003 a DT
+259 266 4004 retired JJ
+267 271 4005 army NN
+272 282 4006 lieutenant JJ
+283 290 4007 general JJ
+291 294 4008 and CC
+295 300 4009 later RBR
+301 302 4010 a DT
+303 311 4011 chairman NN
+312 314 4012 of IN
+315 318 4013 the DT
+319 327 4014 powerful JJ
+328 334 4015 Golkar NNP ORG https://en.wikipedia.org/wiki/Golkar
+335 340 4016 party NN ORG https://en.wikipedia.org/wiki/Golkar
+341 344 4017 who WP
+345 350 4018 aided VBD
+351 353 4019 in IN
+354 366 4020 intelligence NN
+367 377 4021 operations NNS
+378 380 4022 to TO
+381 385 4023 help VB
+386 393 4024 Suharto NNP PER https://en.wikipedia.org/wiki/Suharto
+394 399 4025 stamp VB
+400 403 4026 out RP
+404 407 4027 the DT
+408 417 4028 communist NN ORG https://en.wikipedia.org/wiki/Communist_Party_of_Indonesia
+418 423 4029 party NN ORG https://en.wikipedia.org/wiki/Communist_Party_of_Indonesia
+423 424 4030 . .
+425 435 5001 Sudharmono NNP PER https://en.wikipedia.org/wiki/Sudharmono
+436 438 5002 is VBZ
+439 447 5003 survived VBN
+448 450 5004 by IN
+451 454 5005 his PRP$
+455 459 5006 wife NN
+460 463 5007 and CC
+464 469 5008 three CD
+470 478 5009 children NNS
+478 479 5010 . .

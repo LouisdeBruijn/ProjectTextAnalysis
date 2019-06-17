@@ -1,0 +1,99 @@
+0 3 1001 Oil NN
+4 10 1002 prices NNS
+11 17 1003 soared VBD
+18 20 1004 to TO
+21 22 1005 a DT
+23 29 1006 record NN
+30 34 1007 high NN
+35 37 1008 of IN
+38 39 1009 $ $
+39 44 1010 62.30 CD
+45 46 1011 a DT
+47 53 1012 barrel NN
+54 56 1013 in IN
+57 60 1014 New NNP CIT https://en.wikipedia.org/wiki/New_York_City
+61 65 1015 York NNP CIT https://en.wikipedia.org/wiki/New_York_City
+66 73 1016 trading NN
+74 76 1017 on IN
+77 83 1018 Monday NNP
+84 89 1019 after IN
+90 95 1020 Saudi NN COU https://en.wikipedia.org/wiki/Saudi_Arabia
+96 102 1021 Arabia NNP COU https://en.wikipedia.org/wiki/Saudi_Arabia
+102 104 1022 's POS
+105 109 1023 King VBG
+110 114 1024 Fahd NN PER https://en.wikipedia.org/wiki/Fahd_of_Saudi_Arabia
+115 119 1025 died VBD
+119 120 1026 . .
+121 123 2001 In IN
+124 130 2002 London NNP CIT https://en.wikipedia.org/wiki/London
+130 131 2003 , ,
+132 137 2004 Brent NN
+138 143 2005 crude NN
+144 148 2006 also RB
+149 152 2007 hit NN
+153 154 2008 a DT
+155 161 2009 record NN
+162 166 2010 high NN
+167 172 2011 price NN
+173 174 2012 $ $
+174 179 2013 60.98 CD
+180 181 2014 a DT
+182 188 2015 barrel NN
+188 189 2016 . .
+190 196 3001 Prices NNS
+197 201 3002 rose VBD
+202 206 3003 more JJR
+207 211 3004 than IN
+212 213 3005 $ $
+213 216 3006 1.5 CD
+216 217 3007 , ,
+218 222 3008 even RB
+223 229 3009 though IN
+230 238 3010 analysts NNS
+239 245 3011 expect NN
+246 248 3012 no DT
+249 256 3013 changes NNS
+257 259 3014 in IN
+260 265 3015 Saudi NN
+266 269 3016 oil NN
+270 276 3017 policy NN
+276 277 3018 . .
+278 283 4001 Saudi NN COU https://en.wikipedia.org/wiki/Saudi_Arabia
+284 290 4002 Arabia NNP COU https://en.wikipedia.org/wiki/Saudi_Arabia
+291 293 4003 is VBZ
+294 297 4004 the DT
+298 303 4005 world NN
+303 305 4006 's POS
+306 313 4007 largest JJS
+314 317 4008 oil NN
+318 326 4009 exporter NN
+327 330 4010 and CC
+331 332 4011 a DT
+333 336 4012 key NN
+337 343 4013 member NN
+344 346 4014 of IN
+347 350 4015 the DT
+351 363 4016 Organization NN ORG https://en.wikipedia.org/wiki/OPEC
+364 366 4017 of IN ORG https://en.wikipedia.org/wiki/OPEC
+367 376 4018 Petroleum NN ORG https://en.wikipedia.org/wiki/OPEC
+377 386 4019 Exporting NN ORG https://en.wikipedia.org/wiki/OPEC
+387 396 4020 Countries NNS ORG https://en.wikipedia.org/wiki/OPEC
+396 397 4021 . .
+398 404 5001 Rising VBG
+405 411 5002 demand NN
+412 415 5003 and CC
+416 422 5004 supply NN
+423 431 5005 concerns NNS
+432 436 5006 have VBP
+437 443 5007 pushed VBD
+444 447 5008 oil NN
+448 454 5009 prices NNS
+455 461 5010 upward NN
+462 464 5011 by IN
+465 467 5012 40 CD
+468 475 5013 percent NN
+476 480 5014 over IN
+481 484 5015 the DT
+485 489 5016 past NN
+490 494 5017 year NN
+494 495 5018 . .

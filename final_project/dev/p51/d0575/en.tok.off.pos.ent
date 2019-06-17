@@ -1,0 +1,96 @@
+0 1 1001 A DT
+2 12 1002 California NNP
+13 16 1003 man NN
+17 20 1004 has VBZ
+21 26 1005 filed VBN
+27 28 1006 a DT
+29 36 1007 lawsuit NN
+37 44 1008 against IN
+45 49 1009 Sean NN PER https://en.wikipedia.org/wiki/Sean_Combs
+50 51 1010 " ``
+51 56 1011 Diddy NNP PER https://en.wikipedia.org/wiki/Sean_Combs
+56 57 1012 " ``
+58 63 1013 Combs NNS PER https://en.wikipedia.org/wiki/Sean_Combs
+63 64 1014 , ,
+65 73 1015 claiming VBG
+74 77 1016 the DT
+78 81 1017 rap NN
+82 87 1018 mogul NN
+88 95 1019 punched VBN
+96 99 1020 and CC
+100 106 1021 pushed VBN
+107 110 1022 him PRP
+111 114 1023 and CC
+115 118 1024 his PRP$
+119 129 1025 girlfriend NN
+130 132 1026 in IN
+133 134 1027 a DT
+135 144 1028 Hollywood NNP CIT https://en.wikipedia.org/wiki/Hollywood
+145 154 1029 nightclub NN
+154 155 1030 . .
+156 162 2001 Gerard NNP PER
+163 173 2002 Rechnitzer NN PER
+174 180 2003 claims NNS
+181 183 2004 he PRP
+184 187 2005 and CC
+188 191 2006 his PRP$
+192 202 2007 girlfriend NN
+203 214 2008 encountered VBN
+215 220 2009 Combs NNS PER https://en.wikipedia.org/wiki/Sean_Combs
+221 223 2010 in IN
+224 233 2011 Hollywood NNP CIT https://en.wikipedia.org/wiki/Hollywood
+233 235 2012 's POS
+236 245 2013 Roosevelt NN ORG https://en.wikipedia.org/wiki/The_Hollywood_Roosevelt_Hotel
+246 251 2014 Hotel NN ORG https://en.wikipedia.org/wiki/The_Hollywood_Roosevelt_Hotel
+252 254 2015 on IN
+255 263 2016 February NNP
+264 266 2017 25 CD
+266 267 2018 . .
+268 271 3001 The DT
+272 279 3002 lawsuit NN
+280 286 3003 states NNS
+287 292 3004 Combs NNS PER https://en.wikipedia.org/wiki/Sean_Combs
+293 296 3005 was VBD
+297 305 3006 speaking VBG
+306 308 3007 to TO
+309 319 3008 Rechnitzer NN PER
+319 321 3009 's POS
+322 332 3010 girlfriend NN
+332 333 3011 . .
+334 336 4001 As IN
+337 347 4002 Rechnitzer NN PER
+348 358 4003 approached VBN
+358 359 4004 , ,
+360 365 4005 Combs NNS PER https://en.wikipedia.org/wiki/Sean_Combs
+366 372 4006 yelled VBN
+373 375 4007 at IN
+376 379 4008 him PRP
+380 383 4009 and CC
+384 390 4010 pushed VBN
+391 394 4011 him PRP
+395 399 4012 into IN
+400 401 4013 a DT
+402 408 4014 parked VBN
+409 412 4015 car NN
+412 413 4016 . .
+414 417 5001 The DT
+418 423 5002 March NNP
+424 425 5003 2 CD
+426 433 5004 lawsuit NN
+434 438 5005 asks NNS
+439 442 5006 for IN
+443 454 5007 unspecified JJ
+455 462 5008 damages NNS
+462 463 5009 . .
+464 466 6001 An DT
+467 475 6002 attorney NN
+476 479 6003 for IN
+480 485 6004 Combs NNS PER https://en.wikipedia.org/wiki/Sean_Combs
+486 492 6005 called VBN
+493 496 6006 the DT
+497 501 6007 suit NN
+502 503 6008 " ``
+503 513 6009 completely RB
+514 522 6010 baseless NN
+522 523 6011 . .
+523 524 6012 " ``

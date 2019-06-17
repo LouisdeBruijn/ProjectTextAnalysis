@@ -106,10 +106,12 @@ def spacy_tagger(sent, nlp, begin, end, entities):
         for entit in ent.text.split():
             e = b + len(entit)
             # change SpaCy tags to our category tags
-            if ent.label_ not in ['EVENT', 'FAC', 'PRODUCT', 'LAW', 'LANGUAGE', 'DATE', 'TIME', 'PERCENT', 'MONEY', 'QUANTITY', 'ORDINAL', 'CARDINAL']:
-                # checken of dit het beter maakt
-                if ent.label_ == 'NORP':
-                    label = 'ORG'
+            if ent.label_ not in ['NORP', 'EVENT', 'FAC', 'PRODUCT', 'LAW', 'LANGUAGE', 'DATE', 'TIME', 'PERCENT', 'MONEY', 'QUANTITY', 'ORDINAL', 'CARDINAL']:
+
+                # NORP = 'Israeli' police, 'Muslim' people etc.
+                # if we tag NORP as ORG, the data shows that it is correct 14 times and incorrect 71 times, so let's not include
+                # if ent.label_ == 'NORP':
+                #     label = 'EXTRA'
                 if ent.label_ in ['COU', 'GPE']: # Countries, cities, states.
                     # disambiguate between countries and cities
                     label = gpe_disambiguation(ent.text)
@@ -408,7 +410,10 @@ def measures(path, output_file):
     print('length of errors', len(errors))
 
     # write erronerous lines to an error file
-    with open('errors.txt', "w") as errorFile:
+    # errors = with NORP as 'EXTRA' tagged in SpaCy
+    # errors2 = SpaCy English model
+    # errors3 = own model + SpaCy English model
+    with open('errors4.txt', "w") as errorFile:
         for error in errors:
             errorFile.write("%s\n" %error)
 
@@ -416,10 +421,10 @@ def main():
     '''Create parser file and compare it to the gold standard file'''
 
     path = 'dev/*/*'                            # set to 'dev/*/*' for all files
-    model = "en_core_web_sm"                    # SpaCy English model
-    # model = os.getcwd() + '/spacy_model'        # our own model
+    # model = "en_core_web_sm"                    # SpaCy English model
+    model = os.getcwd() + '/spacy_model'        # our own model
     # model = os.getcwd() + '/spacy_modelv2'      # our own model + SpaCy English model
-    output_file = '.ent.louis'                  # output file endings
+    output_file = '.ent.louis3'                  # output file endings
 
     ## run it
     create_files(path, model, output_file)

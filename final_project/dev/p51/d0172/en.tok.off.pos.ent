@@ -1,0 +1,91 @@
+0 6 1001 Brazil NNP COU https://en.wikipedia.org/wiki/Brazil
+7 10 1002 and CC
+11 20 1003 Argentina NNP COU https://en.wikipedia.org/wiki/Argentina
+21 25 1004 have VB
+26 35 1005 announced VBD
+36 40 1006 they PRP
+41 45 1007 will MD
+46 51 1008 build NN
+52 53 1009 a DT
+54 68 1010 pharmaceutical JJ
+69 74 1011 plant NN
+75 77 1012 to TO
+78 85 1013 produce NN
+86 90 1014 AIDS NN
+91 96 1015 drugs NNS
+97 100 1016 and CC
+101 106 1017 other JJ
+107 118 1018 medications NNS
+118 119 1019 . .
+120 129 2001 Argentine NN
+130 139 2002 officials NNS
+140 144 2003 made VBN
+145 148 2004 the DT
+149 161 2005 announcement NN
+162 171 2006 Wednesday NNP
+172 174 2007 in IN
+175 178 2008 the DT
+179 188 2009 Argentine NN
+189 196 2010 capital NN
+196 197 2011 , ,
+198 204 2012 Buenos NNS CIT https://en.wikipedia.org/wiki/Buenos_Aires
+205 210 2013 Aires NNS CIT https://en.wikipedia.org/wiki/Buenos_Aires
+210 211 2014 , ,
+212 217 2015 after IN
+218 219 2016 a DT
+220 227 2017 meeting NN
+228 233 2018 there RB
+234 241 2019 between IN
+242 245 2020 the DT
+246 249 2021 two CD
+250 259 2022 countries NNS
+259 260 2023 ' ''
+261 267 2024 health NN
+268 277 2025 ministers NNS
+277 278 2026 . .
+279 282 3001 The DT
+283 284 3002 $ $
+284 294 3003 10-million NN
+295 299 3004 drug NN
+300 305 3005 plant NN
+306 308 3006 is VBZ
+309 317 3007 expected VBN
+318 320 3008 to TO
+321 323 3009 be VB
+324 331 3010 located VBN
+332 334 3011 on IN
+335 344 3012 Argentine NN
+345 354 3013 territory NN
+354 355 3014 , ,
+356 359 3015 but CC
+360 364 3016 both DT
+365 372 3017 nations NNS
+373 377 3018 will MD
+378 388 3019 contribute NN
+389 391 3020 to TO
+392 395 3021 the DT
+396 403 3022 project NN
+403 404 3023 . .
+405 408 4001 The DT
+409 421 4002 announcement NN
+422 426 4003 came VBD
+427 429 4004 as IN
+430 439 4005 Argentine NN
+440 449 4006 President NNP
+450 456 4007 Nestor NN PER https://en.wikipedia.org/wiki/N%C3%A9stor_Kirchner
+457 465 4008 Kirchner NNP PER https://en.wikipedia.org/wiki/N%C3%A9stor_Kirchner
+466 469 4009 met NN
+470 474 4010 with IN
+475 478 4011 his PRP$
+479 488 4012 Brazilian JJ
+489 500 4013 counterpart NN
+500 501 4014 , ,
+502 506 4015 Luis NN PER https://en.wikipedia.org/wiki/Luiz_In%C3%A1cio_Lula_da_Silva
+507 513 4016 Inacio NN PER https://en.wikipedia.org/wiki/Luiz_In%C3%A1cio_Lula_da_Silva
+514 518 4017 Lula NN PER https://en.wikipedia.org/wiki/Luiz_In%C3%A1cio_Lula_da_Silva
+519 521 4018 da NN PER https://en.wikipedia.org/wiki/Luiz_In%C3%A1cio_Lula_da_Silva
+522 527 4019 Silva NN PER https://en.wikipedia.org/wiki/Luiz_In%C3%A1cio_Lula_da_Silva
+527 528 4020 , ,
+529 531 4021 in IN
+532 540 4022 Brasilia NNS CIT https://en.wikipedia.org/wiki/Bras%C3%ADlia
+540 541 4023 . .

@@ -1,0 +1,103 @@
+0 2 1001 An DT
+3 10 1002 African NNP ORG https://en.wikipedia.org/wiki/African_Union
+11 16 1003 Union NNP ORG https://en.wikipedia.org/wiki/African_Union
+17 25 1004 official NN
+26 30 1005 says VBZ
+31 34 1006 two CD
+35 37 1007 of IN
+38 41 1008 the DT
+42 49 1009 mission NN
+49 51 1010 's POS
+52 64 1011 peacekeepers NNS
+65 69 1012 have VBP
+70 74 1013 been VBN
+75 81 1014 killed VBN
+82 84 1015 in IN
+85 87 1016 an DT
+88 94 1017 ambush NN
+95 97 1018 in IN
+98 103 1019 Sudan NNP COU https://en.wikipedia.org/wiki/Sudan
+103 105 1020 's POS
+106 114 1021 volatile JJ
+115 121 1022 Darfur NNP COU https://en.wikipedia.org/wiki/Darfur
+122 128 1023 region NN COU https://en.wikipedia.org/wiki/Darfur
+128 129 1024 . .
+130 133 2001 The DT
+134 140 2002 acting VBG
+141 145 2003 head NN
+146 148 2004 of IN
+149 152 2005 the DT
+153 155 2006 AU NNP ORG https://en.wikipedia.org/wiki/African_Union
+156 163 2007 mission NN
+164 166 2008 in IN
+167 172 2009 Sudan NNP COU https://en.wikipedia.org/wiki/Sudan
+172 173 2010 , ,
+174 187 2011 Jean-Baptiste NNP PER https://en.wikipedia.org/wiki/Jean-Baptiste_Natama
+188 194 2012 Natama NNP PER https://en.wikipedia.org/wiki/Jean-Baptiste_Natama
+194 195 2013 , ,
+196 200 2014 said VBD
+201 204 2015 the DT
+205 208 2016 two CD
+209 221 2017 peacekeeping NN
+222 230 2018 soldiers NNS
+230 231 2019 , ,
+232 234 2020 as RB
+235 239 2021 well RB
+240 242 2022 as IN
+243 246 2023 two CD
+247 255 2024 civilian JJ
+256 267 2025 contractors NNS
+267 268 2026 , ,
+269 273 2027 were VBD
+274 280 2028 killed VBN
+281 289 2029 Saturday NNP
+290 296 2030 during IN
+297 298 2031 a DT
+299 307 2032 surprise NN
+308 314 2033 attack NN
+315 317 2034 in IN
+318 323 2035 South NNP COU https://en.wikipedia.org/wiki/South_Darfur
+324 330 2036 Darfur NNP COU https://en.wikipedia.org/wiki/South_Darfur
+330 331 2037 . .
+332 336 3001 More JJR
+337 341 3002 than IN
+342 347 3003 6,000 CD
+348 355 3004 African NNP ORG https://en.wikipedia.org/wiki/African_Union
+356 361 3005 Union NNP ORG https://en.wikipedia.org/wiki/African_Union
+362 374 3006 peacekeepers NNS
+375 378 3007 are VBP
+379 387 3008 deployed VBN
+388 390 3009 to TO
+391 394 3010 the DT
+395 401 3011 region NN
+401 402 3012 . .
+403 411 4001 Fighting VBG
+412 419 4002 between IN
+420 428 4003 Sudanese JJ
+429 435 4004 rebels NNS
+436 439 4005 and CC
+440 457 4006 government-backed JJ
+458 462 4007 Arab NNP
+463 470 4008 militia NN
+471 473 4009 in IN
+474 480 4010 Darfur NNP CIT https://en.wikipedia.org/wiki/Darfur
+481 484 4011 has VBZ
+485 491 4012 killed VBN
+492 496 4013 tens NNS
+497 499 4014 of IN
+500 509 4015 thousands NNS
+510 512 4016 of IN
+513 519 4017 people NNS
+520 523 4018 and CC
+524 530 4019 driven RB
+531 535 4020 more JJR
+536 540 4021 than IN
+541 544 4022 two CD
+545 552 4023 million CD
+553 559 4024 others NNS
+560 564 4025 from IN
+565 570 4026 their PRP$
+571 576 4027 homes NNS
+577 582 4028 since IN
+583 587 4029 2003 CD
+587 588 4030 . .

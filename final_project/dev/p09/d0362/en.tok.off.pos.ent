@@ -1,0 +1,70 @@
+0 2 1001 An DT
+3 9 1002 Ariane NN
+10 16 1003 rocket NN
+17 20 1004 has VBZ
+21 27 1005 lifted VBN
+28 31 1006 off IN
+32 36 1007 from IN
+37 43 1008 Kourou NNP CIT https://en.wikipedia.org/wiki/Kourou
+43 44 1009 , ,
+45 51 1010 French JJ COU https://en.wikipedia.org/wiki/French_Guiana
+52 58 1011 Guiana NNP COU https://en.wikipedia.org/wiki/French_Guiana
+58 59 1012 , ,
+60 68 1013 carrying VBG
+69 74 1014 seven CD
+75 85 1015 satellites NNS
+85 86 1016 , ,
+87 96 1017 including VBG
+97 99 1018 at IN
+100 105 1019 least JJS
+106 109 1020 one CD
+110 114 1021 that IN
+115 117 1022 is VBZ
+118 120 1023 to TO
+121 127 1024 gather NN
+128 140 1025 intelligence NN
+141 144 1026 for IN
+145 151 1027 France NNP ORG https://en.wikipedia.org/wiki/French_Armed_Forces
+151 153 1028 's POS ORG https://en.wikipedia.org/wiki/French_Armed_Forces
+154 162 1029 military JJ ORG https://en.wikipedia.org/wiki/French_Armed_Forces
+162 163 1030 . .
+164 167 2001 The DT
+168 174 2002 Helios NNS
+175 177 2003 2A CD
+178 186 2004 military JJ
+187 196 2005 satellite NN
+196 197 2006 , ,
+198 206 2007 launched VBN
+207 211 2008 from IN
+212 215 2009 the DT
+216 224 2010 European JJ ORG https://en.wikipedia.org/wiki/European_Space_Agency
+225 230 2011 Space NN ORG https://en.wikipedia.org/wiki/European_Space_Agency
+231 237 2012 Agency NN ORG https://en.wikipedia.org/wiki/European_Space_Agency
+237 239 2013 's POS
+240 246 2014 center NN
+246 247 2015 , ,
+248 250 2016 is VBZ
+251 253 2017 to TO
+254 260 2018 gather NN
+261 265 2019 both DT
+266 273 2020 optical JJ
+274 277 2021 and CC
+278 286 2022 infrared VBN
+287 299 2023 intelligence NN
+299 300 2024 . .
+301 304 3001 The DT
+305 310 3002 other JJ
+311 321 3003 satellites NNS
+322 329 3004 include NN
+330 333 3005 the DT
+334 341 3006 Parasol NN
+342 350 3007 designed VBN
+351 353 3008 to TO
+354 359 3009 study NN
+360 365 3010 cloud NN
+366 376 3011 formations NNS
+377 379 3012 in IN
+380 383 3013 the DT
+384 389 3014 upper JJ
+390 400 3015 atmosphere RB NAT https://en.wikipedia.org/wiki/Atmosphere_of_Earth
+400 401 3016 . .
