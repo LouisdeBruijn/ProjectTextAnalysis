@@ -202,27 +202,16 @@ def create_files(path, model, output_file='.ent.louis'):
     for p in offsetPosList:
         print(p)
 
-        # create document list items form rawText
-        doc = []
-
         # append lines
         with open(p) as posFile:
             lines = [line.rstrip().split() for line in posFile]
-            for line in lines:
-                # directly append if line[3] is any of the following substrings
-                substrings = ["'", ":", ".", ",", "-"]
-                if any(string in line[3] for string in substrings):
-                    doc.append(doc[-1]+line[3])
-                    del doc[-2]
-                else:
-                    doc.append(line[3])
 
-        # create rawText
-        doc = ' '.join(doc)
-        # print(doc)
+        # create document from tokens
+        doc = ' '.join(line[3] for line in lines)
+        print(doc)
+
 
         entities = []
-
         #find entities with SpaCy model
         nlp = spacy.load(model) # load the SpaCy model
         spacy_entity = spacy_tagger(doc, nlp) # a list of entities
