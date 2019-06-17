@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # File name: create_ent_files.py
 # Description: Creates .ent files with annoted categories
-# Author: Louis de Bruijn
+# Author: Louis de Bruijn, Nick Algra
 # Date: 11-06-2018
 
 import glob
