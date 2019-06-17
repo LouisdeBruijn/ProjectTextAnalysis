@@ -66,7 +66,8 @@ def read_files():
                                 entity.append(split_s[5])
                                 word.append(split_s[3])
                             else:
-                                new_file.append(find_wiki(word,entity))
+                                print(find_wiki(word,entity))
+                                new_file.append(" ".join(split_s))
                                 entity = []
                                 word = []
                                 entity.append(split_s[5])
