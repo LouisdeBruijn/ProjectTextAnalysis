@@ -235,27 +235,15 @@ def create_files(path, model, output_file='.ent.louis'):
     for p in offsetPosList:
         print(p)
 
-        # create document list items form rawText
-        doc = []
-
         # append lines
         with open(p) as posFile:
             lines = [line.rstrip().split() for line in posFile]
-            for line in lines:
-                # directly append if line[3] is any of the following substrings
-                substrings = ["'", ":", ".", ",", "-"]
-                if any(string in line[3] for string in substrings):
-                    doc.append(doc[-1]+line[3])
-                    del doc[-2]
-                else:
-                    doc.append(line[3])
 
-        # create rawText
-        doc = ' '.join(doc)
-        # print(doc)
+        # create document from tokens
+        doc = ' '.join(line[3] for line in lines)
 
         entities = []
-        
+
         # find entities with SpaCy model
         nlp = spacy.load(model) # load the SpaCy model
         spacy_entity = spacy_tagger(doc, nlp) # a list of entities
@@ -322,7 +310,6 @@ def create_files(path, model, output_file='.ent.louis'):
                 # check if offsets of entity match ent.tok.off.pos token offsets
                 if int(line[0]) == int(ent[0]) and int(line[1]) == int(ent[1]):
                     line.append(ent[3])
-
 
         # write lines the an output file
         with open(p + output_file, "w") as parserFile:
@@ -428,10 +415,6 @@ def measures(path, output_file):
 
     print('length of errors', len(errors))
 
-    # write erronerous lines to an error file
-    # errors = with NORP as 'EXTRA' tagged in SpaCy
-    # errors2 = SpaCy English model
-    # errors3 = own model + SpaCy English model
     with open('errorsnext.txt', "w") as errorFile:
         for error in errors:
             errorFile.write("%s\n" %error)
@@ -443,7 +426,7 @@ def main():
     model = "en_core_web_sm"                    # SpaCy English model
     # model = os.getcwd() + '/spacy_model'        # our own model
     # model = os.getcwd() + '/spacy_modelv2'      # our own model + SpaCy English model
-    output_file = '.ent.louis4'                  # output file endings
+    output_file = '.ent.louis'                  # output file endings
 
     ## run it
     create_files(path, model, output_file)
