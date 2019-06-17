@@ -35,6 +35,8 @@ def find_wiki(entity, cat):
                 keywords = []
             elif cat == "ENT":
                 keywords = ["book", "story", "novel", "song", "album", "magazine", "game", "party", "episode", "series", "film"]
+            else:
+                keywords = []
             for option in options:
                 for keyword in keywords:
                     if keyword in option:
@@ -45,7 +47,8 @@ def find_wiki(entity, cat):
                     URL = '-'
                     return URL
         except wikipedia.exceptions.PageError as f:
-            print(f)
+            URL = '-'
+            return URL
 
 
 def check_next(lines, idx, entities):
