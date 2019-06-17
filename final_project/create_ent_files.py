@@ -244,6 +244,13 @@ def create_files(path, model, output_file='.ent.louis'):
 
         entities = []
 
+        # Stanford CoreNLP NER tagger
+        coreNLP_entity = coreNLP_ner_tagger(lines)
+        if coreNLP_entity:
+            print('Appending CoreNLP tagged entities', coreNLP_entity)
+            for coreNLP_ent in coreNLP_entity:
+                entities.append(coreNLP_ent)
+
         # find entities with SpaCy model
         nlp = spacy.load(model) # load the SpaCy model
         spacy_entity = spacy_tagger(doc, nlp) # a list of entities
@@ -251,13 +258,6 @@ def create_files(path, model, output_file='.ent.louis'):
             print('Appending SpaCy tagged entities', spacy_entity)
             for spacy_ent in spacy_entity:
                 entities.append(spacy_ent)
-
-        # Stanford CoreNLP NER tagger
-        coreNLP_entity = coreNLP_ner_tagger(lines)
-        if coreNLP_entity:
-            print('Appending CoreNLP tagged entities', coreNLP_entity)
-            for coreNLP_ent in coreNLP_entity:
-                entities.append(coreNLP_ent)
 
         # lets try to find new entities with the NLTK NER tagger
         nltk_entity = nltk_ner_tagger(lines)
