@@ -64,10 +64,14 @@ The server.properties are to be included in the directory where the stanford-cor
 
 java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -serverProperties server.properties -preload tokenize,ssplit,pos,lemma,ner,parse,depparse -status_port 9000 -port 9000 -timeout 15000 &
 
+### Other files ###
+
+The directory GPE/ contains the countries.txt and cities.txt.zip files needed for disambiguation between countries and cities for 'COU' and 'CIT' tags.
+
 
 # PTA #
 
-This directory includes all of our work for the Project Text Analysis final project of Group 11.
+This directory includes all of our work for the Project Text Analysis final project of Group 11. Because we had to upload this zipped directory through Nestor we did not included the dev data and the stanford-corenlp-full-2018-10-05, but did decide to include our server properties. 
 
 ## who did what
 - Friso :Wikification of entities
