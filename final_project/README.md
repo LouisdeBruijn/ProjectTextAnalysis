@@ -1,15 +1,15 @@
-### README ###
+# README #
 
 This README describes the files in this directory and the necessary steps to get oyr Wikification application up and running. This Wikifaction system makes use of four ner taggers to find named entities in documents and classify them in eight different categories. 
 
-# NER taggers used #
+### NER taggers used ###
 
 - Stanford NLP ner tagger
 - Wordnet ner tagger through hypernyms
 - NLTK ner tagger
 - SpaCy ner tagger
 
-# Named Entity tags #
+### Named Entity tags ###
  - COU: all country names and state names. Ex: Alaska, Burkina Faso.
  - CIT: all cities and smaller towns. Ex: Rome, Groningen.
  - NAT: natural places. Ex: Mississipi River, Springsteen.
@@ -19,13 +19,13 @@ This README describes the files in this directory and the necessary steps to get
  - SPO: sports. Ex: football, baseball.
  - ENT: entertainment. Ex: books, songs, films.
 
-# Dependencies and files #
+### Dependencies and files ###
 - GPE/countries.txt: to find countries
 - GPE/cities.txt: to find cities
 - stanford-corenlp-full-2018-10-05/* for Stanford NLP parser with specified server settings.
 
 
-### Files and imported libraries ###
+# Files and imported libraries #
 
 ## Program files ##
 
@@ -40,22 +40,22 @@ csv 1.0
 
 ## Imported libraries ##
 
-# PyWSD #
+### PyWSD ###
 description: multiple Lesk algorithms to disambiguate WordNet synsets
 installation: $pip install -U pywsd
 PyWSD 1.2.1
 
-# SpaCy #
+### SpaCy ###
 description: an open-source software library for advanced Natural Language Processing pipeline
 installation: $pip install -U spacy
 Spacy 2.1.3
 
-# NLTK #
+### NLTK ###
 description: a leading platform for building Python programs to work with human language data
 installation: pip install --user -U nltk
 NLTK 3.4.3
 
-# Stanford NLP tagger #
+### Stanford NLP tagger ###
 The following files are needed to instal the Stanford NLP tagger:
 - stanford-corenlp-full-2018-10-05.zip 
 - server.properties
@@ -65,14 +65,14 @@ The server.properties are to be included in the directory where the stanford-cor
 java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -serverProperties server.properties -preload tokenize,ssplit,pos,lemma,ner,parse,depparse -status_port 9000 -port 9000 -timeout 15000 &
 
 
-### PTA ###
+# PTA #
 
 This directory includes all of our work for the Project Text Analysis final project of Group 11.
 
 ## who did what
-# Friso
+## Friso
 Wikification of entities
-# Louis
+## Louis
 SpaCy, NLTK and WordNet ner tagger, pipeline, data pre-processing
-# Nick
+## Nick
 Stanford NLP tagger and WordNet tagger
