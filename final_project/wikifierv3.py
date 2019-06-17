@@ -6,16 +6,17 @@
 import wikipedia
 import os
 import glob
-def find_wiki(entities):
-    whole_word = entities[0][0]
-    if len(entities) > 1:
-        for entity in entities:
-            print(entity)
-            whole_word = whole_word + entity[0]
+from collections import defaultdict
+
+def find_wiki(entity, cat):
+
+
         try:
-            page = wikipedia.page(whole_word)
+            print(entity, cat)
+            page = wikipedia.page(entity)
             URL = page.url
-            print(whole_word, entities)
+            print(entity, URL)
+            exit()
             return URL
         except wikipedia.exceptions.DisambiguationError as e:
             options = e.options
@@ -48,33 +49,72 @@ def find_wiki(entities):
                     return URL
         except wikipedia.exceptions.PageError as f:
             print(f)
+
+
 def check_next(lines, idx, entities):
-    if len(lines[idx+1]) >5:
-        if lines[idx+1][5] == entities[0][1]:
-            print('ja')
-            idx += 1
-            entities.append(lines[idx][3])
-            print(entities, "boem")
-            check_next(lines, idx, entities)
+
+    identifier = next(lines)
+    if len(identifier) > 5:
+        for key in entities.keys():
+            if identifier[5] == key:
+                entities[identifier[5]].append(identifier[3])
+                idx += 1
+                return check_next(lines, idx, entities)
+            # als de volgende line een andere CAT heeft    
+            else:
+                return entities
     else:
-        find_wiki(entities)
-        entities = []
+        return entities
+
+
+
+
+
+
 def read_files():
 
-    offsetPosList = glob.glob('dev2/*/*' + '/en.tok.off.pos.ent.louis')
+    offsetPosList = glob.glob('dev/*/*' + '/en.tok.off.pos.ent.louis')
 
-    # door ifles itereren
+    # door files itereren
     for path in offsetPosList:
+        print(path)
         # maak list met lines
         lines = []
         with open(path) as file:
             lines = [line.rstrip().split() for line in file]
-            entities = []
-            for idx, line in enumerate(lines):
+            lines = (line for line in lines)
+
+        # iterable object
+        lines = iter(lines)
+        # create index
+        idx = 0
+        try:
+            for line in lines:
+                idx += 1
+                entities = defaultdict(list)
                 if len(line) > 5:
-                    entities.append((line[3],line[5]))
+                    entities[line[5]].append(line[3])
+                    entities = check_next(lines, idx, entities)
+                    idx += len(entities.values())
+
                     print(entities)
-                    check_next(lines, idx, entities)
+                    for key, value in entities.items():
+                        find_wiki(' '.join(value), key)
+                        exit()
+
+
+
+        except StopIteration:
+            pass
+                # wiki = ' '.join(entities[0])
+                # print(wiki)
+
+
+
+
+            #         print('ent', entities)
+            #         if check_next(lines, idx, entities) != None:
+            #             print('yes')
 
         # with open(path + '.wiki', "w") as parserFile:
         #     for line in lines:
