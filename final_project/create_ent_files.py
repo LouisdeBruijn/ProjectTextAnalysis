@@ -18,6 +18,7 @@ from collections import defaultdict
 from nltk.metrics import ConfusionMatrix
 # pip install -U pywsd
 from pywsd.lesk import simple_lesk, adapted_lesk, cosine_lesk
+from nltk.parse import CoreNLPParser
 
 def get_continuous_chunks(sent):
     '''extract named entities form nltk.ne_chunk'''
@@ -62,7 +63,7 @@ def gpe_disambiguation(token):
             if token in line:
                 return 'COU'
 
-    with open('GPE/cities.txt') as cityFile:
+    with open('GPE/cities.txt', encoding='utf-8') as cityFile:
         csvReader = csv.reader(cityFile, delimiter=",")
         for line in csvReader:
             if token in line[1] or token in line[2]: #lowercase and uppercase city names
@@ -193,6 +194,38 @@ def categorise_WordNet(lines, doc):
                                     return (line[0], line[1], token, key)
 
 
+def coreNLP_ner_tagger(lines):
+    new_entities = []
+    ner_tagger = CoreNLPParser(url='http://localhost:9000', tagtype='ner')
+    tokens = [line[3] for line in lines]
+    nec_tokens = ner_tagger.tag(tokens)
+    j = 0
+    for i in range(len(tokens)):
+        token = nec_tokens[j][0]
+        token = token.replace('`', "'")
+        token = token.replace('-LRB-', '(')
+        token = token.replace('-RRB-', ')')
+        token = token.replace("''", '"')
+        while token != tokens[i]:
+            j += 1
+            token += nec_tokens[j][0]
+            token = token.replace('`', "'")
+            token = token.replace('LBR', '(')
+            token = token.replace('RBR', ')')
+            token = token.replace("''", '"')
+        nec = nec_tokens[j][1]
+        if nec == 'PERSON':
+            new_entities.append((lines[i][0], lines[i][1], token, 'PER'))
+        elif nec == 'ORGANIZATION':
+            new_entities.append((lines[i][0], lines[i][1], token, 'ORG'))
+        elif nec == 'COUNTRY' or nec == 'STATE_OR_PROVINCE':
+            new_entities.append((lines[i][0], lines[i][1], token, 'COU'))
+        elif nec == 'CITY':
+            new_entities.append((lines[i][0], lines[i][1], token, 'CIT'))
+        j += 1
+    return new_entities
+
+
 def create_files(path, model, output_file='.ent.louis'):
     '''create the .ent files based on the model'''
 
@@ -222,14 +255,21 @@ def create_files(path, model, output_file='.ent.louis'):
         # print(doc)
 
         entities = []
-
-        #find entities with SpaCy model
+        
+        # find entities with SpaCy model
         nlp = spacy.load(model) # load the SpaCy model
         spacy_entity = spacy_tagger(doc, nlp) # a list of entities
         if spacy_entity: 
             print('Appending SpaCy tagged entities', spacy_entity)
             for spacy_ent in spacy_entity:
                 entities.append(spacy_ent)
+
+        # Stanford CoreNLP NER tagger
+        coreNLP_entity = coreNLP_ner_tagger(lines)
+        if coreNLP_entity:
+            print('Appending CoreNLP tagged entities', coreNLP_entity)
+            for coreNLP_ent in coreNLP_entity:
+                entities.append(coreNLP_ent)
 
         # lets try to find new entities with the NLTK NER tagger
         nltk_entity = nltk_ner_tagger(lines)
