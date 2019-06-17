@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # File name: create_ent_files.py
 # Description: Creates .ent files with annoted categories
-# Author: Louis de Bruijn, Nick Algra
+# Author: Louis de Bruijn, Nick Algra, Friso Stolk
 # Date: 11-06-2018
 
 import glob
@@ -9,7 +9,6 @@ import csv
 import os
 import nltk
 import spacy
-import pandas as pd
 from nltk.corpus import wordnet as wn
 from nltk.tree import Tree
 from nltk.wsd import lesk
@@ -178,11 +177,9 @@ def categorise_WordNet(lines, doc):
         if tag in ['NN', 'NNPS', 'NNS']:
             synsets = wn.synsets(token, pos=wn.NOUN) # creates a list with all found synsets for noun
             if len(synsets) > 1:
-                # let Lesk algorithm choose the correct synset from ambigu results
                 # use any of the following Lesk-based algorithms to disambiguate synset
                 # so far adapted_lesk is the best: does not tag 'bird(s)', services' & 'workers', but does tag 'soldiers' and 'survivors' 
-                # synset = adapted_lesk(sent, token, pos='NOUN') # simple_lesk(), cosine_lesk(), adapted_lesk() or just lesk() from NLTK
-                synset = adapted_lesk(doc, token, pos='NOUN')
+                synset = adapted_lesk(doc, token, pos='NOUN') # simple_lesk(), cosine_lesk(), adapted_lesk() or just lesk() from NLTK
                 # find hypernyms for this synset
                 hypernyms = [i for i in synset.closure(lambda s:s.hypernyms())] 
                 # iterate through hypernyms to see whether they match a category
@@ -243,7 +240,6 @@ def create_files(path, model, output_file='.ent.louis'):
         doc = ' '.join(line[3] for line in lines)
 
         entities = []
-
         # Stanford CoreNLP NER tagger
         coreNLP_entity = coreNLP_ner_tagger(lines)
         if coreNLP_entity:
@@ -277,6 +273,9 @@ def create_files(path, model, output_file='.ent.louis'):
         for (_, _, token, tag) in entities:
             dic[token].append(tag)
 
+        # print('entities1', entities)
+        # print('dic1', dic)
+
         for key, value in dic.items():
             for idx, (b, e, token, tag) in enumerate(entities):
                 if key == token:
@@ -287,8 +286,12 @@ def create_files(path, model, output_file='.ent.louis'):
                     # insert entitiy with most used tag
                     entities.insert(idx, (b, e, key, tag))
 
+        # print('dic2', dic)
+
         # make the items unique
         entities = list(set(entities))
+
+        # print('entities2', entities)
 
         # if token is already in entity, append it with same tag
         for ent in entities:
@@ -304,6 +307,9 @@ def create_files(path, model, output_file='.ent.louis'):
                             # lost of files have wrong offsets... which means that a lot of tokens get in here
                             print('### WRONG OFFSETS IN FILE ? ###')
 
+        # print the final entity list
+        # print('Final entities', entities)
+
         # append entity tag to the line
         for ent in entities:
             for line in lines:
@@ -314,8 +320,6 @@ def create_files(path, model, output_file='.ent.louis'):
         # write lines the an output file
         with open(p + output_file, "w") as parserFile:
             for line in lines:
-                # if len(line)>5:
-                #     print(line)
                 item = ' '.join(line)
                 parserFile.write("%s\n" %item)
 
@@ -323,10 +327,9 @@ def create_files(path, model, output_file='.ent.louis'):
 
 
 def measures(path, output_file):
-    '''compare parser file and gold standard file'''
+    '''compare parser file and gold standard file per file'''
     parserOutput = glob.glob(path + '/en.tok.off.pos' + output_file)
     goldStandard = glob.glob(path + '/en.tok.off.pos.ent')
-
 
     # de lines appenden aan een lijst en dat schrijven naar errors.txt
     errors = []
@@ -359,13 +362,8 @@ def measures(path, output_file):
                     labels.add(line[5])
                     gold.append(line[5]) # don't append the Wikipedia link
 
-                    # # TODO: for testing WordNet!!!!
-                    # if line[5] in ['ANI', 'SPO', 'ENT']:
-                    #     print(line)
-
                 else:
                     gold.append(' ')
-
 
         for p, g in zip(parserLines, goldLines):
             if p == g[:6]:
@@ -373,14 +371,6 @@ def measures(path, output_file):
             else:
                 print(p, g[:6])
                 errors.append("{0}\t\t{1}".format(p, g[:6]))
-
-                # # to check WordNet entities
-                # if len(p) > 5:
-                #     if p[5] in ['ANI', 'SPO', 'ENT']:
-                #         print(p, g[:6])
-                # if len(g) > 5:
-                #     if g[5] in ['ANI', 'SPO', 'ENT']:
-                #         print(p, g[:6])
 
         print('The labels', labels, '\n')
 
@@ -413,11 +403,6 @@ def measures(path, output_file):
                 fscore = 2 * (precision * recall) / float(precision + recall)
             print(i, fscore)
 
-    print('length of errors', len(errors))
-
-    with open('errorsnext.txt', "w") as errorFile:
-        for error in errors:
-            errorFile.write("%s\n" %error)
 
 def main():
     '''Create parser file and compare it to the gold standard file'''
@@ -425,8 +410,8 @@ def main():
     path = 'dev/*/*'                            # set to 'dev/*/*' for all files
     model = "en_core_web_sm"                    # SpaCy English model
     # model = os.getcwd() + '/spacy_model'        # our own model
-    # model = os.getcwd() + '/spacy_modelv2'      # our own model + SpaCy English model
-    output_file = '.ent.louis'                  # output file endings
+    model = os.getcwd() + '/spacy_modelv2'      # our own model + SpaCy English model
+    output_file = '.ent.dev2'                  # output file endings
 
     ## run it
     create_files(path, model, output_file)
