@@ -6,6 +6,9 @@
 import wikipedia
 import os
 import glob
+from itertools import cycle
+
+
 def find_wiki(word, entity):
     entity = entity[0]
     if len(word) > 1:
@@ -47,43 +50,72 @@ def find_wiki(word, entity):
                     return URL
         except wikipedia.exceptions.PageError as f:
             print(f)
+    return '-'
+
+
 def read_files():
-    cwd = os.getcwd()
-    dirs = os.listdir('dev')
-    offsetPosList = glob.glob('dev/*/*' + '/en.tok.off.pos.ent.louis')
-    for x in offsetPosList:
-            with open(x) as RawFile:
-                new_file = []
-                file = RawFile.read()
-                sentences = file.splitlines()
-                entity = []
-                word = []
-                for x in sentences:
-                    split_s = x.split()
-                    if len(split_s) == 6:
-                        if len(entity) > 0:
-                            if entity[len(entity)-1] == split_s[5]:
-                                entity.append(split_s[5])
-                                word.append(split_s[3])
-                            else:
-                                print(find_wiki(word,entity))
-                                new_file.append(" ".join(split_s))
-                                entity = []
-                                word = []
-                                entity.append(split_s[5])
-                                word.append(split_s[3])
-                        else:
+
+
+    offsetPosList = glob.glob('dev/*/*' + '/en.tok.off.pos.ent')
+    print(offsetPosList)
+    exit()
+
+    # door ifles itereren
+    for path in offsetPosList:
+        # maak list met lines
+        lines = []
+        with open(path) as file:
+            lines = [line.rstrip().split() for line in file]
+
+        # 
+        for idx, line in enumerate(lines):
+            if len(line) > 5:
+
+                ## wikify 
+                lines[idx+1]
+
+                line = line + wiki_url
+
+        with open(path + '.wiki', "w") as parserFile:
+            for line in lines:
+                item = ' '.join(line)
+                parserFile.write("%s\n" %item)
+
+
+
+
+
+
+            file = RawFile.read()
+            sentences = file.splitlines()
+            entity = []
+            word = []
+            for x in sentences:
+                split_s = x.split()
+                if len(split_s) == 6:
+                    if len(entity) > 0:
+                        if entity[len(entity)-1] == split_s[5]:
                             entity.append(split_s[5])
                             word.append(split_s[3])
-                            new_file.append(find_wiki(word,entity))
-                    elif len(entity) > 0:
-                        new_file.append(find_wiki(word,entity))
-                        entity = []
-                        word = []
+                        else:
+                            print(find_wiki(word,entity))
+                            new_file.append(" ".join(split_s))
+                            entity = []
+                            word = []
+                            entity.append(split_s[5])
+                            word.append(split_s[3])
                     else:
-                        new_file.append(x)
-                for i in new_file:
-                    print(i)
+                        entity.append(split_s[5])
+                        word.append(split_s[3])
+                        new_file.append(find_wiki(word,entity))
+                elif len(entity) > 0:
+                    new_file.append(find_wiki(word,entity))
+                    entity = []
+                    word = []
+                else:
+                    new_file.append(x)
+            for i in new_file:
+                print(i)
 
 
 
