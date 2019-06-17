@@ -29,34 +29,34 @@ This README describes the files in this directory and the necessary steps to get
 
 ## Program files ##
 
-$python3 create_files.py -- annotate tokens with entity tags and create .ent.dev files
-$python3 train_model -- trains a SpaCy model on the development data
-$python3 measures.py -- create a Confusion matrix and F1 scores per category tag
-$python3 wikifier.py -- annotate entities with Wikipedia links and create .ent.wiki files
+- $python3 create_files.py -- annotate tokens with entity tags and create .ent.dev files
+- $python3 train_model -- trains a SpaCy model on the development data
+- $python3 measures.py -- create a Confusion matrix and F1 scores per category tag
+- $python3 wikifier.py -- annotate entities with Wikipedia links and create .ent.wiki files
 
 ## Standard Python libraries ##
-Python 3.7.1 (including glob, os and collections)
-csv 1.0
+- Python 3.7.1 (including glob, os and collections)
+- csv 1.0
 
 ## Imported libraries ##
 
 ### PyWSD ###
-description: multiple Lesk algorithms to disambiguate WordNet synsets
-installation: $pip install -U pywsd
-PyWSD 1.2.1
+- description: multiple Lesk algorithms to disambiguate WordNet synsets
+- installation: $pip install -U pywsd
+- PyWSD 1.2.1
 
 ### SpaCy ###
-description: an open-source software library for advanced Natural Language Processing pipeline
-installation: $pip install -U spacy
-Spacy 2.1.3
+- description: an open-source software library for advanced Natural Language Processing pipeline
+- installation: $pip install -U spacy
+- Spacy 2.1.3
 
 ### NLTK ###
-description: a leading platform for building Python programs to work with human language data
-installation: pip install --user -U nltk
-NLTK 3.4.3
+- description: a leading platform for building Python programs to work with human language data
+ -installation: pip install --user -U nltk
+- NLTK 3.4.3
 
 ### Stanford NLP tagger ###
-The following files are needed to instal the Stanford NLP tagger:
+- The following files are needed to instal the Stanford NLP tagger:
 - stanford-corenlp-full-2018-10-05.zip 
 - server.properties
 
@@ -70,9 +70,6 @@ java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -serverProper
 This directory includes all of our work for the Project Text Analysis final project of Group 11.
 
 ## who did what
-## Friso
-Wikification of entities
-## Louis
-SpaCy, NLTK and WordNet ner tagger, pipeline, data pre-processing
-## Nick
-Stanford NLP tagger and WordNet tagger
+- Friso :Wikification of entities
+- Louis: SpaCy, NLTK and WordNet ner tagger, pipeline, data pre-processing
+- Nick: Stanford NLP tagger and WordNet tagger
