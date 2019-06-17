@@ -1,0 +1,41 @@
+0 6 1001 Recent NN COU https://en.wikipedia.org/wiki/Holocene
+7 14 1002 studies NNS
+15 19 1003 show NN
+20 24 1004 that IN
+25 33 1005 children NNS
+34 37 1006 who WP
+38 40 1007 do VB
+41 44 1008 not RB
+45 48 1009 get VB
+49 55 1010 enough RB
+56 61 1011 sleep NN
+62 66 1012 tend NN
+67 69 1013 to TO
+70 74 1014 have VB
+75 79 1015 some DT
+80 89 1016 emotional JJ
+90 98 1017 problems NNS
+99 101 1018 as IN
+102 106 1019 well RB
+107 109 1020 as IN
+110 116 1021 weight NN
+117 121 1022 gain NN
+122 127 1023 later RB
+128 130 1024 in IN
+131 135 1025 life NN
+135 136 1026 . .
+137 139 2001 As IN
+140 143 2002 VOA NN ORG https://en.wikipedia.org/wiki/Voice_of_America
+143 145 2003 's POS
+146 153 2004 Melinda NN PER https://en.wikipedia.org/wiki/Melinda_Smith
+154 159 2005 Smith NNP PER https://en.wikipedia.org/wiki/Melinda_Smith
+160 167 2006 reports NNS
+167 168 2007 , ,
+169 172 2008 the DT
+173 181 2009 research NN
+182 187 2010 seems VBZ
+188 190 2011 to TO
+191 196 2012 blame NN
+197 200 2013 the DT
+201 208 2014 parents NNS
+208 209 2015 . .

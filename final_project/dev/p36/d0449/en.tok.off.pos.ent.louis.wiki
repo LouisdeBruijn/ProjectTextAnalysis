@@ -1,0 +1,61 @@
+0 8 1001 Numerous JJ
+9 15 1002 health NN
+16 23 1003 studies NNS
+24 28 1004 have VB
+29 34 1005 found NN
+35 43 1006 exercise NN
+44 52 1007 directly RB
+53 60 1008 impacts NNS
+61 67 1009 people NNS
+67 69 1010 's POS
+70 74 1011 well RB
+75 80 1012 being VBG
+80 81 1013 . .
+82 84 2001 An DT
+85 97 2002 organization NN
+98 100 2003 in IN
+101 111 2004 Washington NNP CIT -
+112 114 2005 is VBZ
+115 121 2006 taking VBG
+122 126 2007 this DT
+127 128 2008 a DT
+129 133 2009 step NN
+134 141 2010 further RB
+141 142 2011 : :
+143 152 2012 promoting VBG
+153 157 2013 good JJ
+158 164 2014 health NN
+165 170 2015 while IN
+171 175 2016 also RB
+176 184 2017 building NN
+185 196 2018 camaraderie NN
+197 202 2019 among IN
+203 208 2020 women NNS
+208 209 2021 . .
+210 220 3001 Washington NNP CIT -
+221 226 3002 Women NNS ORG
+227 235 3003 Outdoors NNS ORG https://en.wikipedia.org/wiki/Outdoors
+236 238 3004 is VBZ
+239 241 3005 an DT
+242 254 3006 organization NN
+255 259 3007 that IN
+260 262 3008 is VBZ
+263 270 3009 helping VBG
+271 276 3010 women NNS
+277 284 3011 develop VB
+285 290 3012 their PRP$
+291 301 3013 leadership NN
+302 308 3014 skills NNS
+309 316 3015 through IN
+317 324 3016 outdoor NN
+325 331 3017 sports NNS
+332 335 3018 and CC
+336 346 3019 activities NNS
+346 347 3020 . .
+348 351 4001 VOA NN ORG https://en.wikipedia.org/wiki/Voice_of_America
+351 353 4002 's POS
+354 362 4003 Monaliza NN PER -
+363 376 4004 Noormohammadi NN PER -
+377 380 4005 has VBZ
+381 385 4006 more RBR
+385 386 4007 . .

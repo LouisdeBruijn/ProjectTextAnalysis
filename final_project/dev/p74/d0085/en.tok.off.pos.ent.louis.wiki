@@ -1,0 +1,68 @@
+0 7 1001 Chinese JJ
+8 17 1002 officials NNS
+18 21 1003 say NN
+22 23 1004 a DT
+24 27 1005 gas NN
+28 37 1006 explosion NN
+38 41 1007 has VBZ
+42 49 1008 trapped VBD
+50 52 1009 at IN
+53 58 1010 least NN
+59 61 1011 50 CD
+62 66 1012 coal NN
+67 73 1013 miners NNS
+74 78 1014 deep NN
+79 90 1015 underground NN
+90 91 1016 . .
+92 101 2001 Officials NNS
+102 105 2002 say NN
+106 109 2003 the DT
+110 115 2004 blast NN
+116 124 2005 occurred VBD
+125 131 2006 before IN
+132 136 2007 dawn NN
+137 145 2008 Thursday NNP
+146 148 2009 at IN
+149 150 2010 a DT
+151 155 2011 mine NN
+156 158 2012 in IN
+159 167 2013 northern JJ
+168 173 2014 Hebei NNP COU https://en.wikipedia.org/wiki/Hebei
+174 182 2015 province NN COU https://en.wikipedia.org/wiki/Hebei
+182 183 2016 . .
+184 187 3001 The DT
+188 197 3002 condition NN
+198 200 3003 of IN
+201 204 3004 the DT
+205 211 3005 miners NNS
+212 214 3006 is VBZ
+215 218 3007 not RB
+219 230 3008 immediately RB
+231 236 3009 known NN
+236 237 3010 . .
+238 241 4001 The DT
+242 248 4002 latest JJS
+249 257 4003 accident NN
+258 260 4004 in IN
+261 266 4005 China NNP COU https://en.wikipedia.org/wiki/China
+266 268 4006 's POS
+269 280 4007 notoriously RB
+281 290 4008 dangerous JJ
+291 296 4009 mines NNS
+297 302 4010 comes VBZ
+303 306 4011 one NN
+307 311 4012 week NN
+312 317 4013 after IN
+318 320 4014 an DT
+321 331 4015 accidental NN
+332 341 4016 explosion NN
+342 348 4017 killed VBD
+349 351 4018 21 CD
+352 358 4019 miners NNS
+359 361 4020 in IN
+362 369 4021 Sichuan NN CIT https://en.wikipedia.org/wiki/Sichuan
+370 378 4022 province NN COU
+379 381 4023 in IN
+382 394 4024 southwestern NN
+395 400 4025 China NNP COU https://en.wikipedia.org/wiki/China
+400 401 4026 . .

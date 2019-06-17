@@ -1,0 +1,87 @@
+0 5 1001 India NNP COU https://en.wikipedia.org/wiki/India
+6 9 1002 has VBZ
+10 19 1003 suspended VBN
+20 27 1004 railway NN
+28 35 1005 service NN
+36 38 1006 to TO
+39 42 1007 and CC
+43 47 1008 from IN
+48 56 1009 Pakistan NN COU https://en.wikipedia.org/wiki/Pakistan
+57 59 1010 in IN
+60 63 1011 the DT
+64 68 1012 wake NN
+69 71 1013 of IN
+72 75 1014 the DT
+76 89 1015 assassination NN
+90 92 1016 of IN
+93 99 1017 former JJ
+100 109 1018 Pakistani NN ORG https://en.wikipedia.org/wiki/Pakistanis
+110 115 1019 Prime NNP
+116 124 1020 Minister NNP
+125 132 1021 Benazir NN PER https://en.wikipedia.org/wiki/Benazir_Bhutto
+133 139 1022 Bhutto NNP PER https://en.wikipedia.org/wiki/Benazir_Bhutto
+139 140 1023 . .
+141 150 2001 Officials NNS
+151 153 2002 in IN
+154 157 2003 New NNP CIT https://en.wikipedia.org/wiki/New_Delhi
+158 163 2004 Delhi NN CIT https://en.wikipedia.org/wiki/New_Delhi
+164 167 2005 did VBD
+168 171 2006 not RB
+172 175 2007 say VB
+176 180 2008 when WRB
+181 184 2009 the DT
+185 192 2010 service NN
+193 198 2011 would MD
+199 201 2012 be VB
+202 210 2013 restored VBN
+210 211 2014 . .
+212 223 3001 Authorities NNS
+224 227 3002 are VBP
+228 237 3003 concerned JJ
+238 242 3004 that IN
+243 251 3005 violence NN
+252 254 3006 by IN
+255 260 3007 angry JJ
+261 267 3008 Bhutto NNP PER https://en.wikipedia.org/wiki/Benazir_Bhutto
+268 278 3009 supporters NNS
+279 281 3010 in IN
+282 290 3011 Pakistan NN COU https://en.wikipedia.org/wiki/Pakistan
+291 295 3012 will MD
+296 301 3013 spill NN
+302 308 3014 across IN
+309 312 3015 the DT
+313 319 3016 border NN
+320 324 3017 into IN
+325 330 3018 India NNP COU https://en.wikipedia.org/wiki/India
+330 331 3019 . .
+332 341 4001 Militants NNS
+342 346 4002 have VB
+347 355 4003 targeted VBN
+356 362 4004 trains NNS
+363 365 4005 in IN
+366 369 4006 the DT
+370 374 4007 past NN
+374 375 4008 , ,
+376 385 4009 including VBG
+386 389 4010 the DT
+390 395 4011 fatal NN
+396 407 4012 firebombing VBG
+408 410 4013 of IN
+411 412 4014 a DT
+413 427 4015 Pakistan-bound NN
+428 433 4016 train NN
+434 436 4017 in IN
+437 442 4018 India NNP COU https://en.wikipedia.org/wiki/India
+443 450 4019 earlier RBR
+451 455 4020 this DT
+456 460 4021 year NN
+460 461 4022 . .
+462 473 5001 Sixty-eight JJ
+474 480 5002 people NNS
+481 485 5003 were VBD
+486 492 5004 killed VBN
+493 495 5005 in IN
+496 500 5006 that IN
+501 509 5007 February NNP
+510 516 5008 attack NN
+516 517 5009 . .

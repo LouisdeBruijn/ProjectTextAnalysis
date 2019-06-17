@@ -1,0 +1,47 @@
+0 1 1001 A DT
+2 9 1002 leading VBG
+10 15 1003 group NN
+16 18 1004 of IN
+19 27 1005 American JJ
+28 41 1006 pediatricians NNS
+42 46 1007 says VBZ
+47 51 1008 some DT
+52 60 1009 children NNS
+61 65 1010 with IN
+66 70 1011 high JJ
+71 82 1012 cholesterol NN
+83 89 1013 should MD
+90 94 1014 take VB
+95 106 1015 cholesterol NN
+107 115 1016 lowering VBG
+116 127 1017 medications NNS
+127 128 1018 . .
+130 134 2001 Some DT
+135 142 2002 doctors NNS
+143 152 2003 criticize VB
+153 156 2004 the DT
+157 171 2005 recommendation NN
+171 172 2006 . .
+173 178 3001 Other JJ
+179 186 3002 support NN
+187 189 3003 it PRP
+189 190 3004 . .
+191 196 4001 There EX
+197 199 4002 is VBZ
+200 202 4003 no DT
+203 208 4004 doubt NN
+208 209 4005 , ,
+210 212 4006 it PRP
+213 216 4007 has VBZ
+217 224 4008 stirred VBN
+225 227 4009 up RB
+228 229 4010 a DT
+230 237 4011 furious JJ
+238 244 4012 debate NN
+244 245 4013 . .
+247 250 5001 VOA NN ORG https://en.wikipedia.org/wiki/Voice_of_America
+250 252 5002 's POS
+253 258 5003 Carol NN PER https://en.wikipedia.org/wiki/Carol_Lynn_Pearson
+259 266 5004 Pearson NN PER https://en.wikipedia.org/wiki/Carol_Lynn_Pearson
+267 274 5005 reports NNS
+274 275 5006 . .

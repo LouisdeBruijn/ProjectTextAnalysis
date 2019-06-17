@@ -1,0 +1,26 @@
+0 8 1001 Economic JJ
+9 17 1002 activity NN
+18 20 1003 is VBZ
+21 28 1004 limited JJ
+29 31 1005 to TO
+32 41 1006 providing VBG
+42 50 1007 services NNS
+51 53 1008 to TO
+54 57 1009 the DT
+58 66 1010 military JJ
+67 70 1011 and CC
+71 76 1012 their PRP$
+77 85 1013 families NNS
+86 93 1014 located VBN
+94 96 1015 in IN
+97 105 1016 Dhekelia NNS CIT https://en.wikipedia.org/wiki/Akrotiri_and_Dhekelia
+105 106 1017 . .
+107 110 2001 All DT
+111 115 2002 food NN
+116 119 2003 and CC
+120 132 2004 manufactured VBD
+133 138 2005 goods NNS
+139 143 2006 must MD
+144 146 2007 be VB
+147 155 2008 imported VBN
+155 156 2009 . .

@@ -1,0 +1,89 @@
+0 11 1001 Authorities NNS
+12 14 1002 in IN
+15 20 1003 Haiti NNP COU https://en.wikipedia.org/wiki/Haiti
+21 25 1004 have VBP
+26 32 1005 killed VBN
+33 35 1006 at IN
+36 41 1007 least JJS
+42 45 1008 one CD
+46 52 1009 person NN
+53 59 1010 during IN
+60 61 1011 a DT
+62 69 1012 protest NN
+70 72 1013 by IN
+73 83 1014 supporters NNS
+84 86 1015 of IN
+87 93 1016 ousted JJ
+94 100 1017 former JJ
+101 110 1018 President NNP
+111 124 1019 Jean-Bertrand NNP PER https://en.wikipedia.org/wiki/Jean-Bertrand_Aristide
+125 133 1020 Aristide NNP PER https://en.wikipedia.org/wiki/Jean-Bertrand_Aristide
+133 134 1021 . .
+135 144 2001 Thousands NNP
+145 147 2002 of IN
+148 158 2003 protesters NNS
+159 166 2004 marched VBN
+167 169 2005 in IN
+170 173 2006 the DT
+174 181 2007 Bel-air NNP CIT https://en.wikipedia.org/wiki/The_Fresh_Prince_of_Bel-Air
+182 189 2008 section NN
+190 192 2009 of IN
+193 207 2010 Port-au-Prince NNP CIT https://en.wikipedia.org/wiki/Port-au-Prince
+208 210 2011 to TO
+211 217 2012 demand VB
+218 221 2013 the DT
+222 228 2014 return NN
+229 232 2015 Mr. NNP
+233 241 2016 Aristide NNP PER https://en.wikipedia.org/wiki/Jean-Bertrand_Aristide
+241 242 2017 , ,
+243 246 2018 who WP
+247 250 2019 has VBZ
+251 255 2020 been VBN
+256 258 2021 in IN
+259 264 2022 exile NN
+265 267 2023 in IN
+268 273 2024 South NNP COU https://en.wikipedia.org/wiki/South_Africa
+274 280 2025 Africa NNP COU https://en.wikipedia.org/wiki/South_Africa
+281 286 2026 since IN
+287 291 2027 last JJ
+292 300 2028 February NNP
+300 301 2029 . .
+302 313 3001 Authorities NNS
+314 320 3002 opened VBD
+321 325 3003 fire NN
+326 328 3004 on IN
+329 332 3005 the DT
+333 338 3006 crowd NN
+339 341 3007 as IN
+342 346 3008 they PRP
+347 354 3009 entered VBD
+355 357 3010 an DT
+358 370 3011 intersection NN
+371 373 3012 in IN
+374 378 3013 Bel- NNP CIT -
+379 382 3014 air NN
+382 383 3015 . .
+384 387 4001 Few JJ
+388 393 4002 other JJ
+394 401 4003 details NNS
+402 406 4004 were VBD
+407 412 4005 given VBN
+412 413 4006 . .
+414 422 5001 Violence NN
+423 425 5002 in IN
+426 440 5003 Port-au-Prince NNP CIT https://en.wikipedia.org/wiki/Port-au-Prince
+440 442 5004 's POS
+443 455 5005 pro-Aristide NN
+456 461 5006 slums NN
+462 465 5007 has VBZ
+466 472 5008 killed VBN
+473 477 5009 more JJR
+478 482 5010 than IN
+483 486 5011 200 CD
+487 493 5012 people NNS
+494 496 5013 in IN
+497 500 5014 the DT
+501 505 5015 last JJ
+506 510 5016 four CD
+511 517 5017 months NNS
+517 518 5018 . .
