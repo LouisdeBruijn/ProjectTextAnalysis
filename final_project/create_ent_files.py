@@ -18,6 +18,7 @@ from collections import defaultdict
 from nltk.metrics import ConfusionMatrix
 # pip install -U pywsd
 from pywsd.lesk import simple_lesk, adapted_lesk, cosine_lesk
+from nltk.parse import CoreNLPParser
 
 def get_continuous_chunks(sent):
     '''extract named entities form nltk.ne_chunk'''
@@ -55,25 +56,6 @@ def get_continuous_chunks(sent):
     return named_entities
 
 
-def create_sentences(path):
-    '''create sentences with offsets'''
-    sentData = []
-    with open(path) as rawFile:
-        # read text 
-        rawText = rawFile.read()
-        # remove newline characters inside text
-        rawText = rawText.replace('\n', ' ')
-        # create sentences
-        sents = nltk.sent_tokenize(rawText)
-        # append sentences offsets and sentences
-        begin = 0
-        for s in sents:
-            end = begin + len(s)
-            sentData.append((begin, end, s))
-            begin = end + 1
-    return sentData
-
-
 def gpe_disambiguation(token):
     '''disambiguate between cities and countries'''
     with open('GPE/countries.txt') as countryFile:
@@ -81,7 +63,7 @@ def gpe_disambiguation(token):
             if token in line:
                 return 'COU'
 
-    with open('GPE/cities.txt') as cityFile:
+    with open('GPE/cities.txt', encoding='utf-8') as cityFile:
         csvReader = csv.reader(cityFile, delimiter=",")
         for line in csvReader:
             if token in line[1] or token in line[2]: #lowercase and uppercase city names
@@ -90,17 +72,17 @@ def gpe_disambiguation(token):
     return 'COU'
 
 
-def spacy_tagger(sent, nlp, begin, end, entities):
+def spacy_tagger(raw, nlp):
     '''find named entities based on SpaCy model and return these entities'''
     
     new_entities = []
     # create nlp pipeline
-    doc = nlp(sent)
+    doc = nlp(raw)
     # append entity offsets, text and tagged category
     for ent in doc.ents:
 
         # offsets have been adjusted to fit both double entities and single
-        b = begin + ent.start_char
+        b = 0 + ent.start_char
         e = 0
         # (125, 132, 'Benazir', 'PER'), (133, 139, 'Bhutto', 'PER')
         for entit in ent.text.split():
@@ -132,22 +114,20 @@ def spacy_tagger(sent, nlp, begin, end, entities):
     return new_entities
 
 
-def nltk_ner_tagger(lines, begin, end, entities):
+def nltk_ner_tagger(lines):
     '''finds entities tagged by nltk's NER tagger and converts categories '''
     
     new_entities = []
+
     ## create NLTK tagged entities
     ne_chunk_input = [] # input needs to be tuple(token, pos) for NLTK NER tagger
-
     for line in lines:
-        # see if line is in the sentence in order to go through lines per sentence 
-        if begin <= int(line[1]) <= end:
-            ne_chunk_input.append((line[3], line[4]))
+        ne_chunk_input.append((line[3], line[4]))
+
     # get NE tagged by NLTK.chunker
     named_entities_list = get_continuous_chunks(ne_chunk_input)
-    # a list of list of tuples(token, pos, tag)
     ## [[(9, 'Rugova', 'NNP', 'PER')], [(18, 'European', 'NNP', 'ORG'), (18, 'Union', 'NNP', 'ORG')]
-    ne_chunk_input.clear() # return to empty input for next sentence
+
 
     ## check if item already tagged by SpaCy, and append otherwise
     for item in named_entities_list:
@@ -166,12 +146,13 @@ def nltk_ner_tagger(lines, begin, end, entities):
             item = new_item
         # now it is:
         ## [(18, 'European', 'NNP', 'ORG'), (19, 'Union', 'NNP', 'ORG')
+
         cnt = 0
         for ne in item:
             # check if index of word matches index of line item
             for line in lines:
-                # create index of 0 every new line
-                if int(line[0]) == begin:
+                # # create index of 0 every new line
+                if int(line[0]) == 0:
                     cnt = 0
                 # if NER id equals line id and NER token == line token
                 # then that tagged entity equals the line entity
@@ -183,45 +164,66 @@ def nltk_ner_tagger(lines, begin, end, entities):
                     else:
                         # append the missing NE tagged entity to entities
                         new_entities.append((line[0], line[1], line[3], ne[3]))
-                        ## TODO hier kunnen we nog mee spelen
-                        ## if ne[3] == 'COU' of ne[3] == '-'
-                        ## hij tagt alles als 'COU', ook 'CIT'
-
                 cnt += 1
 
     return new_entities
 
 
-def categorise_WordNet(lines, begin, end, sent, entities):
+def categorise_WordNet(lines, doc):
     '''finds named entities based on WordNet information and returns the entity'''
     categories = {'ANI': ['animal', 'bird'], 'SPO': ['sport'], 'NAT': ['ocean', 'river', 'mountain', 'crack', 'land']}
     for line in lines:
-        # see if line is in the sentence in order to go through lines per sentence 
-        if begin <= int(line[1]) <= end:
-            token = line[3] 
-            # print(token)
-            tag = line[4]
-            if tag in ['NN', 'NNPS', 'NNS']:
-                synsets = wn.synsets(token, pos=wn.NOUN) # creates a list with all found synsets for noun
-                # print('syns', synsets)
-                if len(synsets) > 1:
-                    # let Lesk algorithm choose the correct synset from ambigu results
-                    # print('sent', sent)
-                    # use any of the following Lesk-based algorithms to disambiguate synset
-                    # so far adapted_lesk is the best: does not tag 'bird(s)', services' & 'workers', but does tag 'soldiers' and 'survivors' 
-                    synset = adapted_lesk(sent, token, pos='NOUN') # simple_lesk(), cosine_lesk(), adapted_lesk() or just lesk() from NLTK
-                    # print('synset', synset)
-                    # find hypernyms for this synset
-                    hypernyms = [i for i in synset.closure(lambda s:s.hypernyms())] 
-                    # print('hypern', hypernyms)
-                    # iterate through hypernyms to see whether they match a category
-                    for hyp in hypernyms:
-                        # print('hyp', hyp)
-                        if str(hyp) != "Synset('public_transport.n.01')" and str(hyp) != "Synset('sports_equipment.n.01')": # beide is geen sport
-                            for key, value_list in categories.items():  
-                                for cat in value_list:
-                                    if cat in str(hyp):
-                                        return (line[0], line[1], token, key)
+        token = line[3]
+        tag = line[4]
+        if tag in ['NN', 'NNPS', 'NNS']:
+            synsets = wn.synsets(token, pos=wn.NOUN) # creates a list with all found synsets for noun
+            if len(synsets) > 1:
+                # let Lesk algorithm choose the correct synset from ambigu results
+                # use any of the following Lesk-based algorithms to disambiguate synset
+                # so far adapted_lesk is the best: does not tag 'bird(s)', services' & 'workers', but does tag 'soldiers' and 'survivors' 
+                # synset = adapted_lesk(sent, token, pos='NOUN') # simple_lesk(), cosine_lesk(), adapted_lesk() or just lesk() from NLTK
+                synset = adapted_lesk(doc, token, pos='NOUN')
+                # find hypernyms for this synset
+                hypernyms = [i for i in synset.closure(lambda s:s.hypernyms())] 
+                # iterate through hypernyms to see whether they match a category
+                for hyp in hypernyms:
+                    if str(hyp) != "Synset('public_transport.n.01')" and str(hyp) != "Synset('sports_equipment.n.01')": # beide is geen sport
+                        for key, value_list in categories.items():  
+                            for cat in value_list:
+                                if cat in str(hyp):
+                                    return (line[0], line[1], token, key)
+
+
+def coreNLP_ner_tagger(lines):
+    new_entities = []
+    ner_tagger = CoreNLPParser(url='http://localhost:9000', tagtype='ner')
+    tokens = [line[3] for line in lines]
+    nec_tokens = ner_tagger.tag(tokens)
+    j = 0
+    for i in range(len(tokens)):
+        token = nec_tokens[j][0]
+        token = token.replace('`', "'")
+        token = token.replace('-LRB-', '(')
+        token = token.replace('-RRB-', ')')
+        token = token.replace("''", '"')
+        while token != tokens[i]:
+            j += 1
+            token += nec_tokens[j][0]
+            token = token.replace('`', "'")
+            token = token.replace('LBR', '(')
+            token = token.replace('RBR', ')')
+            token = token.replace("''", '"')
+        nec = nec_tokens[j][1]
+        if nec == 'PERSON':
+            new_entities.append((lines[i][0], lines[i][1], token, 'PER'))
+        elif nec == 'ORGANIZATION':
+            new_entities.append((lines[i][0], lines[i][1], token, 'ORG'))
+        elif nec == 'COUNTRY' or nec == 'STATE_OR_PROVINCE':
+            new_entities.append((lines[i][0], lines[i][1], token, 'COU'))
+        elif nec == 'CITY':
+            new_entities.append((lines[i][0], lines[i][1], token, 'CIT'))
+        j += 1
+    return new_entities
 
 
 def create_files(path, model, output_file='.ent.louis'):
@@ -230,41 +232,45 @@ def create_files(path, model, output_file='.ent.louis'):
     rawPathlist = glob.glob(path + '/en.raw')
     offsetPosList = glob.glob(path + '/en.tok.off.pos')
 
-    for r, p in zip(rawPathlist, offsetPosList):
-        print(r, p)
+    for p in offsetPosList:
+        print(p)
 
         # append lines
         with open(p) as posFile:
             lines = [line.rstrip().split() for line in posFile]
 
+        # create document from tokens
+        doc = ' '.join(line[3] for line in lines)
+
         entities = []
-        # create sentences w/ offsets in tuple
-        sentData = create_sentences(r)
 
-        # find our entities 
-        for begin, end, sent in sentData:
+        # Stanford CoreNLP NER tagger
+        coreNLP_entity = coreNLP_ner_tagger(lines)
+        if coreNLP_entity:
+            print('Appending CoreNLP tagged entities', coreNLP_entity)
+            for coreNLP_ent in coreNLP_entity:
+                entities.append(coreNLP_ent)
 
-            #find entities with SpaCy model
-            nlp = spacy.load(model) # load the SpaCy model
-            spacy_entity = spacy_tagger(sent, nlp, begin, end, entities) # a list of entities
-            if spacy_entity: 
-                print('Appending SpaCy tagged entities', spacy_entity)
-                for spacy_ent in spacy_entity:
-                    entities.append(spacy_ent)
+        # find entities with SpaCy model
+        nlp = spacy.load(model) # load the SpaCy model
+        spacy_entity = spacy_tagger(doc, nlp) # a list of entities
+        if spacy_entity: 
+            print('Appending SpaCy tagged entities', spacy_entity)
+            for spacy_ent in spacy_entity:
+                entities.append(spacy_ent)
 
-            # lets try to find new entities with the NLTK NER tagger
-            nltk_entity = nltk_ner_tagger(lines, begin, end, entities)
-            if nltk_entity:
-                print('Appending NLTK tagged entities', nltk_entity)
-                for nltk_ent in nltk_entity:
-                    entities.append(nltk_ent)
+        # lets try to find new entities with the NLTK NER tagger
+        nltk_entity = nltk_ner_tagger(lines)
+        if nltk_entity:
+            print('Appending NLTK tagged entities', nltk_entity)
+            for nltk_ent in nltk_entity:
+                entities.append(nltk_ent)
 
-            # find entities for categories 'ANI', 'SPO' and 'NAT' with WordNet
-            wn_entity = categorise_WordNet(lines, begin, end, sent, entities)
-            if wn_entity:
-                print('Appending WordNet tagged entities', wn_entity)
-                entities.append(wn_entity)
-
+        # find entities for categories 'ANI', 'SPO' and 'NAT' with WordNet
+        wn_entity = categorise_WordNet(lines, doc)
+        if wn_entity:
+            print('Appending WordNet tagged entities', wn_entity)
+            entities.append(wn_entity)
 
         # out of all NER taggers, choose the tag
         dic = defaultdict(list)
@@ -409,11 +415,7 @@ def measures(path, output_file):
 
     print('length of errors', len(errors))
 
-    # write erronerous lines to an error file
-    # errors = with NORP as 'EXTRA' tagged in SpaCy
-    # errors2 = SpaCy English model
-    # errors3 = own model + SpaCy English model
-    with open('errors4.txt', "w") as errorFile:
+    with open('errorsnext.txt', "w") as errorFile:
         for error in errors:
             errorFile.write("%s\n" %error)
 
@@ -421,16 +423,16 @@ def main():
     '''Create parser file and compare it to the gold standard file'''
 
     path = 'dev/*/*'                            # set to 'dev/*/*' for all files
-    # model = "en_core_web_sm"                    # SpaCy English model
-    model = os.getcwd() + '/spacy_model'        # our own model
+    model = "en_core_web_sm"                    # SpaCy English model
+    # model = os.getcwd() + '/spacy_model'        # our own model
     # model = os.getcwd() + '/spacy_modelv2'      # our own model + SpaCy English model
-    output_file = '.ent.louis3'                  # output file endings
+    output_file = '.ent.louis'                  # output file endings
 
     ## run it
     create_files(path, model, output_file)
 
     ## compare gold standard and parser files
-    measures(path, output_file)
+    # measures(path, output_file)
 
 
 if __name__ == '__main__':
