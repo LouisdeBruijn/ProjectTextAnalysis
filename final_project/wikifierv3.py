@@ -12,40 +12,37 @@ def find_wiki(entity, cat):
 
 
         try:
-            print(entity, cat)
+            # print(entity, cat)
             page = wikipedia.page(entity)
             URL = page.url
-            print(entity, URL)
-            exit()
+            #print(entity, URL)
             return URL
         except wikipedia.exceptions.DisambiguationError as e:
             options = e.options
-            if  entity == "country" or "state" or "LOCATION":
+            if  cat == "COU":
                 keywords = ["culture", "province"]
-            elif entity == "city" or "town":
+            elif cat == "CIT":
                 keywords = []
-            elif entity == "natural places":
+            elif cat == "NAT":
                 keywords = ["river", "mountain"]
-            elif entity == "person":
+            elif cat == "PER":
                 keywords = ["name", "given name", "surname", "person"]
-            elif entity == "organization":
+            elif cat == "ORG":
                 keywords = []
-            elif entity == "animal":
+            elif cat == "ANI":
                 keywords = []
-            elif entity == "sport":
+            elif entity == "SPO":
                 keywords = []
-            elif entity == "entertainment":
+            elif cat == "ENT":
                 keywords = ["book", "story", "novel", "song", "album", "magazine", "game", "party", "episode", "series", "film"]
             for option in options:
                 for keyword in keywords:
                     if keyword in option:
                         page = wikipedia.page(option)
                         URL = page.url
-                        print(word)
                         return URL
                 if keywords not in options:
-                    page = wikipedia.page(options[0])
-                    URL = page.url
+                    URL = '-'
                     return URL
         except wikipedia.exceptions.PageError as f:
             print(f)
@@ -78,16 +75,18 @@ def read_files():
     # door files itereren
     for path in offsetPosList:
         print(path)
-        # maak list met lines
-        lines = []
+
         with open(path) as file:
             lines = [line.rstrip().split() for line in file]
-            lines = (line for line in lines)
 
         # iterable object
         lines = iter(lines)
+        # create wikilinks w/ tuple (index, link)
+        wikilinks = []
+
         # create index
         idx = 0
+        # lets go
         try:
             for line in lines:
                 idx += 1
@@ -95,32 +94,36 @@ def read_files():
                 if len(line) > 5:
                     entities[line[5]].append(line[3])
                     entities = check_next(lines, idx, entities)
-                    idx += len(entities.values())
 
-                    print(entities)
                     for key, value in entities.items():
-                        find_wiki(' '.join(value), key)
-                        exit()
+                        if len(value) > 1:
+                            for i, v in enumerate(value):
+                                wikilinks.append((idx+i, find_wiki(' '.join(value), key)))
+                        else:
+                            wikilinks.append((idx, find_wiki(' '.join(value), key)))
 
+                    for i in entities.values():
+                        idx += len(i)
 
-
+        
         except StopIteration:
-            pass
-                # wiki = ' '.join(entities[0])
-                # print(wiki)
+            continue
 
 
+        with open(path) as file:
+            lines = [line.rstrip().split() for line in file]
+
+        for index, line in enumerate(lines):
+            for item in wikilinks:
+                if index == item[0]-1:
+                    line.append(item[1])
 
 
-            #         print('ent', entities)
-            #         if check_next(lines, idx, entities) != None:
-            #             print('yes')
-
-        # with open(path + '.wiki', "w") as parserFile:
-        #     for line in lines:
-        #         item = ' '.join(line)
-        #         parserFile.write("%s\n" %item)
-
+        with open(path + '.wiki', "w") as parserFile:
+            for line in lines:
+                item = ' '.join(line)
+                parserFile.write("%s\n" %item)
+    
 
 
 
