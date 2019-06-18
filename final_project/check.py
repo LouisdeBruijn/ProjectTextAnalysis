@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # File name: check.py
-# Description: check w/ measures.py TP/FP/TN/FN and F1-score
+# Description: check F1-scores and confusion matrix for entity tags and accuracy scores for Wikilinks
 # Author: Louis de Bruijn
 # Date: 11-06-2018
 
@@ -9,12 +9,8 @@ from collections import Counter
 from nltk.metrics import ConfusionMatrix
 
 
-def main():
-    '''compares all of the parser and gold-standard files'''
-    path = 'dev/*/*'
-    parser = glob.glob(path + '/en.tok.off.pos.ent.dev2')
-    gold = glob.glob(path + '/en.tok.off.pos.ent')
-
+def measures_entity(path, parser_filename, gold_filename):
+    '''compares all of the entities in the parser and gold-standard files'''
     parserLines = []
     goldLines = []
 
@@ -39,7 +35,6 @@ def main():
     goldTags = []
 
     labels = set()
-
 
     for line in parserLines:
         if len(line) > 3:
@@ -89,6 +84,67 @@ def main():
         
         print(i, fscore)
 
+
+def accuracy_wikilinks():
+    '''computes the accuracy score for the wikilinks'''
+    parserLines = []
+    goldLines = []
+
+    for p, g in zip(parser, gold):
+        # print(p, g)
+
+        with open(p) as parserFile:
+            for line in parserFile:
+                # remove newline character and split in list items
+                line = line.rstrip().split()
+                # remove the offsets per line
+                parserLines.append(line[2:])
+                    
+        with open(g) as goldFile:
+            for line in goldFile:
+                # remove newline character and split in list items
+                line = line.rstrip().split()
+                # remove the offsets per line
+                goldLines.append(line[2:])
+
+
+    for x, y in zip(parserLines, goldLines):
+        print(x, y)
+        exit()
+
+
+
+    parserLinks = []
+    goldLinks = []
+
+    ## accuracy = correct links / total links 
+    # total links = all the times where both parser and gold have a link
+    for p_line, g_line in zip(parserLines, goldLines):
+        if len(p_line) > 4 and len(g_line) > 4:
+            parserLinks.append(line[4])
+            goldLinks.append(line[4])
+
+
+    acc = 0
+    total = len(goldLinks)
+    for p_link, g_link in zip(parserLinks, goldLinks):
+        if p_link == g_link:
+            acc += 1
+
+    print('accuracy score:')
+    print(acc/total)
+
+
+def main():
+    path = 'test/*/*'
+    parser = glob.glob(path + '/en.tok.off.pos.ent.test1')
+    gold = glob.glob(path + '/en.tok.off.pos.ent')
+
+    ## compare the entity tags of parser and gold
+    measures_entity(path, parser, gold)
+
+    ## get accuracy scores for the Wikilinks
+    accuracy_wikilinks(path, parser, gold)
 
 if __name__ == '__main__':
     main()
