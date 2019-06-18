@@ -199,14 +199,21 @@ def coreNLP_ner_tagger(lines):
     j = 0
     for i in range(len(tokens)):
         token = nec_tokens[j][0]
+        token = token.replace("--", "-")
         token = token.replace('`', "'")
+        token = token.replace('-LSB-', '[')
+        token = token.replace('-RSB-', ']')
         token = token.replace('-LRB-', '(')
         token = token.replace('-RRB-', ')')
         token = token.replace("''", '"')
+        if token == '-': tokens[i] = '-'
         while token != tokens[i]:
             j += 1
             token += nec_tokens[j][0]
+            token = token.replace('--', '-')
             token = token.replace('`', "'")
+            token = token.replace('-LSB-', '[')
+            token = token.replace('-RSB-', ']')
             token = token.replace('LBR', '(')
             token = token.replace('RBR', ')')
             token = token.replace("''", '"')
@@ -407,11 +414,11 @@ def measures(path, output_file):
 def main():
     '''Create parser file and compare it to the gold standard file'''
 
-    path = 'dev/*/*'                            # set to 'dev/*/*' for all files
+    path = 'test/*/*'                            # set to 'dev/*/*' for all files
     model = "en_core_web_sm"                    # SpaCy English model
     # model = os.getcwd() + '/spacy_model'        # our own model
-    model = os.getcwd() + '/spacy_modelv2'      # our own model + SpaCy English model
-    output_file = '.ent.dev2'                  # output file endings
+    # model = os.getcwd() + '/spacy_modelv2'      # our own model + SpaCy English model
+    output_file = '.ent.test1'                  # output file endings
 
     ## run it
     create_files(path, model, output_file)
